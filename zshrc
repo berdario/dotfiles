@@ -63,28 +63,19 @@ export EDITOR="emacs -nw"
 export EMAIL=berdario@gmail.com
 export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
 export PATH=${PATH}:~/Applications/bin
-export PATH=${PATH}:~/Applications/bin/ec2
-export PATH=$PATH:/usr/share/javadb/bin
-export DERBY_HOME=/usr/share/javadb
+
 export DEBFULLNAME='Dario Bertini'
 export DEBEMAIL='berdario@gmail.com'
 export GPGKEY=F8C98EFE
 export VIMINIT="so $HOME/.config/vim/vimrc"
 
 export JAVA_HOME=$(readlink -f "`dirname \`readlink -f  \\\`which java\\\`\``""/../../.")
-export EC2_HOME=$HOME/Applications/ec2-api-tools-1.3-57419/
 
-export EC2_CERT=~/Documents/cloud\ computing/cert-QWEYDD2BUEX6OOANBKTPBNDILMZM4F5C.pem
-export EC2_PRIVATE_KEY=~/Documents/cloud\ computing/pk-QWEYDD2BUEX6OOANBKTPBNDILMZM4F5C.pem
-
-export M2_HOME=$HOME/Applications/apache-maven-3.0.1
-export PATH=$M2_HOME/bin:${PATH}
 export PATH=${PATH}:$HOME/.cabal/bin
 export PATH="$PATH":$HOME/Applications/depot_tools
 
 alias ls="ls --color=auto"
-alias django-jadmin="jython /usr/bin/django-admin"
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
 alias duh="dulwich"
 alias history="history 1"
 alias e="emacs -nw"
