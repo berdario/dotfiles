@@ -1,0 +1,15 @@
+[alias]
+pull=pull -u
+[ui]
+username=Dario Bertini <berdario@gmail.com>
+[extensions]
+hgext.pager =
+hgext.transplant =
+hgext.churn = 
+hgext.purge = 
+mq =
+color =
+hgsubversion =
+[pager]
+pager = LESS='FSRX' less
+quiet = True
