@@ -56,8 +56,7 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 
 source /etc/zsh_command_not_found
-#source /etc/bash_completion.d/virtualenvwrapper
-source /home/dario/Projects/virtualenvwrapper/virtualenvwrapper.sh
+source /etc/bash_completion.d/virtualenvwrapper
 
 export EDITOR="emacs -nw"
 export EMAIL=berdario@gmail.com
