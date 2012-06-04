@@ -68,7 +68,7 @@ export DEBEMAIL='berdario@gmail.com'
 export GPGKEY=F8C98EFE
 export VIMINIT="so $HOME/.config/vim/vimrc"
 
-export JAVA_HOME=$(readlink -f "`dirname \`readlink -f  \\\`which java\\\`\``""/../../.")
+command -v java >/dev/null 2>&1 && export JAVA_HOME=$(readlink -f "`dirname \`readlink -f  \\\`which java\\\`\``""/../../.")
 
 export PATH=${PATH}:$HOME/.cabal/bin
 export PATH="$PATH":$HOME/Applications/depot_tools
