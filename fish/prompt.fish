@@ -1,11 +1,13 @@
 function branch_name
 	if [ -d .hg ]
-	  printf (hg branch)
+	  printf ' (%s)' (hg branch)
 	end
 end
 
 function fish_prompt --description 'Write out the prompt'
 	
+	set -l last_status $status
+
 	# Just calculate these once, to save a few cycles when displaying the prompt
 	if not set -q __fish_prompt_hostname
 		set -g __fish_prompt_hostname (hostname|cut -d . -f 1)
@@ -43,8 +45,13 @@ function fish_prompt --description 'Write out the prompt'
 		   set -g __fish_prompt_venv (set_color --bold -b blue white) (basename "$VIRTUAL_ENV") "$__fish_prompt_normal "
 		end
 
-		echo -n -s "$__fish_prompt_venv$__fish_prompt_userhost$USER" @ "$__fish_prompt_hostname" ' ' "$__fish_prompt_cwd" (prompt_pwd) "[$status]" "$__fish_prompt_branch" (branch_name) "$__fish_prompt_normal" '> '
+		if [ $last_status -ne 0 ]
+		   set -g __fish_prompt_exit_code (set_color --bold red) "[$last_status]"
+		else
+		   set -g __fish_prompt_exit_code ""
+		end
 
-		# TODO: $status is not updated
+		echo -n -s "$__fish_prompt_venv$__fish_prompt_userhost$USER" @ "$__fish_prompt_hostname" ' ' "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_branch" (branch_name) "$__fish_prompt_exit_code$__fish_prompt_normal" '> '
+
 	end
 end

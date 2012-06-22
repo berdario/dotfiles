@@ -1,11 +1,8 @@
 if [ -z "$DISPLAY" -a -z "$BYOBU_WINDOWS" ] ;
-   if $TERM != "dumb";
+   if test $TERM != "dumb";
      exec byobu-launcher;
    end
 end
-
-set config_dir (dirname (readlink -f (pwd)"/config.fish"))
-echo $_
 
 set -gx WORKON_HOME ~/.virtualenvs/
 . ~/.config/fish/workon_funcs.fish
