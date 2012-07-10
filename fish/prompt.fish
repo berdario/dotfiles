@@ -2,7 +2,7 @@ function branch_name
 	if [ -d .hg ]
 		printf ' (%s)' (hg branch)
 	else; if [ -d .git ]
-			printf ' (%s)' (git branch | awk '{print $2}')
+			printf ' (%s)' (git symbolic-ref -q HEAD | cut -d"/" -f 3)
 		end
 	end
 end
