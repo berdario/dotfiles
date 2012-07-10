@@ -1,6 +1,9 @@
 function branch_name
 	if [ -d .hg ]
-	  printf ' (%s)' (hg branch)
+		printf ' (%s)' (hg branch)
+	else; if [ -d .git ]
+			printf ' (%s)' (git branch | awk '{print $2}')
+		end
 	end
 end
 
