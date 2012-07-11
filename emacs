@@ -78,3 +78,15 @@
   (setq c-default-style "bsd" c-basic-offset 4)
 )
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+(defun toggle-fullscreen (&optional f)
+  (interactive)
+  (let ((current-value (frame-parameter nil 'fullscreen)))
+	(set-frame-parameter nil 'fullscreen
+						 (if (equal 'fullboth current-value)
+							 (if (boundp 'old-fullscreen) old-fullscreen nil)
+						   (progn (setq old-fullscreen current-value)
+								  'fullboth)))))
+(global-set-key [f11] 'toggle-fullscreen)
+
+(tool-bar-mode -1)
