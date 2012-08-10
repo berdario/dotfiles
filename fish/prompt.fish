@@ -1,10 +1,16 @@
 function branch_name
-	if [ -d .hg ]
-		printf ' (%s)' (hg branch)
-	else; if [ -d .git ]
-			printf ' (%s)' (git symbolic-ref -q HEAD | cut -d"/" -f 3)
+	if test $PWD != $__fish_previous_pwd
+		if test (hg branch ^&-)
+			set -g __fish_branch_name (printf ' (%s)' (hg branch))
+		else; if test (git symbolic-ref -q HEAD ^&-)
+				set -g __fish_branch_name (printf ' (%s)' (git symbolic-ref -q HEAD | cut -d"/" -f 3))
+			else; 
+				set -g __fish_branch_name ""
+			end
 		end
+		set -g __fish_previous_pwd $PWD
 	end
+	printf "%s" $__fish_branch_name
 end
 
 function fish_prompt --description 'Write out the prompt'
@@ -14,10 +20,9 @@ function fish_prompt --description 'Write out the prompt'
 	# Just calculate these once, to save a few cycles when displaying the prompt
 	if not set -q __fish_prompt_hostname
 		set -g __fish_prompt_hostname (hostname|cut -d . -f 1)
-	end
-
-	if not set -q __fish_prompt_normal
 		set -g __fish_prompt_normal (set_color normal)
+		set -g __fish_branch_name ""
+		set -g __fish_previous_pwd ""
 	end
 
 	switch $USER
