@@ -1,17 +1,28 @@
-function branch_name
-	if test $PWD != $__fish_previous_pwd
-		if test (hg branch ^&-)
+set -g __dvcs git hg
+
+function set_branch_name
+	if test (hg branch ^&-)
 			set -g __fish_branch_name (printf ' (%s)' (hg branch))
-		else; if test (git symbolic-ref -q HEAD ^&-)
-				set -g __fish_branch_name (printf ' (%s)' (git symbolic-ref -q HEAD | cut -d"/" -f 3))
-			else; 
-				set -g __fish_branch_name ""
-			end
+	else; if test (git symbolic-ref -q HEAD ^&-)
+			set -g __fish_branch_name (printf ' (%s)' (git symbolic-ref -q HEAD | cut -d"/" -f 3))
+		else; 
+			set -g __fish_branch_name ""
 		end
-		set -g __fish_previous_pwd $PWD
+	end
+	set -g __fish_previous_pwd $PWD
+end
+
+
+function branch_name
+	if contains (echo $history[1] | cut -d" " -f1) $__dvcs
+		set_branch_name
+	end
+	if [ $PWD != $__fish_previous_pwd ]
+		set_branch_name
 	end
 	printf "%s" $__fish_branch_name
 end
+
 
 function fish_prompt --description 'Write out the prompt'
 	
