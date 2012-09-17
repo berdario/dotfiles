@@ -18,6 +18,7 @@ set -x VIMINIT "so $HOME/.config/vim/vimrc"
 
 which java > /dev/null ; and set -x JAVA_HOME (readlink -f (echo (dirname (readlink -f (which java)))"/../../."))
 
+mkdir -p ~/Applications/bin ~/.cabal/bin ~/Applications/depot_tools
 set -x PATH $PATH ~/Applications/bin ~/.cabal/bin ~/Applications/depot_tools
 
 function e; emacs -nw $argv; end
