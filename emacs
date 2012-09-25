@@ -54,6 +54,7 @@
 (global-hl-line-mode 1)
 (setq read-file-name-completion-ignore-case 1)
 (global-visual-line-mode)
+(column-number-mode)
 ;(setq-default indent-tabs-mode t)
 (setq-default tab-width 4)
 (global-whitespace-mode 1)
@@ -90,3 +91,4 @@
 (global-set-key [f11] 'toggle-fullscreen)
 
 (tool-bar-mode -1)
+
