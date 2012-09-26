@@ -4,3 +4,5 @@ fish_history
 bazaar/subversion.conf
 fish/completions
 plugins
+emacs.d/elpa
+emacs.d/url
