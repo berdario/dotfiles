@@ -6,3 +6,4 @@ fish/completions
 plugins
 emacs.d/elpa
 emacs.d/url
+./bazaar/qbzr.conf
