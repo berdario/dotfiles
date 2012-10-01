@@ -97,3 +97,6 @@
     '("marmalade" .
       "http://marmalade-repo.org/packages/"))
 (package-initialize)
+
+(require 'powershell-mode)
+(add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode))
