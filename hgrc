@@ -2,6 +2,7 @@
 pull=pull -u
 [ui]
 username=Dario Bertini <berdario@gmail.com>
+ssh="C:\Program Files (x86)\PuTTY\plink.exe" -ssh -i "C:\Users\Dario\.ssh\id_rsa.ppk"
 [extensions]
 hgext.pager =
 hgext.transplant =
@@ -9,7 +10,7 @@ hgext.churn =
 hgext.purge = 
 mq =
 color =
-hgsubversion =
+#hgsubversion =
 [pager]
-pager = LESS='FSRX' less
+pager = less
 quiet = True
