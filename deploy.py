@@ -12,6 +12,12 @@ home = environ.get("HOME", ".")
 home = environ.get("USERPROFILE", home)
 dotfiles_dir = path.join(home, ".dotfiles")
 
+if not hasattr(__builtins__, "WindowsError"):
+	# dummy WindowsError, will never be catched
+	# but without it, ignore_existing_target would fail on linux
+	class WindowsError(BaseException):
+		pass
+
 admin = "admin" in argv
 debug = "debug" in argv
 if debug:
@@ -51,24 +57,31 @@ try_mkdir = ignore_existing_target(os.mkdir)
 def main():
 	try:
 		if platform.startswith("linux"):
-			pass
-			#fish = path.join(home, ".config", "fish")
-			#try_symlink(path.join(dotfiles_dir, "fish"), fish)
+			cfg_dir = environ.get("XDG_CONFIG_HOME", path.join(home, ".config"))
+			joiner = lambda x: [path.join(home, x)]
+			bazaar, hgrc, gitconfig, emacsd = map(joiner, [".bazaar", ".hgrc",
+				".gitconfig", ".emacs.d"])
+			try_symlink(path.join(dotfiles_dir, "fish"), path.join(cfg_dir, "fish"))
 		elif platform == "win32":
 			appdata = environ["AppData"]
 			if not admin:
 				call("powershell set-executionpolicy RemoteSigned CurrentUser")
-			bazaar = path.join(appdata, "bazaar", "2.0")
-			hgrc = path.join(home, "mercurial.ini")
-			gitconfig = path.join(home, ".gitconfig")
-			emacsd = path.join(appdata, ".emacs.d")
+
+			# the True means that it's a folder, it's needed because
+			# posix.symlink and windows symlink have a different signature
+			bazaar = [path.join(appdata, "bazaar", "2.0"), True]
+			hgrc = [path.join(home, "mercurial.ini")]
+			gitconfig = [path.join(home, ".gitconfig")]
+			emacsd = [path.join(appdata, ".emacs.d"), True]
 			ps_profile = path.join(home, "Documents", "WindowsPowerShell", "profile.ps1")
 			try_symlink(path.join(dotfiles_dir, "powershell.ps1"), ps_profile)
 
-		try_symlink(path.join(dotfiles_dir, "bazaar"), bazaar, True)
-		try_symlink(path.join(dotfiles_dir, "hgrc"), hgrc)
-		try_symlink(path.join(dotfiles_dir, "gitconfig"), gitconfig)
-		try_symlink(path.join(dotfiles_dir, "emacs.d"), emacsd, True)
+		joiner = lambda x: [path.join(dotfiles_dir, x)]
+		# I need the argument expansion, since windows' symlink requires an extra True
+		try_symlink(*(joiner("bazaar") + bazaar))
+		try_symlink(*(joiner("hgrc") + hgrc))
+		try_symlink(*(joiner("gitconfig") + gitconfig))
+		try_symlink(*(joiner("emacs.d") + emacsd))
 		if admin:
 			sys.exit()
 	
@@ -78,6 +91,7 @@ def main():
 		else:
 			raise
 
+	bazaar = joiner("bazaar")[0]
 	bzr_plugins = path.join(bazaar, "plugins.list")
 	bzr_plugin_dir = path.join(bazaar, "plugins")
 	try_mkdir(bzr_plugin_dir)
@@ -86,7 +100,8 @@ def main():
 	# otherwise, launchpad would ask us for auth, even only for read access
 	with open(bzr_plugins, "r") as plugins, chdir(bzr_plugin_dir) as _:
 		for plugin in plugins:
-			call(["bzr", "branch"] + shlex.split(plugin))
+			if not path.exists(plugin.split()[-1]):
+				call(["bzr", "branch"] + shlex.split(plugin))
 	os.rename(bzr_bakconf, bzr_conf)
 
 if __name__ == "__main__":
