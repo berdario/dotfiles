@@ -91,7 +91,7 @@ def main():
 		else:
 			raise
 
-	bazaar = joiner("bazaar")[0]
+	bazaar = path.join(dotfiles_dir, "bazaar")
 	bzr_plugins = path.join(bazaar, "plugins.list")
 	bzr_plugin_dir = path.join(bazaar, "plugins")
 	try_mkdir(bzr_plugin_dir)
