@@ -12,12 +12,6 @@ home = environ.get("HOME", ".")
 home = environ.get("USERPROFILE", home)
 dotfiles_dir = path.join(home, ".dotfiles")
 
-if not hasattr(__builtins__, "WindowsError"):
-	# dummy WindowsError, will never be catched
-	# but without it, ignore_existing_target would fail on linux
-	class WindowsError(BaseException):
-		pass
-
 admin = "admin" in argv
 debug = "debug" in argv
 if debug:
@@ -45,9 +39,6 @@ def ignore_existing_target (f):
 			f(*args, **kwargs)
 		except OSError as e:
 			if e.errno != 17: # 17 == file exists
-				raise
-		except WindowsError as e:
-			if e.winerror != 183: # 183 == file already existing
 				raise
 	return inner
 
