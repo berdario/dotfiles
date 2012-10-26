@@ -8,3 +8,5 @@ emacs.d/elpa
 emacs.d/url
 ./bazaar/qbzr.conf
 ./bazaar/ssh_host_keys
+bazaar/locations.conf
+bazaar/lock
