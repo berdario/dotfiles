@@ -98,9 +98,26 @@
       "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
+(when (not package-archive-contents)
+  (package-refresh-contents))
+(defvar my-packages '(clojure-mode
+                      nrepl
+                      nrepl-ritz))
+(dolist (p my-packages)
+  (when (not (package-installed-p p))
+    (package-install p)))
+
 (require 'powershell-mode)
 (add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode))
 
 (require 'zencoding-mode)
 (add-hook 'sgml-mode-hook 'zencoding-mode)
 
+(setq-default sgml-basic-offset tab-width)
+
+
+;; (fset 'indent-region-copy (symbol-function 'indent-region))
+;; (defun indent-region (START END &optional COLUMN) 
+;;   (interactive)
+;;   (increase-left-margin START END)
+;;   (indent-region-copy START END COLUMN))

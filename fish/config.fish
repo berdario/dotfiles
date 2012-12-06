@@ -16,6 +16,8 @@ set -x DEBEMAIL 'berdario@gmail.com'
 set -x GPGKEY F8C98EFE
 set -x VIMINIT "so $HOME/.config/vim/vimrc"
 
+set -x CLOJURESCRIPT_HOME "$HOME/Projects/clojurescript"
+
 which java > /dev/null ; and set -x JAVA_HOME (readlink -f (echo (dirname (readlink -f (which java)))"/../../."))
 
 mkdir -p ~/Applications/bin ~/.cabal/bin ~/Applications/depot_tools

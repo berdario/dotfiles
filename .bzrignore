@@ -10,3 +10,4 @@ emacs.d/url
 ./bazaar/ssh_host_keys
 bazaar/locations.conf
 bazaar/lock
+emacs.d/tramp
