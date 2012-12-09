@@ -101,6 +101,7 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 (defvar my-packages '(clojure-mode
+					  erlang
                       nrepl
                       nrepl-ritz))
 (dolist (p my-packages)
@@ -128,3 +129,5 @@
 (autoload 'run-fsharp "inf-fsharp" "Run an inferior F# process." t)
 (setq inferior-fsharp-program "fsharpi")
 (setq fsharp-compiler "fsharpc")
+
+(add-to-list 'auto-mode-alist '("\\.\\(e\\|h\\)rl" . erlang-mode))
