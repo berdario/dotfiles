@@ -1,2 +1,2 @@
 --type-set=vala=.vala
---type-set=clojure=.clj .cljs
+--type-set=clojure=.clj,.cljs
