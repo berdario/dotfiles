@@ -50,9 +50,10 @@ def main():
 		if platform.startswith("linux"):
 			cfg_dir = environ.get("XDG_CONFIG_HOME", path.join(home, ".config"))
 			joiner = lambda x: [path.join(home, x)]
-			bazaar, hgrc, gitconfig, emacsd = map(joiner, [".bazaar", ".hgrc",
-				".gitconfig", ".emacs.d"])
+			bazaar, hgrc, gitconfig, emacsd, ackrc = map(joiner, [".bazaar", 
+				".hgrc", ".gitconfig", ".emacs.d", ".ackrc"])
 			try_symlink(path.join(dotfiles_dir, "fish"), path.join(cfg_dir, "fish"))
+			try_symlink(path.join(dotfiles_dir, "ackrc"), ackrc[0])
 		elif platform == "win32":
 			appdata = environ["AppData"]
 			if not admin:
