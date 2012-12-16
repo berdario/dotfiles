@@ -1,47 +1,7 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; File name: ` ~/.emacs '
-;;; ---------------------
-;;;
-;;; If you need your own personal ~/.emacs
-;;; please make a copy of this file
-;;; an placein your changes and/or extension.
-;;;
-;;; Copyright (c) 1997-2002 SuSE Gmbh Nuernberg, Germany.
-;;;
-;;; Author: Werner Fink, <feedback@suse.de> 1997,98,99,2002
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Test of Emacs derivates
-;;; -----------------------
-(if (string-match "XEmacs\\|Lucid" emacs-version)
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;;; XEmacs
-  ;;; ------
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (progn
-     (if (file-readable-p "~/.xemacs/init.el")
-        (load "~/.xemacs/init.el" nil t))
-  )
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;;; GNU-Emacs
-  ;;; ---------
-  ;;; load ~/.gnu-emacs or, if not exists /etc/skel/.gnu-emacs
-  ;;; For a description and the settings see /etc/skel/.gnu-emacs
-  ;;;   ... for your private ~/.gnu-emacs your are on your one.
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (if (file-readable-p "~/.gnu-emacs")
-      (load "~/.gnu-emacs" nil t)
-    (if (file-readable-p "/etc/skel/.gnu-emacs")
-	(load "/etc/skel/.gnu-emacs" nil t)))
+;; Custom Settings from customize
+(setq custom-file "~/.emacs.d/customizations")
+(load "~/.emacs.d/customizations" t t)
 
-  ;; Custom Settings
-  ;; ===============
-  ;; To avoid any trouble with the customization system of GNU emacs
-  ;; we set the default file ~/.gnu-emacs-custom
-  (setq custom-file "~/.gnu-emacs-custom")
-  (load "~/.gnu-emacs-custom" t t)
-;;;
-)
 ;;;
 ;;(setenv "ERGOEMACS_KEYBOARD_LAYOUT" "it")
 ;;(load-file "~/.emacs.d/ergoemacs_1.9.3.1/site-lisp/site-start.el")
@@ -63,8 +23,8 @@
               (lambda ()
                 (setq tab-width (default-value 'tab-width)
                       python-indent 4)))
-(require 'undo-tree)
-(global-undo-tree-mode)
+
+(add-hook 'after-init-hook 'global-undo-tree-mode)
 
 (global-set-key (kbd "C-x <tab>") 'increase-left-margin)
 
@@ -101,9 +61,12 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 (defvar my-packages '(clojure-mode
+					  zencoding-mode
 					  erlang
-                      nrepl
-                      nrepl-ritz))
+					  nrepl
+					  nrepl-ritz
+					  undo-tree
+					  ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -131,3 +94,6 @@
 (setq fsharp-compiler "fsharpc")
 
 (add-to-list 'auto-mode-alist '("\\.\\(e\\|h\\)rl" . erlang-mode))
+
+(delete-selection-mode)
+(setq save-place-file "~/.emacs.d/saved-places")
