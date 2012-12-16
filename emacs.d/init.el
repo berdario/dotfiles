@@ -70,10 +70,13 @@
 					  nrepl-ritz
 					  undo-tree
 					  powershell-mode
+					  solarized-theme
 					  ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
+
+(load-theme 'solarized-dark)
 
 (require 'powershell-mode)
 (add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode))
