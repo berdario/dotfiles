@@ -56,6 +56,9 @@
 (add-to-list 'package-archives 
     '("marmalade" .
       "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+	'("melpa" . 
+	  "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
 (when (not package-archive-contents)
@@ -66,6 +69,7 @@
 					  nrepl
 					  nrepl-ritz
 					  undo-tree
+					  powershell-mode
 					  ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
