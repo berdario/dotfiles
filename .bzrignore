@@ -11,3 +11,4 @@ emacs.d/url
 bazaar/locations.conf
 bazaar/lock
 emacs.d/tramp
+projectile.cache

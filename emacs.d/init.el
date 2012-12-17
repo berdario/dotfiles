@@ -71,6 +71,13 @@
 					  undo-tree
 					  powershell-mode
 					  solarized-theme
+					  ergoemacs-mode
+					  expand-region
+					  paredit
+					  projectile
+					  rainbow-mode
+					  ack-and-a-half
+					  rainbow-delimiters
 					  ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -104,3 +111,21 @@
 
 (delete-selection-mode)
 (setq save-place-file "~/.emacs.d/saved-places")
+
+(ergoemacs-mode)
+(global-set-key (kbd "M-O") 'nil)
+; disabled this as a workaround for https://code.google.com/p/ergoemacs/issues/detail?id=37
+
+(require 'expand-region)
+(global-set-key (kbd "C-0") 'er/expand-region)
+(global-set-key (kbd "C-9") 'er/contract-region)
+
+(dolist (mode '(scheme emacs-lisp lisp clojure clojurescript))
+  (add-hook (intern (concat (symbol-name mode) "-mode-hook"))
+              'paredit-mode))
+
+(projectile-global-mode)
+(add-hook 'css-mode-hook 'rainbow-mode)
+; FIXME this removes the hook for er/css-mode-expansion
+
+(global-rainbow-delimiters-mode)
