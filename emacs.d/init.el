@@ -78,6 +78,7 @@
 					  rainbow-mode
 					  ack-and-a-half
 					  rainbow-delimiters
+					  ibuffer-vc
 					  ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -129,3 +130,22 @@
 ; FIXME this removes the hook for er/css-mode-expansion
 
 (global-rainbow-delimiters-mode)
+
+(add-hook 'ibuffer-hook
+    (lambda ()
+      (ibuffer-vc-set-filter-groups-by-vc-root)
+      (unless (eq ibuffer-sorting-mode 'alphabetic)
+        (ibuffer-do-sort-by-alphabetic))
+	  (setq truncate-lines t)))
+
+(setq ibuffer-formats
+      '((mark modified read-only vc-status-mini " "
+              (name 18 18 :left :elide)
+              " "
+              (size 9 -1 :right)
+              " "
+              (mode 16 16 :left :elide)
+              " "
+              (vc-status 16 16 :left)
+              " "
+              filename-and-process)))
