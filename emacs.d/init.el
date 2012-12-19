@@ -2,9 +2,6 @@
 (setq custom-file "~/.emacs.d/customizations")
 (load "~/.emacs.d/customizations" t t)
 
-;;;
-;;(setenv "ERGOEMACS_KEYBOARD_LAYOUT" "it")
-;;(load-file "~/.emacs.d/ergoemacs_1.9.3.1/site-lisp/site-start.el")
 (add-to-list 'load-path "~/.emacs.d/packages/")
 
 (set-scroll-bar-mode 'right)
@@ -79,6 +76,7 @@
 					  ack-and-a-half
 					  rainbow-delimiters
 					  ibuffer-vc
+					  fsharp-mode
 					  ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -101,11 +99,7 @@
 ;;   (increase-left-margin START END)
 ;;   (indent-region-copy START END COLUMN))
 
-(setq load-path (cons "~/.emacs.d/packages/fsharp" load-path))
-(setq auto-mode-alist (cons '("\\.fs[iylx]?$" . fsharp-mode) auto-mode-alist))
-(autoload 'fsharp-mode "fsharp" "Major mode for editing F# code." t)
-(autoload 'run-fsharp "inf-fsharp" "Run an inferior F# process." t)
-(setq inferior-fsharp-program "fsharpi")
+(setq inferior-fsharp-program "fsharpi --readline-")
 (setq fsharp-compiler "fsharpc")
 
 (add-to-list 'auto-mode-alist '("\\.\\(e\\|h\\)rl" . erlang-mode))
