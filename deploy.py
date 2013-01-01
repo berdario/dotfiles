@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 
 import sys
 from sys import platform, argv
@@ -11,12 +11,6 @@ import shlex
 home = environ.get("HOME", ".")
 home = environ.get("USERPROFILE", home)
 dotfiles_dir = path.join(home, ".dotfiles")
-
-if not hasattr(__builtins__, "WindowsError"):
-	# dummy WindowsError, will never be catched
-	# but without it, ignore_existing_target would fail on linux
-	class WindowsError(BaseException):
-		pass
 
 admin = "admin" in argv
 debug = "debug" in argv
@@ -46,9 +40,6 @@ def ignore_existing_target (f):
 		except OSError as e:
 			if e.errno != 17: # 17 == file exists
 				raise
-		except WindowsError as e:
-			if e.winerror != 183: # 183 == file already existing
-				raise
 	return inner
 
 try_symlink = ignore_existing_target(os.symlink)
@@ -59,9 +50,10 @@ def main():
 		if platform.startswith("linux"):
 			cfg_dir = environ.get("XDG_CONFIG_HOME", path.join(home, ".config"))
 			joiner = lambda x: [path.join(home, x)]
-			bazaar, hgrc, gitconfig, emacsd = map(joiner, [".bazaar", ".hgrc",
-				".gitconfig", ".emacs.d"])
+			bazaar, hgrc, gitconfig, emacsd, ackrc = map(joiner, [".bazaar", 
+				".hgrc", ".gitconfig", ".emacs.d", ".ackrc"])
 			try_symlink(path.join(dotfiles_dir, "fish"), path.join(cfg_dir, "fish"))
+			try_symlink(path.join(dotfiles_dir, "ackrc"), ackrc[0])
 		elif platform == "win32":
 			appdata = environ["AppData"]
 			if not admin:

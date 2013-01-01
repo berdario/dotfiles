@@ -1,50 +1,7 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; File name: ` ~/.emacs '
-;;; ---------------------
-;;;
-;;; If you need your own personal ~/.emacs
-;;; please make a copy of this file
-;;; an placein your changes and/or extension.
-;;;
-;;; Copyright (c) 1997-2002 SuSE Gmbh Nuernberg, Germany.
-;;;
-;;; Author: Werner Fink, <feedback@suse.de> 1997,98,99,2002
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Test of Emacs derivates
-;;; -----------------------
-(if (string-match "XEmacs\\|Lucid" emacs-version)
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;;; XEmacs
-  ;;; ------
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (progn
-     (if (file-readable-p "~/.xemacs/init.el")
-        (load "~/.xemacs/init.el" nil t))
-  )
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;;; GNU-Emacs
-  ;;; ---------
-  ;;; load ~/.gnu-emacs or, if not exists /etc/skel/.gnu-emacs
-  ;;; For a description and the settings see /etc/skel/.gnu-emacs
-  ;;;   ... for your private ~/.gnu-emacs your are on your one.
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (if (file-readable-p "~/.gnu-emacs")
-      (load "~/.gnu-emacs" nil t)
-    (if (file-readable-p "/etc/skel/.gnu-emacs")
-	(load "/etc/skel/.gnu-emacs" nil t)))
+;; Custom Settings from customize
+(setq custom-file "~/.emacs.d/customizations")
+(load "~/.emacs.d/customizations" t t)
 
-  ;; Custom Settings
-  ;; ===============
-  ;; To avoid any trouble with the customization system of GNU emacs
-  ;; we set the default file ~/.gnu-emacs-custom
-  (setq custom-file "~/.gnu-emacs-custom")
-  (load "~/.gnu-emacs-custom" t t)
-;;;
-)
-;;;
-;;(setenv "ERGOEMACS_KEYBOARD_LAYOUT" "it")
-;;(load-file "~/.emacs.d/ergoemacs_1.9.3.1/site-lisp/site-start.el")
 (add-to-list 'load-path "~/.emacs.d/packages/")
 
 (set-scroll-bar-mode 'right)
@@ -63,8 +20,8 @@
               (lambda ()
                 (setq tab-width (default-value 'tab-width)
                       python-indent 4)))
-(require 'undo-tree)
-(global-undo-tree-mode)
+
+(add-hook 'after-init-hook 'global-undo-tree-mode)
 
 (global-set-key (kbd "C-x <tab>") 'increase-left-margin)
 
@@ -96,7 +53,93 @@
 (add-to-list 'package-archives 
     '("marmalade" .
       "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+	'("melpa" . 
+	  "http://melpa.milkbox.net/packages/"))
 (package-initialize)
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
+(defvar my-packages '(clojure-mode
+					  zencoding-mode
+					  erlang
+					  nrepl
+					  nrepl-ritz
+					  undo-tree
+					  powershell-mode
+					  solarized-theme
+					  ergoemacs-mode
+					  expand-region
+					  paredit
+					  projectile
+					  rainbow-mode
+					  ack-and-a-half
+					  rainbow-delimiters
+					  ibuffer-vc
+					  fsharp-mode
+					  ))
+(dolist (p my-packages)
+  (when (not (package-installed-p p))
+    (package-install p)))
+
+(load-theme 'solarized-dark)
 
 (require 'powershell-mode)
 (add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode))
+
+(require 'zencoding-mode)
+(add-hook 'sgml-mode-hook 'zencoding-mode)
+
+(setq-default sgml-basic-offset tab-width)
+
+
+;; (fset 'indent-region-copy (symbol-function 'indent-region))
+;; (defun indent-region (START END &optional COLUMN) 
+;;   (interactive)
+;;   (increase-left-margin START END)
+;;   (indent-region-copy START END COLUMN))
+
+(setq inferior-fsharp-program "fsharpi --readline-")
+(setq fsharp-compiler "fsharpc")
+
+(add-to-list 'auto-mode-alist '("\\.\\(e\\|h\\)rl" . erlang-mode))
+
+(delete-selection-mode)
+(setq save-place-file "~/.emacs.d/saved-places")
+
+(ergoemacs-mode)
+(global-set-key (kbd "M-O") 'nil)
+; disabled this as a workaround for https://code.google.com/p/ergoemacs/issues/detail?id=37
+
+(require 'expand-region)
+(global-set-key (kbd "C-0") 'er/expand-region)
+(global-set-key (kbd "C-9") 'er/contract-region)
+
+(dolist (mode '(scheme emacs-lisp lisp clojure clojurescript))
+  (add-hook (intern (concat (symbol-name mode) "-mode-hook"))
+              'paredit-mode))
+
+(projectile-global-mode)
+(add-hook 'css-mode-hook 'rainbow-mode)
+; FIXME this removes the hook for er/css-mode-expansion
+
+(global-rainbow-delimiters-mode)
+
+(add-hook 'ibuffer-hook
+    (lambda ()
+      (ibuffer-vc-set-filter-groups-by-vc-root)
+      (unless (eq ibuffer-sorting-mode 'alphabetic)
+        (ibuffer-do-sort-by-alphabetic))
+	  (setq truncate-lines t)))
+
+(setq ibuffer-formats
+      '((mark modified read-only vc-status-mini " "
+              (name 18 18 :left :elide)
+              " "
+              (size 9 -1 :right)
+              " "
+              (mode 16 16 :left :elide)
+              " "
+              (vc-status 16 16 :left)
+              " "
+              filename-and-process)))
