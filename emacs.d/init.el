@@ -143,3 +143,5 @@
               (vc-status 16 16 :left)
               " "
               filename-and-process)))
+
+(global-set-key (kbd "C-x C-g") 'goto-line)
