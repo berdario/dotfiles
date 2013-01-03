@@ -2,8 +2,6 @@
 (setq custom-file "~/.emacs.d/customizations")
 (load "~/.emacs.d/customizations" t t)
 
-(add-to-list 'load-path "~/.emacs.d/packages/")
-
 (set-scroll-bar-mode 'right)
 (setq mouse-wheel-scroll-amount '(3 ((shift) .3) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
@@ -143,3 +141,5 @@
               (vc-status 16 16 :left)
               " "
               filename-and-process)))
+
+(global-set-key (kbd "C-x C-g") 'goto-line)

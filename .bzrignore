@@ -12,3 +12,5 @@ bazaar/locations.conf
 bazaar/lock
 emacs.d/tramp
 projectile.cache
+fish/fishd.uberc50
+bazaar/explorer
