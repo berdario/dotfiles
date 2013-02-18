@@ -20,7 +20,8 @@ set -x CLOJURESCRIPT_HOME "$HOME/Projects/clojurescript"
 
 which java > /dev/null ; and set -x JAVA_HOME (readlink -f (echo (dirname (readlink -f (which java)))"/../../."))
 
-mkdir -p ~/Applications/bin ~/.cabal/bin ~/Applications/depot_tools
-set -x PATH $PATH ~/Applications/bin ~/.cabal/bin ~/Applications/depot_tools
+set -l additional_paths ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin ~/Applications/depot_tools
+mkdir -p $additional_paths
+set -x PATH $additional_paths $PATH
 
 function e; emacs -nw $argv; end
