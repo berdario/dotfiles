@@ -1,6 +1,7 @@
 ;; Custom Settings from customize
 (setq custom-file "~/.emacs.d/customizations")
 (load "~/.emacs.d/customizations" t t)
+;(load-file "/home/dario/Projects/ergoemacs/site-lisp/site-start.el")
 
 (set-scroll-bar-mode 'right)
 (setq mouse-wheel-scroll-amount '(3 ((shift) .3) ((control) . nil)))
@@ -66,7 +67,7 @@
 					  undo-tree
 					  powershell-mode
 					  solarized-theme
-					  ergoemacs-mode
+					  ;ergoemacs-mode
 					  expand-region
 					  paredit
 					  projectile
@@ -143,3 +144,8 @@
               filename-and-process)))
 
 (global-set-key (kbd "C-x C-g") 'goto-line)
+
+(add-hook 'isearch-mode-hook (lambda () (define-key isearch-mode-map (kbd "C-f") 'isearch-repeat-forward)))
+
+(require 'iso-transl)
+(setq ruby-insert-encoding-magic-comment nil)
