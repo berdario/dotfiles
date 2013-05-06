@@ -1,7 +1,6 @@
 ;; Custom Settings from customize
 (setq custom-file "~/.emacs.d/customizations")
 (load "~/.emacs.d/customizations" t t)
-;(load-file "/home/dario/Projects/ergoemacs/site-lisp/site-start.el")
 
 (set-scroll-bar-mode 'right)
 (setq mouse-wheel-scroll-amount '(3 ((shift) .3) ((control) . nil)))
@@ -67,7 +66,7 @@
 					  undo-tree
 					  powershell-mode
 					  solarized-theme
-					  ;ergoemacs-mode
+					  ergoemacs-mode
 					  expand-region
 					  paredit
 					  projectile
