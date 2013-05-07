@@ -10,7 +10,7 @@ import shlex
 
 home = environ.get("HOME", ".")
 home = environ.get("USERPROFILE", home)
-dotfiles_dir = path.join(home, ".dotfiles")
+dotfiles_dir = path.dirname(path.abspath(__file__))
 
 admin = "admin" in argv
 debug = "debug" in argv

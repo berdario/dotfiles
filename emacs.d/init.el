@@ -67,6 +67,7 @@
 					  powershell-mode
 					  solarized-theme
 					  ergoemacs-mode
+					  evil
 					  expand-region
 					  paredit
 					  projectile
@@ -105,7 +106,7 @@
 (delete-selection-mode)
 (setq save-place-file "~/.emacs.d/saved-places")
 
-(ergoemacs-mode)
+;(ergoemacs-mode)
 (global-set-key (kbd "M-O") 'nil)
 ; disabled this as a workaround for https://code.google.com/p/ergoemacs/issues/detail?id=37
 
