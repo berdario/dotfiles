@@ -66,7 +66,7 @@
 					  undo-tree
 					  powershell-mode
 					  solarized-theme
-					  ergoemacs-mode
+					  evil
 					  expand-region
 					  paredit
 					  projectile
@@ -105,10 +105,6 @@
 (delete-selection-mode)
 (setq save-place-file "~/.emacs.d/saved-places")
 
-(ergoemacs-mode)
-(global-set-key (kbd "M-O") 'nil)
-; disabled this as a workaround for https://code.google.com/p/ergoemacs/issues/detail?id=37
-
 (require 'expand-region)
 (global-set-key (kbd "C-0") 'er/expand-region)
 (global-set-key (kbd "C-9") 'er/contract-region)
@@ -143,3 +139,42 @@
               filename-and-process)))
 
 (global-set-key (kbd "C-x C-g") 'goto-line)
+
+(add-hook 'isearch-mode-hook (lambda () (define-key isearch-mode-map (kbd "C-f") 'isearch-repeat-forward)))
+
+(require 'iso-transl)
+(setq ruby-insert-encoding-magic-comment nil)
+
+(cua-mode t)
+
+(require 'tabbar)
+(tabbar-mode t)
+; define all tabs to be one of 3 possible groups: “Emacs Buffer”, “Dired”, “User Buffer”.
+
+(defun tabbar-buffer-groups ()
+  "Return the list of group names the current buffer belongs to.
+This function is a custom function for tabbar-mode's tabbar-buffer-groups.
+This function group all buffers into 3 groups:
+Those Dired, those user buffer, and those emacs buffer.
+Emacs buffer are those starting with “*”."
+  (list
+   (cond
+    ((string-equal "*" (substring (buffer-name) 0 1))
+     "Emacs Buffer"
+     )
+    ((eq major-mode 'dired-mode)
+     "Dired"
+     )
+    (t
+     "User Buffer"
+     )
+    ))) 
+
+(setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
+
+(global-set-key [C-S-iso-lefttab] 'tabbar-backward)
+(global-set-key [C-tab] 'tabbar-forward)
+
+(global-set-key (kbd "C-f") 'isearch-forward)
+(global-set-key (kbd "C-s") 'save-buffer)
+(global-set-key (kbd "C-o") 'find-file)

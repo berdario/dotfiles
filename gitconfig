@@ -2,5 +2,8 @@
 	email = berdario@gmail.com
 	surname = Bertini
 	name = Dario Bertini
+	signingkey = B3BF75A0
 [color]
 	ui = auto
+[alias]
+	scommit = commit -S
