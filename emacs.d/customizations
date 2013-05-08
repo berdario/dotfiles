@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bf7ed640479049f1d74319ed004a9821072c1d9331bc1147e01d22748c18ebdf" default)))
  '(inhibit-startup-screen t)
- '(initial-scratch-message ";; C-M-x to evaluate, M-a ielm to open a REPL
+ '(initial-scratch-message ";; C-M-x to evaluate, M-x ielm to open a REPL
 ")
  '(show-paren-mode t)
  '(x-select-enable-clipboard t))
