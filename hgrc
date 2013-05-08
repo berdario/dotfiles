@@ -11,7 +11,7 @@ hgext.purge =
 mq =
 color =
 #hgsubversion =
-commitsigs = ~/.dotfiles/mercurial/commitsigs.py
+commitsigs = "C:\Users\Dario\.dotfiles\mercurial\commitsigs.py"
 [pager]
 pager = less
 quiet = True
