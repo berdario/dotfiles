@@ -15,12 +15,13 @@ function bzr {
 $Global:pshistory = "$home\Documents\WindowsPowerShell\log.csv"
 
 $history = ("#TYPE Microsoft.PowerShell.Commands.HistoryInfo",
-'Id","CommandLine","ExecutionStatus","StartExecutionTime","EndExecutionTime"')
+'"Id","CommandLine","ExecutionStatus","StartExecutionTime","EndExecutionTime"')
 
 if (Test-Path $pshistory) {
 	$history += (get-content $pshistory)
 }
 
+# should probably filter out the Failed commands
 $history | Select -Unique | Convertfrom-csv -ErrorAction SilentlyContinue | Add-History 
 
 function prompt{
