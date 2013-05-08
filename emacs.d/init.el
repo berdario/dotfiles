@@ -151,6 +151,16 @@
 
 (require 'tabbar)
 (tabbar-mode t)
+
+(setq tabbar-background-color "gray20")
+(custom-set-faces
+ '(tabbar-default ((t (:background "gray20" :foreground "black" :weight bold :box (:line-width 1 :color "gray20")))))
+ '(tabbar-button ((t (:inherit tabbar-default :box (:line-width 1 :color "gray20" :style nil)))))
+ '(tabbar-highlight ((t :background "white" :foreground "black" :underline nil :box (:line-width 5 :color "white" :style nil))))
+ '(tabbar-selected ((t (:inherit tabbar-default :background "gray75" :foreground "black" :box (:line-width 5 :color "gray75" :style nil)))))
+ '(tabbar-separator ((t (:inherit tabbar-default :background "gray20" :height 0.6))))
+ '(tabbar-unselected ((t (:inherit tabbar-default :background "gray30" :foreground "white" :box (:line-width 5 :color "gray30" :style nil))))))
+
 ; define all tabs to be one of 3 possible groups: “Emacs Buffer”, “Dired”, “User Buffer”.
 
 (defun tabbar-buffer-groups ()

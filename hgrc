@@ -10,7 +10,7 @@ hgext.purge =
 mq =
 color =
 hgsubversion =
-commitsigs = ~/.dotfiles/mercurial/commitsigs.py
+commitsigs = ~/.dotfiles/dotfiles/mercurial/commitsigs.py
 [pager]
 pager = LESS='FSRX' less
 quiet = True
