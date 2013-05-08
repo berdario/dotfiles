@@ -67,6 +67,7 @@
 					  powershell-mode
 					  solarized-theme
 					  evil
+					  tabbar
 					  expand-region
 					  paredit
 					  projectile
