@@ -68,6 +68,7 @@
 					  solarized-theme
 					  evil
 					  tabbar
+					  diminish
 					  expand-region
 					  paredit
 					  projectile
@@ -179,3 +180,11 @@ Emacs buffer are those starting with “*”."
 (global-set-key (kbd "C-f") 'isearch-forward)
 (global-set-key (kbd "C-s") 'save-buffer)
 (global-set-key (kbd "C-o") 'find-file)
+
+(require 'diminish)
+(eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
+(diminish 'global-whitespace-mode)
+(diminish 'global-visual-line-mode)
+(diminish 'visual-line-mode)
+(diminish 'projectile-mode)
+
