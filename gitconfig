@@ -7,3 +7,5 @@
 	ui = auto
 [alias]
 	scommit = commit -S
+[push]
+	default = simple
