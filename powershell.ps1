@@ -24,10 +24,17 @@ if (Test-Path $pshistory) {
 # should probably filter out the Failed commands
 $history | Select -Unique | Convertfrom-csv -ErrorAction SilentlyContinue | Add-History 
 
+function blue { write-host -NoNewLine -f blue -b white $args } 
+function red { write-host -NoNewLine -f red $args }
+function green { write-host -NoNewLine -f green $args }
+function white { write-host -NoNewLine $args }
+
 function prompt{
+	blue ([System.IO.Path]::GetFileName($env:VIRTUAL_ENV))
 	$hid = $myinvocation.historyID
 	if ($hid -gt 1) {
 		(get-history ($myinvocation.historyID -1 ) | convertto-csv)[-1] >> $pshistory
 	}
-	"PS $($executionContext.SessionState.Path.CurrentLocation)$('>' * ($nestedPromptLevel + 1)) "
+	green "PS $($executionContext.SessionState.Path.CurrentLocation)$('>' * ($nestedPromptLevel + 1))"
+	" "
 }
