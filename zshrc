@@ -18,8 +18,7 @@ autoload colors; colors
 #promptinit
 #prompt walters
 
-PS1='%{$fg_bold[green]%}%n@%m%{$reset_color%}:%{$fg_bold[blue]%}%~%(?..[%?])$(hgBranch " %%{$fg_bold[red]%%}(%s)")%{$reset_color%}%(!.#.$) '
-
+PS1='%{$fg_bold[blue]%}$(basename "$VIRTUAL_ENV")%{$fg_bold[green]%}%n@%m%{$reset_color%}:%{$fg_bold[blue]%}%~%(?..[%?])$(hgBranch " %%{$fg_bold[red]%%}(%s)")%{$reset_color%}%(!.#.$) '
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
 
@@ -56,11 +55,11 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 
 source /etc/zsh_command_not_found
-source /etc/bash_completion.d/virtualenvwrapper
+#source /etc/bash_completion.d/virtualenvwrapper
 
 export EDITOR="emacs -nw"
 export EMAIL=berdario@gmail.com
-export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
+#export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
 export PATH=${PATH}:~/Applications/bin
 
 export DEBFULLNAME='Dario Bertini'
