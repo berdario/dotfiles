@@ -7,6 +7,7 @@ from os import environ, path
 from subprocess import check_call as call
 import contextlib
 import shlex
+import shutil
 
 home = environ.get("HOME", ".")
 home = environ.get("USERPROFILE", home)
@@ -50,10 +51,11 @@ def main():
 		if platform.startswith("linux"):
 			cfg_dir = environ.get("XDG_CONFIG_HOME", path.join(home, ".config"))
 			joiner = lambda x: [path.join(home, x)]
-			bazaar, hgrc, gitconfig, emacsd, ackrc = map(joiner, [".bazaar", 
-				".hgrc", ".gitconfig", ".emacs.d", ".ackrc"])
+			bazaar, hgrc, gitconfig, emacsd, ackrc, ghci = map(joiner, [".bazaar", 
+				".hgrc", ".gitconfig", ".emacs.d", ".ackrc", ".ghci"])
 			try_symlink(path.join(dotfiles_dir, "fish"), path.join(cfg_dir, "fish"))
 			try_symlink(path.join(dotfiles_dir, "ackrc"), ackrc[0])
+			shutil.copy2(path.join(dotfiles_dir, "ghci.conf"), ghci[0])
 		elif platform == "win32":
 			appdata = environ["AppData"]
 			if not admin:
