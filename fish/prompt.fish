@@ -1,20 +1,20 @@
 set -g __dvcs git hg
 
-set -l hgpath (which hg)
-set -l gitpath (which git)
+set -g __hgpath (which hg)
+set -g __gitpath (which git)
 
 function set_branch_name
 	set -g __previous_pwd $PWD
-	if test $hgpath
+	if test $__hgpath
 		if test (hg branch ^&-)
 			set -g __branch_name (printf ' (%s)' (hg branch))
 			return
 		end
-	else; if test $gitpath
-			if test (git symbolic-ref -q HEAD ^&-)
-				set -g __branch_name (printf ' (%s)' (git symbolic-ref -q HEAD | cut -d"/" -f 3))
-				return
-			end
+	end
+	if test $__gitpath
+		if test (git symbolic-ref -q HEAD ^&-)
+			set -g __branch_name (printf ' (%s)' (git symbolic-ref -q HEAD | cut -d"/" -f 3))
+			return
 		end
 	end
 	set -g __branch_name ""
