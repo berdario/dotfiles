@@ -198,3 +198,4 @@ Emacs buffer are those starting with “*”."
 (diminish 'visual-line-mode)
 (diminish 'projectile-mode)
 
+(setq default-directory (or (getenv "USERPROFILE") (getenv "HOME")))
