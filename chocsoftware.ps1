@@ -10,3 +10,5 @@ cinstm hg
 cinstm git
 cinstm ack
 cinstm HaskellPlatform
+cinstm lein
+cinstm 7zip
