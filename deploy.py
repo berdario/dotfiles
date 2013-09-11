@@ -57,8 +57,8 @@ dotfiles = [ # src, lindest, windest, method
 ['gitconfig', '.gitconfig', '.gitconfig', symlink],
 ['emacs.d', '.emacs.d', path.join(appdata, ".emacs.d"), symlink],
 ['fish', path.join(cfg_dir, 'fish'), None, symlink],
-['ackrc', '.ackrc', None, symlink],
-['ghci.conf', '.ghci', None, shutil.copy2],
+['ackrc', '.ackrc', '_ackrc', symlink],
+['ghci.conf', '.ghci', path.join(appdata, 'ghc', 'ghci.conf'), shutil.copy2],
 ['powershell.ps1', None, path.join(home, "Documents", "WindowsPowerShell", "profile.ps1"), symlink]
 ]
 
