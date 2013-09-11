@@ -77,6 +77,7 @@
 					  rainbow-delimiters
 					  ibuffer-vc
 					  fsharp-mode
+					  tuareg
 					  ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -145,7 +146,9 @@
 (add-hook 'isearch-mode-hook (lambda () (define-key isearch-mode-map (kbd "C-f") 'isearch-repeat-forward)))
 
 (require 'iso-transl)
+
 (setq ruby-insert-encoding-magic-comment nil)
+(add-to-list 'auto-mode-alist '("Rakefile\\'" . ruby-mode))
 
 (cua-mode t)
 
@@ -197,5 +200,7 @@ Emacs buffer are those starting with “*”."
 (diminish 'global-visual-line-mode)
 (diminish 'visual-line-mode)
 (diminish 'projectile-mode)
+
+;(windmove-default-keybindings 'shift)
 
 (setq default-directory (or (getenv "USERPROFILE") (getenv "HOME")))

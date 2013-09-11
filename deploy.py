@@ -7,10 +7,14 @@ from os import environ, path
 from subprocess import check_call as call
 import contextlib
 import shlex
+import shutil
+from operator import itemgetter
 
 home = environ.get("HOME", ".")
-home = environ.get("USERPROFILE", home)
+home = os.path.abspath(environ.get("USERPROFILE", home))
 dotfiles_dir = path.dirname(path.abspath(__file__))
+cfg_dir = os.path.abspath(environ.get("XDG_CONFIG_HOME", path.join(home, ".config")))
+appdata = os.path.abspath(environ.get('AppData', ''))
 
 admin = "admin" in argv
 debug = "debug" in argv
@@ -38,55 +42,65 @@ def ignore_existing_target (f):
 		try:
 			f(*args, **kwargs)
 		except OSError as e:
-			if e.errno != 17: # 17 == file exists
+			# 17 == file exists
+			if e.errno != 17 or not path.islink(e.filename):
 				raise
 	return inner
 
-try_symlink = ignore_existing_target(os.symlink)
-try_mkdir = ignore_existing_target(os.mkdir)
+@ignore_existing_target
+def symlink(src, target):
+	os.symlink(src, target, path.isdir(src))
 
-def main():
+dotfiles = [ # src, lindest, windest, method
+['bazaar', '.bazaar', path.join(appdata, "bazaar", "2.0"), symlink], 
+['hgrc', '.hgrc', 'mercurial.ini', symlink],
+['gitconfig', '.gitconfig', '.gitconfig', symlink],
+['emacs.d', '.emacs.d', path.join(appdata, ".emacs.d"), symlink],
+['fish', path.join(cfg_dir, 'fish'), None, symlink],
+['ackrc', '.ackrc', '_ackrc', symlink],
+['ghci.conf', '.ghci', path.join(appdata, 'ghc', 'ghci.conf'), shutil.copy2],
+['powershell.ps1', None, path.join(home, "Documents", "WindowsPowerShell", "profile.ps1"), symlink]
+]
+
+dotfiles = map(
+	lambda dotfile: dict(zip(['src', 'lindest', 'windest', 'method'], dotfile)),
+	dotfiles)
+
+def deploy_symlinks():
 	try:
-		if platform.startswith("linux"):
-			cfg_dir = environ.get("XDG_CONFIG_HOME", path.join(home, ".config"))
-			joiner = lambda x: [path.join(home, x)]
-			bazaar, hgrc, gitconfig, emacsd, ackrc = map(joiner, [".bazaar", 
-				".hgrc", ".gitconfig", ".emacs.d", ".ackrc"])
-			try_symlink(path.join(dotfiles_dir, "fish"), path.join(cfg_dir, "fish"))
-			try_symlink(path.join(dotfiles_dir, "ackrc"), ackrc[0])
-		elif platform == "win32":
-			appdata = environ["AppData"]
+		if platform.startswith('linux'):
+			dest = itemgetter('lindest')
+		elif platfrom == 'win32':
+			dest = itemgetter('windest')
 			if not admin:
 				call("powershell set-executionpolicy RemoteSigned CurrentUser")
 
-			# the True means that it's a folder, it's needed because
-			# posix.symlink and windows symlink have a different signature
-			bazaar = [path.join(appdata, "bazaar", "2.0"), True]
-			hgrc = [path.join(home, "mercurial.ini")]
-			gitconfig = [path.join(home, ".gitconfig")]
-			emacsd = [path.join(appdata, ".emacs.d"), True]
-			ps_profile = path.join(home, "Documents", "WindowsPowerShell", "profile.ps1")
-			try_symlink(path.join(dotfiles_dir, "powershell.ps1"), ps_profile)
+		for dotfile in filter(dest, dotfiles):
+			target = dest(dotfile)
+			if not path.isabs(target):
+				target = path.join(home, target)
+			
+			# actually apply symlink() or copy2()
+			dotfile['method'](path.join(dotfiles_dir, dotfile['src']), target)
 
-		joiner = lambda x: [path.join(dotfiles_dir, x)]
-		# I need the argument expansion, since windows' symlink requires an extra True
-		try_symlink(*(joiner("bazaar") + bazaar))
-		try_symlink(*(joiner("hgrc") + hgrc))
-		try_symlink(*(joiner("gitconfig") + gitconfig))
-		try_symlink(*(joiner("emacs.d") + emacsd))
-		if admin:
-			sys.exit()
-	
+			if admin:
+				sys.exit()
+
 	except OSError as e:
 		if "symbolic link" in e.args[0]:
 			admin_relaunch()
 		else:
 			raise
 
+
+def deploy_bazaar_plugins():
 	bazaar = path.join(dotfiles_dir, "bazaar")
 	bzr_plugins = path.join(bazaar, "plugins.list")
 	bzr_plugin_dir = path.join(bazaar, "plugins")
-	try_mkdir(bzr_plugin_dir)
+	try:
+		os.mkdir(bzr_plugin_dir)
+	except OSError:
+		pass
 	bzr_conf, bzr_bakconf = path.join(bazaar, "bazaar.conf"), path.join(bazaar, "conf.bak")
 	os.rename(bzr_conf, bzr_bakconf) # move the config out of the way
 	# otherwise, launchpad would ask us for auth, even only for read access
@@ -96,5 +110,7 @@ def main():
 				call(["bzr", "branch"] + shlex.split(plugin))
 	os.rename(bzr_bakconf, bzr_conf)
 
+
 if __name__ == "__main__":
-	main()
+	deploy_symlinks()
+	deploy_bazaar_plugins()
