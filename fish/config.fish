@@ -4,7 +4,6 @@ if [ -z "$DISPLAY" -a -z "$BYOBU_WINDOWS" ] ;
    end
 end
 
-complete -c workon -a "(cd ~/.virtualenvs; ls -d *)"
 . ~/.config/fish/prompt.fish
 
 set -x EDITOR "emacs -nw"
