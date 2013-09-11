@@ -203,3 +203,4 @@ Emacs buffer are those starting with “*”."
 
 ;(windmove-default-keybindings 'shift)
 
+(setq default-directory (or (getenv "USERPROFILE") (getenv "HOME")))
