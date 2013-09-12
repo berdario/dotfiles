@@ -12,3 +12,5 @@ cinstm ack
 cinstm HaskellPlatform
 cinstm lein
 cinstm 7zip
+cinstm PowerShell
+cinstm pscx

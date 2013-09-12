@@ -43,12 +43,16 @@ def ignore_existing_target (f):
 			f(*args, **kwargs)
 		except OSError as e:
 			# 17 == file exists
-			if e.errno != 17 or not path.islink(e.filename):
+			# WTF?: cannot use e.filename, because on win32 it's the src... not the target
+			if e.errno != 17 or not path.islink(args[1]):
 				raise
 	return inner
 
 @ignore_existing_target
 def symlink(src, target):
+	parent = path.dirname(target)
+	if not path.exists(parent):
+		os.makedirs(parent)
 	os.symlink(src, target, path.isdir(src))
 
 dotfiles = [ # src, lindest, windest, method
@@ -70,7 +74,7 @@ def deploy_symlinks():
 	try:
 		if platform.startswith('linux'):
 			dest = itemgetter('lindest')
-		elif platfrom == 'win32':
+		elif platform == 'win32':
 			dest = itemgetter('windest')
 			if not admin:
 				call("powershell set-executionpolicy RemoteSigned CurrentUser")
@@ -83,12 +87,22 @@ def deploy_symlinks():
 			# actually apply symlink() or copy2()
 			dotfile['method'](path.join(dotfiles_dir, dotfile['src']), target)
 
-			if admin:
-				sys.exit()
+		if admin:
+			sys.exit()
 
 	except OSError as e:
-		if "symbolic link" in e.args[0]:
+		if "symbolic link" in str(e.args[0]):
 			admin_relaunch()
+		elif admin:
+                        # unfortunately, "powershell -verb runAs" creates a new
+                        # window, and thus our stdout/err might not be visible
+			import traceback
+			import tkinter
+			t = tkinter.Text(bg='lightgrey')
+			t.insert(tkinter.END, traceback.format_exc())
+			t.config(state=tkinter.DISABLED)
+			t.pack()
+			tkinter.mainloop()
 		else:
 			raise
 
