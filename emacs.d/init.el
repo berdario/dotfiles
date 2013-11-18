@@ -59,6 +59,7 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 (defvar my-packages '(clojure-mode
+					  haskell-mode
 					  zencoding-mode
 					  erlang
 					  nrepl
@@ -204,3 +205,7 @@ Emacs buffer are those starting with “*”."
 ;(windmove-default-keybindings 'shift)
 
 (setq default-directory (or (getenv "USERPROFILE") (getenv "HOME")))
+(put 'upcase-region 'disabled nil)
+
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
