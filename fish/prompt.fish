@@ -1,3 +1,14 @@
+set -g __fish_git_prompt_showdirtystate 1
+set -g __fish_git_prompt_showuntrackedfiles 1
+set -g __fish_git_prompt_showstashstate 1
+
+set -g __fish_git_prompt_color red bold
+set -g __fish_git_prompt_char_stateseparator ""
+
+set -g __fish_git_prompt_showupstream informative
+set -g __fish_git_prompt_char_upstream_ahead "▴"
+set -g __fish_git_prompt_char_upstream_behind "▾"
+
 set -g __dvcs git hg
 
 set -g __hgpath (which hg)
@@ -12,10 +23,8 @@ function set_branch_name
 		end
 	end
 	if test $__gitpath
-		if test (git symbolic-ref -q HEAD ^&-)
-			set -g __branch_name (printf ' (%s)' (git symbolic-ref -q HEAD | cut -d"/" -f 3))
-			return
-		end
+		set -g __branch_name (__fish_git_prompt)
+		return
 	end
 	set -g __branch_name ""
 end
