@@ -34,11 +34,11 @@
 (defun toggle-fullscreen (&optional f)
   (interactive)
   (let ((current-value (frame-parameter nil 'fullscreen)))
-	(set-frame-parameter nil 'fullscreen
-						 (if (equal 'fullboth current-value)
-							 (if (boundp 'old-fullscreen) old-fullscreen nil)
-						   (progn (setq old-fullscreen current-value)
-								  'fullboth)))))
+    (set-frame-parameter nil 'fullscreen
+                         (if (equal 'fullboth current-value)
+                             (if (boundp 'old-fullscreen) old-fullscreen nil)
+                           (progn (setq old-fullscreen current-value)
+                                  'fullboth)))))
 (global-set-key [f11] 'toggle-fullscreen)
 
 (tool-bar-mode -1)
@@ -48,34 +48,34 @@
     '("marmalade" .
       "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives
-	'("melpa" . 
-	  "http://melpa.milkbox.net/packages/"))
+    '("melpa" . 
+      "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
 (when (not package-archive-contents)
   (package-refresh-contents))
 (defvar my-packages '(clojure-mode
-					  haskell-mode
-					  zencoding-mode
-					  erlang
-					  nrepl
-					  nrepl-ritz
-					  undo-tree
-					  powershell-mode
-					  solarized-theme
-					  evil
-					  tabbar
-					  diminish
-					  expand-region
-					  paredit
-					  projectile
-					  rainbow-mode
-					  ack-and-a-half
-					  rainbow-delimiters
-					  ibuffer-vc
-					  fsharp-mode
-					  tuareg
-					  ))
+                      haskell-mode
+                      zencoding-mode
+                      erlang
+                      nrepl
+                      nrepl-ritz
+                      undo-tree
+                      powershell-mode
+                      solarized-theme
+                      evil
+                      tabbar
+                      diminish
+                      expand-region
+                      paredit
+                      projectile
+                      rainbow-mode
+                      ack-and-a-half
+                      rainbow-delimiters
+                      ibuffer-vc
+                      fsharp-mode
+                      tuareg
+                      ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -124,7 +124,7 @@
       (ibuffer-vc-set-filter-groups-by-vc-root)
       (unless (eq ibuffer-sorting-mode 'alphabetic)
         (ibuffer-do-sort-by-alphabetic))
-	  (setq truncate-lines t)))
+      (setq truncate-lines t)))
 
 (setq ibuffer-formats
       '((mark modified read-only vc-status-mini " "

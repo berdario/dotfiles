@@ -1,11 +1,11 @@
 [user]
-	email = berdario@gmail.com
-	surname = Bertini
-	name = Dario Bertini
-	signingkey = B3BF75A0
+    email = berdario@gmail.com
+    surname = Bertini
+    name = Dario Bertini
+    signingkey = B3BF75A0
 [color]
-	ui = auto
+    ui = auto
 [alias]
-	scommit = commit -S
+    scommit = commit -S
 [push]
-	default = simple
+    default = simple
