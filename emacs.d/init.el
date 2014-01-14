@@ -10,14 +10,11 @@
 (setq read-file-name-completion-ignore-case 1)
 (global-visual-line-mode)
 (column-number-mode)
-;(setq-default indent-tabs-mode t)
+(setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (global-whitespace-mode 1)
-(setq whitespace-style '(tab-mark))
-(add-hook 'python-mode-hook
-              (lambda ()
-                (setq tab-width (default-value 'tab-width)
-                      python-indent 4)))
+(setq whitespace-style '(tab-mark trailing face))
+
 
 (add-hook 'after-init-hook 'global-undo-tree-mode)
 
@@ -30,7 +27,6 @@
                   '((regexp-quote (system-name)) nil nil))
 
 (defun my-c-mode-common-hook ()
-  (setq indent-tabs-mode t)
   (setq c-default-style "bsd" c-basic-offset 4)
 )
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
