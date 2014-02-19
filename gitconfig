@@ -9,3 +9,5 @@
     scommit = commit -S
 [push]
     default = simple
+[gpg]
+	program = gpg2
