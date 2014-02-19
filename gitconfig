@@ -10,4 +10,6 @@
 [push]
     default = simple
 [gpg]
-	program = gpg2
+    program = gpg2
+[merge]
+    tool = meld
