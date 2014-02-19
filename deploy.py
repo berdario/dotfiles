@@ -56,8 +56,9 @@ def symlink(src, target):
     os.symlink(src, target, path.isdir(src))
 
 dotfiles = [ # src, lindest, windest, method
-['bazaar', '.bazaar', path.join(appdata, "bazaar", "2.0"), symlink], 
+['bazaar', '.bazaar', path.join(appdata, "bazaar", "2.0"), symlink],
 ['hgrc', '.hgrc', 'mercurial.ini', symlink],
+['mercurial', '.hgextensions', '.hgextensions', symlink],
 ['gitconfig', '.gitconfig', '.gitconfig', symlink],
 ['emacs.d', '.emacs.d', path.join(appdata, ".emacs.d"), symlink],
 ['fish', path.join(cfg_dir, 'fish'), None, symlink],

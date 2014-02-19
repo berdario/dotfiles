@@ -5,14 +5,15 @@ username=Dario Bertini <berdario@gmail.com>
 [extensions]
 hgext.pager =
 hgext.transplant =
-hgext.churn = 
-hgext.purge = 
+hgext.churn =
+hgext.purge =
 mq =
 color =
-hgsubversion =
-commitsigs = ~/.dotfiles/dotfiles/mercurial/commitsigs.py
+hgsubversion = ~/.hgextensions/hgsubversion/hgsubversion
+commitsigs = ~/.hgextensions/commitsigs.py
 [pager]
 pager = LESS='FSRX' less
 quiet = True
 [commitsigs]
 scheme = gnupg
+gnupg.path = gpg2
