@@ -206,6 +206,3 @@ Emacs buffer are those starting with “*”."
 
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-
-(setq x-select-enable-clipboard t)
-(load "~/.emacs.d/copypaste.el")
