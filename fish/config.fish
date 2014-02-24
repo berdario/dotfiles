@@ -4,7 +4,7 @@ if [ -z "$DISPLAY" -a -z "$BYOBU_WINDOWS" ] ;
    end
 end
 
-. ~/.config/fish/prompt.fish
+set -x NIX_LINK ~/.nix-profile
 
 set -x EDITOR "emacs -nw"
 set -x EMAIL berdario@gmail.com
@@ -23,8 +23,10 @@ set -x CAML_LD_LIBRARY_PATH ~/.opam/$OCAMLVERSION/lib/stublibs /usr/lib/ocaml/st
 set -x OCAML_TOPLEVEL_PATH ~/.opam/$OCAMLVERSION/lib/toplevel
 set -x MANPATH ~/.opam/$OCAMLVERSION/man:$MANPATH
 
-set -l additional_paths ~/.opam/$OCAMLVERSION/bin ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin ~/Applications/depot_tools
+set -l additional_paths ~/.opam/$OCAMLVERSION/bin ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin ~/Applications/depot_tools $NIX_LINK/bin
 mkdir -p $additional_paths
 set -x PATH $additional_paths $PATH
+
+. ~/.config/fish/prompt.fish
 
 function e; emacs -nw $argv; end
