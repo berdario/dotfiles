@@ -64,6 +64,7 @@ dotfiles = [ # src, lindest, windest, method
 ['fish', path.join(cfg_dir, 'fish'), None, symlink],
 ['ackrc', '.ackrc', '_ackrc', symlink],
 ['ghci.conf', '.ghci', path.join(appdata, 'ghc', 'ghci.conf'), shutil.copy2],
+['lighttable', path.join(cfg_dir, 'LightTable', 'settings'), None, symlink],
 ['powershell.ps1', None, path.join(home, "Documents", "WindowsPowerShell", "profile.ps1"), symlink]
 ]
 
