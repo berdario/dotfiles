@@ -37,6 +37,15 @@ def admin_relaunch():
     this_program = ["python", '"' + " ".join(argv) + ' admin"']
     call(["powershell", "Start-Process"] + this_program + proc_args)
 
+def ask_to_overwrite(src, target):
+    choice = None
+    while choice not in {'y', 'n', ''}:
+        choice = input(target + ' already exists, do you want to overwrite it? [Y/n] ').lower()
+    if choice in 'y':
+        delete = shutil.rmtree if os.path.isdir(target) else os.remove
+        delete(target)
+    return choice in 'y'
+
 def ignore_existing_target (f):
     def inner(*args, **kwargs):
         try:
@@ -44,8 +53,11 @@ def ignore_existing_target (f):
         except OSError as e:
             # 17 == file exists
             # WTF?: cannot use e.filename, because on win32 it's the src... not the target
-            if e.errno != 17 or not path.islink(args[1]):
+            if e.errno != 17:
                 raise
+            if not path.islink(args[1]):
+                if ask_to_overwrite(*args):
+                    f(*args, **kwargs)
     return inner
 
 @ignore_existing_target
@@ -65,6 +77,7 @@ dotfiles = [ # src, lindest, windest, method
 ['ackrc', '.ackrc', '_ackrc', symlink],
 ['ghci.conf', '.ghci', path.join(appdata, 'ghc', 'ghci.conf'), shutil.copy2],
 ['lighttable', path.join(cfg_dir, 'LightTable', 'settings'), None, symlink],
+['lein-profile.clj', path.join('.lein', 'profiles.clj'), None, symlink],
 ['powershell.ps1', None, path.join(home, "Documents", "WindowsPowerShell", "profile.ps1"), symlink]
 ]
 
