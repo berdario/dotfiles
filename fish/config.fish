@@ -4,6 +4,8 @@ if [ -z "$DISPLAY" -a -z "$BYOBU_WINDOWS" ] ;
    end
 end
 
+set -x SHELL fish
+
 set -x NIX_LINK ~/.nix-profile
 
 set -x EDITOR "emacs -nw"

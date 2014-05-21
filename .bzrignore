@@ -21,3 +21,4 @@ emacs.d/ac-comphist.dat
 mercurial/hgsubversion/.hg
 mercurial/hgsubversion/.hgignore
 mercurial/hgsubversion/.hgtags
+emacs.d/abbrev_defs
