@@ -55,11 +55,11 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 (defvar my-packages '(clojure-mode
+                      clojure-test-mode
+                      cider
                       haskell-mode
                       zencoding-mode
                       erlang
-                      nrepl
-                      nrepl-ritz
                       undo-tree
                       powershell-mode
                       solarized-theme
