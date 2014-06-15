@@ -1,7 +1,5 @@
-if [ -z "$DISPLAY" -a -z "$BYOBU_WINDOWS" ] ;
-   if test $TERM != "dumb";
-     exec byobu-launcher;
-   end
+if [ (uname) != Darwin -a -z "$DISPLAY" -a -z "$BYOBU_WINDOWS" -a "$TERM" != dumb ] ;
+   exec byobu-launcher;
 end
 
 set -x SHELL fish
@@ -17,6 +15,8 @@ set -x GPGKEY F8C98EFE
 set -x VIMINIT "so $HOME/.config/vim/vimrc"
 
 set -x CLOJURESCRIPT_HOME "$HOME/Projects/clojurescript"
+
+which greadlink > /dev/null ; and alias readlink greadlink
 
 which java > /dev/null ; and set -x JAVA_HOME (readlink -f (echo (dirname (readlink -f (which java)))"/../../."))
 

@@ -14,6 +14,7 @@ home = environ.get("HOME", ".")
 home = os.path.abspath(environ.get("USERPROFILE", home))
 dotfiles_dir = path.dirname(path.abspath(__file__))
 cfg_dir = os.path.abspath(environ.get("XDG_CONFIG_HOME", path.join(home, ".config")))
+appsupport = os.path.abspath(path.join(home, 'Library', 'Application Support')) if platform == 'darwin' else None
 appdata = os.path.abspath(environ.get('AppData', ''))
 
 admin = "admin" in argv
@@ -67,7 +68,7 @@ def symlink(src, target):
         os.makedirs(parent)
     os.symlink(src, target, path.isdir(src))
 
-dotfiles = [ # src, lindest, windest, method
+dotfiles = [ # src, unixdest, windest, method
 ['bazaar', '.bazaar', path.join(appdata, "bazaar", "2.0"), symlink],
 ['hgrc', '.hgrc', 'mercurial.ini', symlink],
 ['mercurial', '.hgextensions', '.hgextensions', symlink],
@@ -76,19 +77,19 @@ dotfiles = [ # src, lindest, windest, method
 ['fish', path.join(cfg_dir, 'fish'), None, symlink],
 ['ackrc', '.ackrc', '_ackrc', symlink],
 ['ghci.conf', '.ghci', path.join(appdata, 'ghc', 'ghci.conf'), shutil.copy2],
-['lighttable', path.join(cfg_dir, 'LightTable', 'settings'), None, symlink],
+['lighttable', path.join(appsupport or cfg_dir, 'LightTable', 'settings'), None, symlink],
 ['lein-profile.clj', path.join('.lein', 'profiles.clj'), None, symlink],
 ['powershell.ps1', None, path.join(home, "Documents", "WindowsPowerShell", "profile.ps1"), symlink]
 ]
 
 dotfiles = map(
-    lambda dotfile: dict(zip(['src', 'lindest', 'windest', 'method'], dotfile)),
+    lambda dotfile: dict(zip(['src', 'unixdest', 'windest', 'method'], dotfile)),
     dotfiles)
 
 def deploy_symlinks():
     try:
-        if platform.startswith('linux'):
-            dest = itemgetter('lindest')
+        if platform.startswith('linux') or platform == 'darwin':
+            dest = itemgetter('unixdest')
         elif platform == 'win32':
             dest = itemgetter('windest')
             if not admin:
