@@ -206,3 +206,10 @@ Emacs buffer are those starting with “*”."
 
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+
+(setq backup-dir (expand-file-name ".emacs.d/backup/"))
+(setq autosave-dir (expand-file-name ".emacs.d/autosaves/"))
+(setq backup-directory-alist
+      `((".*" . ,backup-dir)))
+(setq auto-save-file-name-transforms
+      `((".*" ,autosave-dir t)))

@@ -73,6 +73,7 @@ dotfiles = [ # src, unixdest, windest, method
 ['hgrc', '.hgrc', 'mercurial.ini', symlink],
 ['mercurial', '.hgextensions', '.hgextensions', symlink],
 ['gitconfig', '.gitconfig', '.gitconfig', symlink],
+['global_gitignore', '.gitignore', None, symlink],
 ['emacs.d', '.emacs.d', path.join(appdata, ".emacs.d"), symlink],
 ['fish', path.join(cfg_dir, 'fish'), None, symlink],
 ['ackrc', '.ackrc', '_ackrc', symlink],

@@ -16,6 +16,8 @@ bazaar/explorer
 emacs.d/saved-places
 emacs.d/history
 fish/fishd.*
+emacs.d/backup
+emacs.d/autosaves
 emacs.d/projectile-bookmarks.eld
 emacs.d/ac-comphist.dat
 mercurial/hgsubversion/.hg
