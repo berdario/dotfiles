@@ -75,6 +75,7 @@
                       ibuffer-vc
                       fsharp-mode
                       tuareg
+                      exec-path-from-shell
                       ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -213,3 +214,6 @@ Emacs buffer are those starting with “*”."
       `((".*" . ,backup-dir)))
 (setq auto-save-file-name-transforms
       `((".*" ,autosave-dir t)))
+
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))

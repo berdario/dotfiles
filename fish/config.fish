@@ -20,6 +20,10 @@ which greadlink > /dev/null ; and alias readlink greadlink
 
 which java > /dev/null ; and set -x JAVA_HOME (readlink -f (echo (dirname (readlink -f (which java)))"/../../."))
 
+if [ -e /usr/libexec/java_home ] ;
+    set -x JAVA_HOME (/usr/libexec/java_home)
+end
+
 set OCAMLVERSION 4.00.1
 set -x CAML_LD_LIBRARY_PATH ~/.opam/$OCAMLVERSION/lib/stublibs /usr/lib/ocaml/stublibs
 set -x OCAML_TOPLEVEL_PATH ~/.opam/$OCAMLVERSION/lib/toplevel
