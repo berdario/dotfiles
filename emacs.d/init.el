@@ -110,7 +110,7 @@
 (global-set-key (kbd "C-0") 'er/expand-region)
 (global-set-key (kbd "C-9") 'er/contract-region)
 
-(dolist (mode '(scheme emacs-lisp lisp clojure clojurescript))
+(dolist (mode '(scheme emacs-lisp lisp clojure clojurescript cider-repl))
   (add-hook (intern (concat (symbol-name mode) "-mode-hook"))
               'paredit-mode))
 
@@ -217,3 +217,15 @@ Emacs buffer are those starting with “*”."
 
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
+
+(setq cider-popup-stacktraces t)
+(setq cider-repl-popup-stacktraces t)
+(setq cider-popup-on-error nil)
+
+(setq nrepl-buffer-name-separator "-")
+(setq nrepl-buffer-name-show-port t)
+
+(setq cider-repl-print-length 10000)
+(setq cider-repl-history-size 500000)
+(setq cider-repl-history-file "~/.nrepl-history.eld")
+(add-hook 'cider-repl-mode-hook 'subword-mode)
