@@ -1,5 +1,5 @@
 [core]
-    excludesfile = '~/.gitignore'
+    excludesfile = "~/.gitignore"
 [user]
     email = berdario@gmail.com
     surname = Bertini
