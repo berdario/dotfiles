@@ -186,7 +186,10 @@ Emacs buffer are those starting with “*”."
 
 (setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
 
-(global-set-key [C-S-iso-lefttab] 'tabbar-backward)
+(global-set-key [home] 'beginning-of-line) ; macosx
+(global-set-key [end] 'end-of-line) ; macosx
+(global-set-key [C-S-iso-lefttab] 'tabbar-backward) ; linux
+(global-set-key [C-S-tab] 'tabbar-backward) ; macosx
 (global-set-key [C-tab] 'tabbar-forward)
 
 (global-set-key (kbd "C-f") 'isearch-forward)
