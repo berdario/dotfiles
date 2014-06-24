@@ -68,6 +68,11 @@ def symlink(src, target):
         os.makedirs(parent)
     os.symlink(src, target, path.isdir(src))
 
+def copy_ghciconf(src, target):
+    "ghci refuses to load the file if it is writable by others, and git doesn't preserve permissions"
+    shutil.copy2(src, target)
+    os.chmod(target, 0o644)
+
 dotfiles = [ # src, unixdest, windest, method
 ['bazaar', '.bazaar', path.join(appdata, "bazaar", "2.0"), symlink],
 ['hgrc', '.hgrc', 'mercurial.ini', symlink],
@@ -77,7 +82,7 @@ dotfiles = [ # src, unixdest, windest, method
 ['emacs.d', '.emacs.d', path.join(appdata, ".emacs.d"), symlink],
 ['fish', path.join(cfg_dir, 'fish'), None, symlink],
 ['ackrc', '.ackrc', '_ackrc', symlink],
-['ghci.conf', '.ghci', path.join(appdata, 'ghc', 'ghci.conf'), shutil.copy2],
+['ghci.conf', '.ghci', path.join(appdata, 'ghc', 'ghci.conf'), copy_ghciconf],
 ['lighttable', path.join(appsupport or cfg_dir, 'LightTable', 'settings'), None, symlink],
 ['lein-profile.clj', path.join('.lein', 'profiles.clj'), None, symlink],
 ['powershell.ps1', None, path.join(home, "Documents", "WindowsPowerShell", "profile.ps1"), symlink]
