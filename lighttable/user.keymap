@@ -15,8 +15,8 @@
      :editor {"alt-w" [:editor.watch.watch-selection]
               "alt-shift-w" [:editor.watch.unwatch]}
 
-     :editor.clj.common {"backspace" [:paredit.backspace]
-                        "del" [:paredit.delete]
+     :editor.clj.common {"backspace" [:paredit-plus.backward-delete]
+                        "del" [:paredit-plus.forward-delete]
                         "alt-s" [:paredit.unwrap.parent]
                         "alt-shift-s" [:paredit.select.parent]
                         "esc" [:paredit.select.clear]
