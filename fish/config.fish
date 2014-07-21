@@ -29,6 +29,8 @@ set -x CAML_LD_LIBRARY_PATH ~/.opam/$OCAMLVERSION/lib/stublibs /usr/lib/ocaml/st
 set -x OCAML_TOPLEVEL_PATH ~/.opam/$OCAMLVERSION/lib/toplevel
 set -x MANPATH ~/.opam/$OCAMLVERSION/man:$MANPATH
 
+set -x ANSIBLE_NOCOWS 1
+
 set -l additional_paths ~/.opam/$OCAMLVERSION/bin ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin ~/Applications/depot_tools $NIX_LINK/bin
 mkdir -p $additional_paths
 set -x PATH $additional_paths $PATH
