@@ -2,13 +2,6 @@
 (setq custom-file "~/.emacs.d/customizations")
 (load "~/.emacs.d/customizations" t t)
 
-(defun reductions (f init coll)
-  (let ((result (funcall f init (car coll)))
-        (rest (cdr coll)))
-    (cons result
-          (when rest
-            (reductions f result rest)))))
-
 (set-scroll-bar-mode 'right)
 (setq mouse-wheel-scroll-amount '(3 ((shift) .3) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
@@ -17,9 +10,6 @@
 (setq read-file-name-completion-ignore-case 1)
 (global-visual-line-mode)
 (column-number-mode)
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-
 
 (global-whitespace-mode 1)
 (setq whitespace-style '(tab-mark trailing face))
@@ -63,7 +53,9 @@
 
 (when (not package-archive-contents)
   (package-refresh-contents))
-(defvar my-packages '(clojure-mode
+(defvar my-packages '(dash
+                      dash-functional
+                      clojure-mode
                       clojure-test-mode
                       cider
                       haskell-mode
@@ -89,6 +81,12 @@
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
+
+(require 'dash-functional)
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq tab-stop-list (number-sequence tab-width 120 tab-width))
+
 
 (load-theme 'solarized-dark)
 
