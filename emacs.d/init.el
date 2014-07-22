@@ -2,6 +2,13 @@
 (setq custom-file "~/.emacs.d/customizations")
 (load "~/.emacs.d/customizations" t t)
 
+(defun reductions (f init coll)
+  (let ((result (funcall f init (car coll)))
+        (rest (cdr coll)))
+    (cons result
+          (when rest
+            (reductions f result rest)))))
+
 (set-scroll-bar-mode 'right)
 (setq mouse-wheel-scroll-amount '(3 ((shift) .3) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
@@ -12,6 +19,8 @@
 (column-number-mode)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
+
+
 (global-whitespace-mode 1)
 (setq whitespace-style '(tab-mark trailing face))
 
@@ -109,8 +118,7 @@
 (require 'expand-region)
 (global-set-key (kbd "C-0") 'er/expand-region)
 (global-set-key (kbd "C-9") 'er/contract-region)
-
-(dolist (mode '(scheme emacs-lisp lisp clojure clojurescript cider-repl))
+(dolist (mode '(scheme emacs-lisp ielm lisp clojure clojurescript cider-repl))
   (add-hook (intern (concat (symbol-name mode) "-mode-hook"))
               'paredit-mode))
 
