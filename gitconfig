@@ -9,6 +9,7 @@
     ui = auto
 [alias]
     scommit = commit -S
+    serve = daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose
 [push]
     default = simple
 [gpg]

@@ -116,8 +116,8 @@ def deploy_symlinks():
         if "symbolic link" in str(e.args[0]):
             admin_relaunch()
         elif admin:
-                        # unfortunately, "powershell -verb runAs" creates a new
-                        # window, and thus our stdout/err might not be visible
+            # unfortunately, "powershell -verb runAs" creates a new
+            # window, and thus our stdout/err might not be visible
             import traceback
             import tkinter
             t = tkinter.Text(bg='lightgrey')
