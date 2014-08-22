@@ -15,7 +15,8 @@
      :app [(:lt.objs.style/set-skin "dark")]
 
      ;; The editor tag is applied to all editors
-     :editor [:lt.objs.editor/no-wrap
+     :editor [(:lt.objs.style/font-settings nil 12 1)
+              :lt.objs.editor/no-wrap
               :lt.objs.editor/line-numbers
               (:lt.objs.style/set-theme "default")]
 
