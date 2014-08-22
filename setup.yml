@@ -1,0 +1,94 @@
+# execute with ansible-playbook -i 'localhost,' setup.yml
+
+- hosts: localhost
+  connection: local
+  sudo: True
+  vars:
+    dropbox:
+      version: 1.6.0
+      sha256: 3d96207244a6897cb23de088b3c4c8c2f93cce1baab4d5b74a224484b16c6202
+    crashplan:
+      version: 3.6.3
+      sha256: 605580cfc6aecb3acdc10baa6afc448ac07d960dafdbaa2e35b92f61d877016c
+
+  tasks:
+    - name: Download dropbox
+      get_url: url="https://www.dropbox.com/download?dl=packages/debian/dropbox_{{dropbox.version}}_amd64.deb" dest=/tmp/dropbox.deb sha256sum={{dropbox.sha256}}
+
+    - name: Install gpgme (needed to verify dropbox installation)
+      apt: name=python-gpgme
+
+    - name: Install dropbox
+      apt: deb=/tmp/dropbox.deb
+      ignore_errors: yes # dropbox might have been updated compared to the deb
+
+    - name: Download crashplan
+      get_url: url="http://download.code42.com/installs/linux/install/CrashPlan/CrashPlan_{{crashplan.version}}_Linux.tgz" dest=/tmp/crashplan.tgz sha256sum={{crashplan.sha256}}
+
+    - name: Extract crashplan
+      unarchive: src=/tmp/crashplan.tgz copy=no dest=/tmp/
+
+    - name: Install java
+      apt: name=openjdk-7-jre
+
+    - name: Check if crashplan is already installed
+      stat: path=/usr/local/crashplan
+      register: crashplandir
+
+    - name: Increase inotify watches
+      # lineinfile: dest=/proc/sys/fs/inotify/max_user_watches regexp='' line=" 1500000" # doesn't work
+      shell: echo "1500000" | tee /proc/sys/fs/inotify/max_user_watches
+
+    - name: Install crashplan
+      when: not crashplandir.stat.exists
+      shell: xterm ./install.sh chdir=/tmp/CrashPlan-install
+
+    - name: Increase inotify watches (persist)
+      lineinfile: dest=/etc/sysctl.conf line="fs.inotify.max_user_watches=1500000"
+
+    - name: Fix CrashPlan webkit bug
+      lineinfile: dest=/usr/local/crashplan/bin/run.conf regexp='^GUI_JAVA_OPTS' backup=yes line='GUI_JAVA_OPTS="-Dfile.encoding=UTF-8 -Dapp=CrashPlanDesktop -DappBaseName=CrashPlan -Xms20m -Xmx512m -Djava.net.preferIPv4Stack=true -Dsun.net.inetaddr.ttl=300 -Dnetworkaddress.cache.ttl=300 -Dsun.net.inetaddr.negative.ttl=0 -Dnetworkaddress.cache.negative.ttl=0 -Dc42.native.md5.enabled=false -Dorg.eclipse.swt.browser.DefaultType=mozilla"'
+
+    - name: Install keepass # to be able to login into Crashplan
+      apt: name=keepass2
+
+    - name: Install git
+      apt: name=git
+
+    - name: Clone dotfiles
+      sudo: False
+      git: repo=https://github.com/berdario/dotfiles.git dest=~/.dotfiles force=no
+      ignore_errors: yes # if you want to customize the deploy script and rerun ansible
+
+    - debug: msg="Cloned dotfiles, remember to create/add your ssh key and to correctly set the upstream"
+
+    - name: Deploy dotfiles
+      sudo: False
+      command: /usr/bin/python3 ~/.dotfiles/deploy.py --dont-prompt
+      register: dotfiles_deploy
+      changed_when: dotfiles_deploy.stdout
+
+    - name: Add fish repository
+      apt_repository: repo='ppa:fish-shell/release-2'
+
+    - name: Install fish
+      apt: name=fish
+
+    - name: Set fish as login shell
+      user: name={{ansible_env.SUDO_USER}} shell=/usr/bin/fish
+
+    - name: Add Canonical partner repository # for skype
+      apt_repository: repo='deb http://archive.canonical.com/ {{ansible_lsb.codename}} partner'
+
+    - name: Install other software
+      apt: name={{item}}
+      with_items:
+        - emacs
+        - python3-pip
+        - ack-grep
+        - indicator-multiload
+        - smuxi
+        - jitsi
+        - skype
+
+# TODO: nix, bitmessage

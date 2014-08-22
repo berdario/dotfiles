@@ -31,6 +31,18 @@ def chdir(dirname):
     finally:
         os.chdir(curdir)
 
+
+@contextlib.contextmanager
+def rename_away(dirname):
+    if not path.exists(dirname):
+        yield
+    else:
+        bak = dirname + '.bak'
+        os.rename(dirname, bak)
+        yield
+        os.rename(bak, dirname)
+
+
 def admin_relaunch():
     proc_args = ["-Verb", "runAs"]
     if not debug:
@@ -39,6 +51,8 @@ def admin_relaunch():
     call(["powershell", "Start-Process"] + this_program + proc_args)
 
 def ask_to_overwrite(src, target):
+    if '--dont-prompt' in sys.argv:
+        sys.exit(target + ' already exists')
     choice = None
     while choice not in {'y', 'n', ''}:
         choice = input(target + ' already exists, do you want to overwrite it? [Y/n] ').lower()
@@ -51,6 +65,7 @@ def ignore_existing_target (f):
     def inner(*args, **kwargs):
         try:
             f(*args, **kwargs)
+            print(args[1], 'deployed')
         except OSError as e:
             # 17 == file exists
             # WTF?: cannot use e.filename, because on win32 it's the src... not the target
@@ -137,16 +152,16 @@ def deploy_bazaar_plugins():
         os.mkdir(bzr_plugin_dir)
     except OSError:
         pass
-    bzr_conf, bzr_bakconf = path.join(bazaar, "bazaar.conf"), path.join(bazaar, "conf.bak")
-    os.rename(bzr_conf, bzr_bakconf) # move the config out of the way
-    # otherwise, launchpad would ask us for auth, even only for read access
-    with open(bzr_plugins, "r") as plugins, chdir(bzr_plugin_dir) as _:
-        for plugin in plugins:
-            if not path.exists(plugin.split()[-1]):
-                call(["bzr", "branch"] + shlex.split(plugin))
-    os.rename(bzr_bakconf, bzr_conf)
+    with rename_away(path.join(bazaar, "bazaar.conf")):
+        # move the config out of the way otherwise, launchpad would ask us for
+        # auth, even only for read access
+        with open(bzr_plugins, "r") as plugins, chdir(bzr_plugin_dir):
+            for plugin in plugins:
+                if not path.exists(plugin.split()[-1]):
+                    call(["bzr", "branch"] + shlex.split(plugin))
 
 
 if __name__ == "__main__":
     deploy_symlinks()
-    deploy_bazaar_plugins()
+    if shutil.which('bzr'):
+        deploy_bazaar_plugins()
