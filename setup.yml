@@ -10,6 +10,8 @@
     crashplan:
       version: 3.6.3
       sha256: 605580cfc6aecb3acdc10baa6afc448ac07d960dafdbaa2e35b92f61d877016c
+    nix_installer:
+      sha256: 9a20b31afe264646acaaac54e2f5ab1be6247feda4dedf4a26affcec0ea084ac
 
   tasks:
     - name: Download dropbox
@@ -83,12 +85,35 @@
     - name: Install other software
       apt: name={{item}}
       with_items:
+        - rlwrap
+        - gpgv2
         - emacs
         - python3-pip
+        - ruby2.0
         - ack-grep
+        - meld
+        - mercurial
+        - bzr
+        - virtualbox
+        - vagrant
         - indicator-multiload
         - smuxi
         - jitsi
         - skype
 
-# TODO: nix, bitmessage
+    - name: Check if nix is already installed
+      stat: path=/nix/store
+      register: nixstore
+
+    - name: Download nix-installer
+      when: not nixstore.stat.exists
+      get_url: url=https://nixos.org/nix/install dest=/tmp/nix-install sha256sum={{nix_installer.sha256}}
+
+    - name: Install nix
+      # this install nix for the user, but needs sudo to install some files globally
+      # it usually works, assuming that sudo has already been authenticated in previous commands
+      sudo: False
+      when: not nixstore.stat.exists
+      command: /bin/bash /tmp/nix-install
+
+# TODO: bitmessage
