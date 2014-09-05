@@ -101,6 +101,11 @@
         - jitsi
         - skype
 
+    - name: Change default VBox machine folder
+      sudo: False
+      command: VBoxManage setproperty machinefolder ~/.VirtualBoxVMs
+      changed_when: False
+
     - name: Check if nix is already installed
       stat: path=/nix/store
       register: nixstore
