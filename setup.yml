@@ -82,6 +82,9 @@
     - name: Add Canonical partner repository # for skype
       apt_repository: repo='deb http://archive.canonical.com/ {{ansible_lsb.codename}} partner'
 
+    - name: Add Haskell PPA
+      apt_repository: repo='ppa:hvr/ghc'
+
     - name: Install other software
       apt: name={{item}}
       with_items:
@@ -89,6 +92,8 @@
         - gpgv2
         - emacs
         - python3-pip
+        - ghc-7.8.3
+        - ghc-7.6.3
         - ruby2.0
         - ack-grep
         - meld
