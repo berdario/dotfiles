@@ -61,6 +61,7 @@
                       haskell-mode
                       zencoding-mode
                       erlang
+                      yaml-mode
                       undo-tree
                       powershell-mode
                       solarized-theme

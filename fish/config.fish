@@ -40,3 +40,5 @@ set -x PATH $additional_paths $PATH
 . ~/.config/fish/prompt.fish
 
 function e; emacs -nw $argv; end
+
+alias git hub

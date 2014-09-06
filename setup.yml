@@ -93,9 +93,13 @@
         - emacs
         - python3-pip
         - ghc-7.8.3
+        - cabal-install-1.20
         - ghc-7.6.3
+        - nodejs
+        - npm
         - ruby2.0
         - ack-grep
+        - socat
         - meld
         - mercurial
         - bzr
@@ -105,6 +109,7 @@
         - smuxi
         - jitsi
         - skype
+        - libssl-dev
 
     - name: Change default VBox machine folder
       sudo: False
@@ -125,5 +130,43 @@
       sudo: False
       when: not nixstore.stat.exists
       command: /bin/bash /tmp/nix-install
+
+# TODO: create an ansible nix module
+
+    - name: Check if hub is installed
+      sudo: False
+      command: nix-env -q --installed hub
+      register: hub_installed
+      changed_when: False
+
+    - name: Install hub
+      sudo: False
+      when: not hub_installed.stdout
+      command: nix-env -i hub
+
+    - name: Clone ruby-build
+      sudo: False
+      git: repo=https://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
+
+    - name: Install ruby 2.1.2
+      sudo: False
+      command: rbenv install -s 2.1.2
+      register: rbenv_install
+      changed_when: rbenv_install.stdout
+
+    - name: Switch to ruby 2.1.2 as default
+      sudo: False
+      command: rbenv global 2.1.2
+      changed_when: False
+
+    - name: Install gist
+      sudo: False
+      gem: name=gist
+
+    - name: Rehash rubygem executables
+      sudo: False
+      command: rbenv rehash
+      changed_when: False
+
 
 # TODO: bitmessage
