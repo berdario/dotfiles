@@ -12,6 +12,8 @@
       sha256: 605580cfc6aecb3acdc10baa6afc448ac07d960dafdbaa2e35b92f61d877016c
     nix_installer:
       sha256: 9a20b31afe264646acaaac54e2f5ab1be6247feda4dedf4a26affcec0ea084ac
+    keepass_http:
+      sha256: e37e1dcb762b470fd4091c61c5db693652790549459b9a3a9b7fa1257ea69edf
 
   tasks:
     - name: Download dropbox
@@ -89,15 +91,17 @@
       apt: name={{item}}
       with_items:
         - rlwrap
-        - gpgv2
+        - gnupg2
         - emacs
         - python3-pip
         - ghc-7.8.3
+        - hoogle
         - cabal-install-1.20
         - ghc-7.6.3
         - nodejs
         - npm
         - ruby2.0
+        - mono-complete
         - ack-grep
         - socat
         - meld
@@ -107,9 +111,16 @@
         - vagrant
         - indicator-multiload
         - smuxi
-        - jitsi
+        - electrum
+        - psi-plus
         - skype
         - libssl-dev
+        - texlive-latex-base
+        - texlive-latex-extra
+        - texlive-fonts-recommended
+
+    - name: Install KeepassHttp plugin # needed for PassIFox
+      get_url: url="https://passifox.appspot.com/KeePassHttp.plgx" dest=/usr/lib/keepass2 sha256sum={{keepass_http.sha256}}
 
     - name: Change default VBox machine folder
       sudo: False
@@ -146,7 +157,7 @@
 
     - name: Clone ruby-build
       sudo: False
-      git: repo=https://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
+      git: repo=git://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
 
     - name: Install ruby 2.1.2
       sudo: False
@@ -159,9 +170,12 @@
       command: rbenv global 2.1.2
       changed_when: False
 
-    - name: Install gist
+    - name: Install gems
       sudo: False
-      gem: name=gist
+      gem: name={{item}}
+      with_items:
+        - gist
+        - bundler
 
     - name: Rehash rubygem executables
       sudo: False
