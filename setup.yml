@@ -81,11 +81,15 @@
     - name: Set fish as login shell
       user: name={{ansible_env.SUDO_USER}} shell=/usr/bin/fish
 
-    - name: Add Canonical partner repository # for skype
-      apt_repository: repo='deb http://archive.canonical.com/ {{ansible_lsb.codename}} partner'
+    - name: Add docker repository key
+      apt_key: id=36A1D7869245C8950F966E92D8576A8BA88D21E9 keyserver=hkp://keyserver.ubuntu.com:80
 
-    - name: Add Haskell PPA
-      apt_repository: repo='ppa:hvr/ghc'
+    - name: Add extra repositories
+      apt_repository: repo="{{item}}"
+      with_items:
+        - 'deb http://archive.canonical.com/ {{ansible_lsb.codename}} partner' # skype, etc
+        - 'ppa:hvr/ghc' # haskell
+        - 'deb https://get.docker.io/ubuntu docker main'
 
     - name: Install other software
       apt: name={{item}}
@@ -118,6 +122,7 @@
         - texlive-latex-base
         - texlive-latex-extra
         - texlive-fonts-recommended
+        - lxc-docker
 
     - name: Install KeepassHttp plugin # needed for PassIFox
       get_url: url="https://passifox.appspot.com/KeePassHttp.plgx" dest=/usr/lib/keepass2 sha256sum={{keepass_http.sha256}}
