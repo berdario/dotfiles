@@ -16,35 +16,42 @@
       sha256: e37e1dcb762b470fd4091c61c5db693652790549459b9a3a9b7fa1257ea69edf
 
   tasks:
+    - name: Check if dropbox is already installed
+      stat: path=/usr/bin/dropbox
+      register: dropbox
+
     - name: Download dropbox
+      when: not dropbox.stat.exists
       get_url: url="https://www.dropbox.com/download?dl=packages/debian/dropbox_{{dropbox.version}}_amd64.deb" dest=/tmp/dropbox.deb sha256sum={{dropbox.sha256}}
 
     - name: Install gpgme (needed to verify dropbox installation)
       apt: name=python-gpgme
 
     - name: Install dropbox
+      when: not dropbox.stat.exists
       apt: deb=/tmp/dropbox.deb
-      ignore_errors: yes # dropbox might have been updated compared to the deb
+
+    - name: Check if crashplan is already installed
+      stat: path=/usr/local/bin/CrashPlanDesktop
+      register: crashplan
 
     - name: Download crashplan
+      when: not crashplan.stat.exists
       get_url: url="http://download.code42.com/installs/linux/install/CrashPlan/CrashPlan_{{crashplan.version}}_Linux.tgz" dest=/tmp/crashplan.tgz sha256sum={{crashplan.sha256}}
 
     - name: Extract crashplan
+      when: not crashplan.stat.exists
       unarchive: src=/tmp/crashplan.tgz copy=no dest=/tmp/
 
     - name: Install java
       apt: name=openjdk-7-jre
-
-    - name: Check if crashplan is already installed
-      stat: path=/usr/local/crashplan
-      register: crashplandir
 
     - name: Increase inotify watches
       # lineinfile: dest=/proc/sys/fs/inotify/max_user_watches regexp='' line=" 1500000" # doesn't work
       shell: echo "1500000" | tee /proc/sys/fs/inotify/max_user_watches
 
     - name: Install crashplan
-      when: not crashplandir.stat.exists
+      when: not crashplan.stat.exists
       shell: xterm ./install.sh chdir=/tmp/CrashPlan-install
 
     - name: Increase inotify watches (persist)
