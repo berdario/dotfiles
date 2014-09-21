@@ -112,7 +112,7 @@
         - nodejs
         - npm
         - ruby2.0
-        - mono-complete
+        - mono-complete # also needed for keepass plugins
         - ack-grep
         - socat
         - meld
@@ -130,6 +130,7 @@
         - texlive-latex-extra
         - texlive-fonts-recommended
         - lxc-docker
+        - libreadline-dev # needed by heroku
 
     - name: Install KeepassHttp plugin # needed for PassIFox
       get_url: url="https://passifox.appspot.com/KeePassHttp.plgx" dest=/usr/lib/keepass2 sha256sum={{keepass_http.sha256}}
@@ -188,6 +189,8 @@
       with_items:
         - gist
         - bundler
+        - rb-readline # needed by heroku
+        - heroku
 
     - name: Rehash rubygem executables
       sudo: False
