@@ -168,6 +168,21 @@
       when: not hub_installed.stdout
       command: nix-env -i hub
 
+    - name: Clone other software repos
+      sudo: False
+      git: repo={{item.repo}} dest=~/Applications/{{item.name}}
+      ignore_errors: yes
+      with_items:
+        - {repo: 'https://github.com/sstephenson/rbenv.git', name: 'rbenv'}
+        - {repo: 'https://github.com/Bitmessage/PyBitmessage.git', name: 'PyBitmessage'}
+
+    - name: Symlink cloned repos executables
+      sudo: False
+      file: src=~/Applications/{{ item.path }} dest=~/Applications/bin/{{ item.dest }} state=link
+      with_items:
+        - {path: 'rbenv/bin/rbenv', dest: 'rbenv'}
+        - {path: 'PyBitmessage/src/bitmessagemain.py', dest: 'bitmessage'}
+
     - name: Clone ruby-build
       sudo: False
       git: repo=git://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
@@ -191,11 +206,9 @@
         - bundler
         - rb-readline # needed by heroku
         - heroku
+        - rhc
 
     - name: Rehash rubygem executables
       sudo: False
       command: rbenv rehash
       changed_when: False
-
-
-# TODO: bitmessage
