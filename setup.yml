@@ -212,3 +212,8 @@
       sudo: False
       command: rbenv rehash
       changed_when: False
+
+    - name: Install node executables
+      npm: name={{item}} global=True
+      with_items:
+        - keybase
