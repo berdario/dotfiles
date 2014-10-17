@@ -132,6 +132,9 @@
         - lxc-docker
         - libreadline-dev # needed by heroku
         - exfat-fuse
+        - tree
+        - bikeshed
+        - nethogs
 
     - name: Install KeepassHttp plugin # needed for PassIFox
       get_url: url="https://passifox.appspot.com/KeePassHttp.plgx" dest=/usr/lib/keepass2 sha256sum={{keepass_http.sha256}}
