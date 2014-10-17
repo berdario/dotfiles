@@ -10,6 +10,7 @@
 [alias]
     scommit = commit -S
     serve = daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose
+    ls = ls-tree --name-only
 [push]
     default = simple
 [gpg]
