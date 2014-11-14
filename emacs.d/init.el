@@ -118,14 +118,13 @@
 (global-set-key (kbd "C-0") 'er/expand-region)
 (global-set-key (kbd "C-9") 'er/contract-region)
 (dolist (mode '(scheme emacs-lisp ielm lisp clojure clojurescript cider-repl))
-  (add-hook (intern (concat (symbol-name mode) "-mode-hook"))
-              'paredit-mode))
+  (let ((hook (intern (concat (symbol-name mode) "-mode-hook"))))
+    (add-hook hook 'paredit-mode)
+    (add-hook hook #'rainbow-delimiters-mode)))
 
 (projectile-global-mode)
 (add-hook 'css-mode-hook 'rainbow-mode)
 ; FIXME this removes the hook for er/css-mode-expansion
-
-(global-rainbow-delimiters-mode)
 
 (add-hook 'ibuffer-hook
     (lambda ()
