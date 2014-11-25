@@ -78,6 +78,7 @@
                       fsharp-mode
                       tuareg
                       exec-path-from-shell
+                      ace-jump-mode
                       ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -239,3 +240,5 @@ Emacs buffer are those starting with “*”."
 (setq cider-repl-history-size 500000)
 (setq cider-repl-history-file "~/.nrepl-history.eld")
 (add-hook 'cider-repl-mode-hook 'subword-mode)
+
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
