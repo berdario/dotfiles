@@ -7,7 +7,7 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      /etc/nixos/hardware-configuration.nix
       <nixpkgs/nixos/modules/programs/virtualbox.nix>
     ];
 
@@ -16,50 +16,56 @@
   boot.loader.grub.version = 2;
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/sda";
-  # boot.loader.gummiboot.enable = true;
+  
+  nixpkgs.config.virtualbox.enableExtensionPack = true;
 
-  # networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless.
+  
+  security.initialRootPassword = "!"; # disable root password login
+
+  networking.hostName = "curie"; # Define your hostname.
+  networking.wireless.enable = true;  # Enables wireless.
 
   # Select internationalisation properties.
   i18n = {
     consoleFont = "lat9w-16";
-    consoleKeyMap = "it";
+    consoleKeyMap = "uk";
     defaultLocale = "en_US.UTF-8";
   };
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  # services.openssh.enable = true;
 
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  security.initialRootPassword = "!"; # disable root password login
-
+  services.printing.enable = true;
+  
   services.udev.extraRules = ''KERNEL=="vboxnetctl", OWNER="root", GROUP="vboxusers",      MODE="0660", TAG+="systemd"'';
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.layout = "it";
+  services.xserver.layout = "uk";
   services.xserver.xkbOptions = "eurosign:e";
 
   # Enable the KDE Desktop Environment.
   services.xserver.displayManager.kdm.enable = true;
   services.xserver.desktopManager.kde4.enable = true;
 
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers = {
-      dario = {
-	createHome = true;
-	description = "Dario Bertini";
-	extraGroups = ["wheel" "vboxusers"];
-	group = "users";
-	home = "/home/dario";
-	uid = 1000;
-      };
+    dario = {
+      name = "dario";
+      group = "users";
+      extraGroups = ["wheel" "vboxusers"];
+      uid = 1000;
+      createHome = true;
+      home = "/home/dario";
+      shell = "/nix/var/nix/profiles/default/bin/fish";
+    };
   };
-
+  
+  # List packages installed in system profile. To search by name, run:
+  # -env -qaP | grep wget
   environment.systemPackages = with pkgs; [
     # base utilities
     which
@@ -71,7 +77,9 @@
     gnupg
     ack
     openssl
+    zip
     unzip
+    socat
 
     # dev
     fish
@@ -82,12 +90,21 @@
     gcc
     gnumake
     emacs
+    ghc.ghc782
+    haskellPackages.hoogle
     gradle
     bazaar
     mercurial
     git
+    gitAndTools.hub
+    docker
+    vagrant
     openjdk
     gradle
+    nodePackages.npm
+    
+    # networking
+    openvpn
 
     # applications
     xpdf
@@ -98,6 +115,6 @@
 
     ## these are only in the unstable channel, atm
     #ideas.idea_community_1302
-    #vagrant
   ];
+
 }
