@@ -15,8 +15,6 @@
 (setq whitespace-style '(tab-mark trailing face))
 
 
-(add-hook 'after-init-hook 'global-undo-tree-mode)
-
 (global-set-key (kbd "C-x <tab>") 'increase-left-margin)
 
 (if (boundp 'tramp-default-proxies-alist) nil (setq tramp-default-proxies-alist nil))
@@ -41,6 +39,118 @@
 (global-set-key [f11] 'toggle-fullscreen)
 
 (tool-bar-mode -1)
+
+(defun cider-load ()
+ (setq cider-popup-stacktraces t)
+ (setq cider-repl-popup-stacktraces t)
+ (setq cider-popup-on-error nil)
+
+ (setq nrepl-buffer-name-separator "-")
+ (setq nrepl-buffer-name-show-port t)
+
+ (setq cider-repl-print-length 10000)
+ (setq cider-repl-history-size 500000)
+ (setq cider-repl-history-file "~/.nrepl-history.eld")
+ (add-hook 'cider-repl-mode-hook 'subword-mode))
+
+
+(defun haskell-mode-load ()
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode))
+
+(defun zencoding-mode-load ()
+  (require 'zencoding-mode)
+  (add-hook 'sgml-mode-hook 'zencoding-mode))
+
+
+(defun powershell-mode-load ()
+  (require 'powershell-mode)
+  (add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode)))
+
+
+(defun tabbar-load ()
+  (require 'tabbar)
+  (tabbar-mode t)
+
+  (setq tabbar-background-color "gray20")
+  (custom-set-faces
+   '(tabbar-default ((t (:background "gray20" :foreground "black" :weight bold :box (:line-width 1 :color "gray20")))))
+   '(tabbar-button ((t (:inherit tabbar-default :box (:line-width 1 :color "gray20" :style nil)))))
+   '(tabbar-highlight ((t :background "white" :foreground "black" :underline nil :box (:line-width 5 :color "white" :style nil))))
+   '(tabbar-selected ((t (:inherit tabbar-default :background "gray75" :foreground "black" :box (:line-width 5 :color "gray75" :style nil)))))
+   '(tabbar-separator ((t (:inherit tabbar-default :background "gray20" :height 0.6))))
+   '(tabbar-unselected ((t (:inherit tabbar-default :background "gray30" :foreground "white" :box (:line-width 5 :color "gray30" :style nil))))))
+
+                                        ; define all tabs to be one of 3 possible groups: “Emacs Buffer”, “Dired”, “User Buffer”.
+
+
+
+  (defun tabbar-buffer-groups ()
+    "Return the list of group names the current buffer belongs to.
+This function is a custom function for tabbar-mode's tabbar-buffer-groups.
+This function group all buffers into 3 groups:
+Those Dired, those user buffer, and those emacs buffer.
+Emacs buffer are those starting with “*”."
+    (list
+     (cond
+      ((string-equal "*" (substring (buffer-name) 0 1))
+       "Emacs Buffer"
+       )
+      ((eq major-mode 'dired-mode)
+       "Dired"
+       )
+      (t
+       "User Buffer"
+       )
+      ))) 
+
+  (setq tabbar-buffer-groups-function 'tabbar-buffer-groups))
+
+
+(defun diminish-load ()
+  (require 'diminish)
+  (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
+  (diminish 'global-whitespace-mode)
+  (diminish 'global-visual-line-mode)
+  (diminish 'visual-line-mode)
+  (diminish 'projectile-mode))
+
+
+(defun expand-region-load ()
+  (require 'expand-region)
+  (global-set-key (kbd "C-0") 'er/expand-region)
+  (global-set-key (kbd "C-9") 'er/contract-region))
+
+(defun paredit-load ()
+  (dolist (mode '(scheme emacs-lisp ielm lisp clojure clojurescript cider-repl))
+    (let ((hook (intern (concat (symbol-name mode) "-mode-hook"))))
+      (add-hook hook 'paredit-mode)
+      (add-hook hook #'rainbow-delimiters-mode))))
+
+(defun ibuffer-vc-load ()
+  (add-hook 'ibuffer-hook
+            (lambda ()
+              (ibuffer-vc-set-filter-groups-by-vc-root)
+              (unless (eq ibuffer-sorting-mode 'alphabetic)
+                (ibuffer-do-sort-by-alphabetic))
+              (setq truncate-lines t)))
+
+  (setq ibuffer-formats
+        '((mark modified read-only vc-status-mini " "
+                (name 18 18 :left :elide)
+                " "
+                (size 9 -1 :right)
+                " "
+                (mode 16 16 :left :elide)
+                " "
+                (vc-status 16 16 :left)
+                " "
+                filename-and-process))))
+
+
+(defun fsharp-mode-load ()
+  (setq inferior-fsharp-program "fsharpi --readline-")
+  (setq fsharp-compiler "fsharpc"))
 
 (require 'package)
 (add-to-list 'package-archives 
@@ -67,30 +177,31 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(defvar my-packages '((clojure-mode (lambda ()))
-                      (clojure-test-mode (lambda ()))
-                      (cider (lambda ()))
-                      (haskell-mode (lambda ()))
-                      (zencoding-mode (lambda ()))
-                      (erlang (lambda ()))
-                      (yaml-mode (lambda ()))
-                      (undo-tree (lambda ()))
-                      (powershell-mode (lambda ()))
-                      (solarized-theme (lambda ()))
-                      (evil (lambda ()))
-                      (tabbar (lambda ()))
-                      (diminish (lambda ()))
-                      (expand-region (lambda ()))
-                      (paredit (lambda ()))
-                      (projectile (lambda ()))
-                      (rainbow-mode (lambda ()))
-                      (ack-and-a-half (lambda ()))
-                      (rainbow-delimiters (lambda ()))
-                      (ibuffer-vc (lambda ()))
-                      (fsharp-mode (lambda ()))
-                      (tuareg (lambda ()))
-                      (exec-path-from-shell (lambda ()))
-                      (ace-jump-mode (lambda ()))
+(defvar my-packages `((clojure-mode ignore)
+                      (clojure-test-mode ignore)
+                      (cider cider-load)
+                      (haskell-mode haskell-mode-load)
+                      (zencoding-mode zencoding-mode-load)
+                      (erlang (lambda () (add-to-list 'auto-mode-alist '("\\.\\(e\\|h\\)rl" . erlang-mode))))
+                      (yaml-mode ignore)
+                      (undo-tree (lambda () (add-hook 'after-init-hook 'global-undo-tree-mode)))
+                      (powershell-mode powershell-mode-load)
+                      (solarized-theme (lambda () (load-theme 'solarized-dark)))
+                      (evil ignore)
+                      (tabbar tabbar-load)
+                      (expand-region expand-region-load)
+                      (rainbow-delimiters ignore)
+                      (paredit paredit-load)
+                      (projectile projectile-global-mode)
+                      (rainbow-mode (lambda () (add-hook 'css-mode-hook 'rainbow-mode)))
+                      (ack-and-a-half ignore)
+                      (ibuffer-vc ibuffer-vc-load)
+                      (fsharp-mode fsharp-mode-load)
+                      (tuareg ignore)
+                      (exec-path-from-shell ,(if (memq window-system '(mac ns))
+                                                exec-path-from-shell-initialize 'ignore))
+                      (ace-jump-mode (lambda () (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)))
+                      (diminish diminish-load)
                       ))
 
 
@@ -103,15 +214,6 @@
 (setq-default tab-width 4)
 (setq tab-stop-list (number-sequence tab-width 120 tab-width))
 
-
-(load-theme 'solarized-dark)
-
-(require 'powershell-mode)
-(add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode))
-
-(require 'zencoding-mode)
-(add-hook 'sgml-mode-hook 'zencoding-mode)
-
 (setq-default sgml-basic-offset tab-width)
 
 
@@ -121,44 +223,14 @@
 ;;   (increase-left-margin START END)
 ;;   (indent-region-copy START END COLUMN))
 
-(setq inferior-fsharp-program "fsharpi --readline-")
-(setq fsharp-compiler "fsharpc")
 
-(add-to-list 'auto-mode-alist '("\\.\\(e\\|h\\)rl" . erlang-mode))
 
 (delete-selection-mode)
 (setq save-place-file "~/.emacs.d/saved-places")
 
-(require 'expand-region)
-(global-set-key (kbd "C-0") 'er/expand-region)
-(global-set-key (kbd "C-9") 'er/contract-region)
-(dolist (mode '(scheme emacs-lisp ielm lisp clojure clojurescript cider-repl))
-  (let ((hook (intern (concat (symbol-name mode) "-mode-hook"))))
-    (add-hook hook 'paredit-mode)
-    (add-hook hook #'rainbow-delimiters-mode)))
 
-(projectile-global-mode)
-(add-hook 'css-mode-hook 'rainbow-mode)
 ; FIXME this removes the hook for er/css-mode-expansion
 
-(add-hook 'ibuffer-hook
-    (lambda ()
-      (ibuffer-vc-set-filter-groups-by-vc-root)
-      (unless (eq ibuffer-sorting-mode 'alphabetic)
-        (ibuffer-do-sort-by-alphabetic))
-      (setq truncate-lines t)))
-
-(setq ibuffer-formats
-      '((mark modified read-only vc-status-mini " "
-              (name 18 18 :left :elide)
-              " "
-              (size 9 -1 :right)
-              " "
-              (mode 16 16 :left :elide)
-              " "
-              (vc-status 16 16 :left)
-              " "
-              filename-and-process)))
 
 (global-set-key (kbd "C-x C-g") 'goto-line)
 
@@ -172,40 +244,6 @@
 
 (cua-mode t)
 
-(require 'tabbar)
-(tabbar-mode t)
-
-(setq tabbar-background-color "gray20")
-(custom-set-faces
- '(tabbar-default ((t (:background "gray20" :foreground "black" :weight bold :box (:line-width 1 :color "gray20")))))
- '(tabbar-button ((t (:inherit tabbar-default :box (:line-width 1 :color "gray20" :style nil)))))
- '(tabbar-highlight ((t :background "white" :foreground "black" :underline nil :box (:line-width 5 :color "white" :style nil))))
- '(tabbar-selected ((t (:inherit tabbar-default :background "gray75" :foreground "black" :box (:line-width 5 :color "gray75" :style nil)))))
- '(tabbar-separator ((t (:inherit tabbar-default :background "gray20" :height 0.6))))
- '(tabbar-unselected ((t (:inherit tabbar-default :background "gray30" :foreground "white" :box (:line-width 5 :color "gray30" :style nil))))))
-
-; define all tabs to be one of 3 possible groups: “Emacs Buffer”, “Dired”, “User Buffer”.
-
-(defun tabbar-buffer-groups ()
-  "Return the list of group names the current buffer belongs to.
-This function is a custom function for tabbar-mode's tabbar-buffer-groups.
-This function group all buffers into 3 groups:
-Those Dired, those user buffer, and those emacs buffer.
-Emacs buffer are those starting with “*”."
-  (list
-   (cond
-    ((string-equal "*" (substring (buffer-name) 0 1))
-     "Emacs Buffer"
-     )
-    ((eq major-mode 'dired-mode)
-     "Dired"
-     )
-    (t
-     "User Buffer"
-     )
-    ))) 
-
-(setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
 
 (global-set-key [home] 'beginning-of-line) ; macosx
 (global-set-key [end] 'end-of-line) ; macosx
@@ -217,20 +255,11 @@ Emacs buffer are those starting with “*”."
 (global-set-key (kbd "C-s") 'save-buffer)
 (global-set-key (kbd "C-o") 'find-file)
 
-(require 'diminish)
-(eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
-(diminish 'global-whitespace-mode)
-(diminish 'global-visual-line-mode)
-(diminish 'visual-line-mode)
-(diminish 'projectile-mode)
 
 ;(windmove-default-keybindings 'shift)
 
 (setq default-directory (or (getenv "USERPROFILE") (getenv "HOME")))
 (put 'upcase-region 'disabled nil)
-
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 
 (setq backup-dir (expand-file-name ".emacs.d/backup/"))
 (setq autosave-dir (expand-file-name ".emacs.d/autosaves/"))
@@ -239,19 +268,3 @@ Emacs buffer are those starting with “*”."
 (setq auto-save-file-name-transforms
       `((".*" ,autosave-dir t)))
 
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
-
-(setq cider-popup-stacktraces t)
-(setq cider-repl-popup-stacktraces t)
-(setq cider-popup-on-error nil)
-
-(setq nrepl-buffer-name-separator "-")
-(setq nrepl-buffer-name-show-port t)
-
-(setq cider-repl-print-length 10000)
-(setq cider-repl-history-size 500000)
-(setq cider-repl-history-file "~/.nrepl-history.eld")
-(add-hook 'cider-repl-mode-hook 'subword-mode)
-
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
