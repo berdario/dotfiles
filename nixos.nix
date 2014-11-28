@@ -42,10 +42,20 @@
   
   services.udev.extraRules = ''KERNEL=="vboxnetctl", OWNER="root", GROUP="vboxusers",      MODE="0660", TAG+="systemd"'';
 
+  hardware.pulseaudio.enable = true;
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.layout = "uk";
   services.xserver.xkbOptions = "eurosign:e";
+
+  services.xserver.synaptics = {
+    enable = true;
+    tapButtons = false;
+    twoFingerScroll = true;
+    vertEdgeScroll = false;
+  };
+  
 
   # Enable the KDE Desktop Environment.
   services.xserver.displayManager.kdm.enable = true;
