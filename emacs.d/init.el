@@ -51,40 +51,54 @@
       "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
+(defun try-install (package)
+  (let ((result nil))
+    (condition-case _
+        (progn (when (not (package-installed-p package))
+(package-install package))
+               (setq result 't))
+      ('error (message (format "Unable to install %s" package))))
+    result))
+
+(try-install 'dash)
+(try-install 'dash-functional)
+(require 'dash-functional)
+
 (when (not package-archive-contents)
   (package-refresh-contents))
-(defvar my-packages '(dash
-                      dash-functional
-                      clojure-mode
-                      clojure-test-mode
-                      cider
-                      haskell-mode
-                      zencoding-mode
-                      erlang
-                      yaml-mode
-                      undo-tree
-                      powershell-mode
-                      solarized-theme
-                      evil
-                      tabbar
-                      diminish
-                      expand-region
-                      paredit
-                      projectile
-                      rainbow-mode
-                      ack-and-a-half
-                      rainbow-delimiters
-                      ibuffer-vc
-                      fsharp-mode
-                      tuareg
-                      exec-path-from-shell
-                      ace-jump-mode
-                      ))
-(dolist (p my-packages)
-  (when (not (package-installed-p p))
-    (package-install p)))
 
-(require 'dash-functional)
+(defvar my-packages '((clojure-mode (lambda ()))
+                      (clojure-test-mode (lambda ()))
+                      (cider (lambda ()))
+                      (haskell-mode (lambda ()))
+                      (zencoding-mode (lambda ()))
+                      (erlang (lambda ()))
+                      (yaml-mode (lambda ()))
+                      (undo-tree (lambda ()))
+                      (powershell-mode (lambda ()))
+                      (solarized-theme (lambda ()))
+                      (evil (lambda ()))
+                      (tabbar (lambda ()))
+                      (diminish (lambda ()))
+                      (expand-region (lambda ()))
+                      (paredit (lambda ()))
+                      (projectile (lambda ()))
+                      (rainbow-mode (lambda ()))
+                      (ack-and-a-half (lambda ()))
+                      (rainbow-delimiters (lambda ()))
+                      (ibuffer-vc (lambda ()))
+                      (fsharp-mode (lambda ()))
+                      (tuareg (lambda ()))
+                      (exec-path-from-shell (lambda ()))
+                      (ace-jump-mode (lambda ()))
+                      ))
+
+
+(-each my-packages
+  (-lambda ((p loader))
+    (when (try-install p)
+      (funcall loader))))
+
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq tab-stop-list (number-sequence tab-width 120 tab-width))
