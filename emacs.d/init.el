@@ -163,7 +163,7 @@ Emacs buffer are those starting with “*”."
 
 (defun try-install (package)
   (let ((result nil))
-    (condition-case _
+    (condition-case nil
         (progn (when (not (package-installed-p package))
 (package-install package))
                (setq result 't))
@@ -194,6 +194,7 @@ Emacs buffer are those starting with “*”."
                       (paredit paredit-load)
                       (projectile projectile-global-mode)
                       (rainbow-mode (lambda () (add-hook 'css-mode-hook 'rainbow-mode)))
+                      ; FIXME this removes the hook for er/css-mode-expansion
                       (ack-and-a-half ignore)
                       (ibuffer-vc ibuffer-vc-load)
                       (fsharp-mode fsharp-mode-load)
@@ -227,9 +228,6 @@ Emacs buffer are those starting with “*”."
 
 (delete-selection-mode)
 (setq save-place-file "~/.emacs.d/saved-places")
-
-
-; FIXME this removes the hook for er/css-mode-expansion
 
 
 (global-set-key (kbd "C-x C-g") 'goto-line)
