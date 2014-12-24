@@ -90,6 +90,16 @@
     zip
     unzip
     socat
+    jwhois
+
+    # tools
+    pdftk
+    unetbootin
+    wget
+    openvpn
+    tigervnc
+    glxinfo
+    nfsUtils
 
     # dev
     fish
@@ -112,19 +122,29 @@
     openjdk
     gradle
     nodePackages.npm
-    
-    # networking
-    openvpn
+    clang
+    qemu
 
     # applications
     xpdf
     kde4.kvirc
     # kde4.kwallet # I probably don't need this
     kde4.kdiff3
+    kde4.ark
     firefox
+    inkscape
+    chromium
+
+    # pentest
+    nmap
+    telnet
+    net_snmp
 
     ## these are only in the unstable channel, atm
     #ideas.idea_community_1302
+    #android-sdk
+    #sshpass
+    #ansible
   ];
 
 }

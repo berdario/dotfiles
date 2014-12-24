@@ -91,6 +91,8 @@
     - name: Add docker repository key
       apt_key: id=36A1D7869245C8950F966E92D8576A8BA88D21E9 keyserver=hkp://keyserver.ubuntu.com:80
 
+    # TODO setup pinentry-program (which pinentry-gtk-2) in ~/.gnupg/gpg-agent.conf
+
     - name: Add extra repositories
       apt_repository: repo="{{item}}"
       with_items:
