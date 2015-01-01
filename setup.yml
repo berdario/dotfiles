@@ -13,7 +13,8 @@
     nix_installer:
       sha256: 9a20b31afe264646acaaac54e2f5ab1be6247feda4dedf4a26affcec0ea084ac
     keepass_http:
-      sha256: e37e1dcb762b470fd4091c61c5db693652790549459b9a3a9b7fa1257ea69edf
+      version: 1.8.4.0
+      sha256: 4803ea799962ec3e294691922d6255e63c5a96df36941f99ef633775829e7289
 
   tasks:
     - name: Check if dropbox is already installed
@@ -99,6 +100,7 @@
         - 'deb http://archive.canonical.com/ {{ansible_lsb.codename}} partner' # skype, etc
         - 'ppa:hvr/ghc' # haskell
         - 'deb https://get.docker.io/ubuntu docker main'
+        - 'deb http://ppa.launchpad.net/avsm/ppa/ubuntu trusty main' # opam
 
     - name: Install other software
       apt: name={{item}}
@@ -140,9 +142,15 @@
         - pv
         - whois
         - sshuttle
+        - iodine
+        - pdftk
+        - ocaml
+        - ocaml-native-compilers
+        - camlp4-extra
+        - opam
 
     - name: Install KeepassHttp plugin # needed for PassIFox
-      get_url: url="https://passifox.appspot.com/KeePassHttp.plgx" dest=/usr/lib/keepass2 sha256sum={{keepass_http.sha256}}
+      get_url: url="https://github.com/pfn/keepasshttp/raw/{{keepass_http.version}}/KeePassHttp.plgx" dest=/usr/lib/keepass2 sha256sum={{keepass_http.sha256}}
 
     - name: Change default VBox machine folder
       sudo: False
