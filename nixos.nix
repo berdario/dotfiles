@@ -29,8 +29,10 @@
   i18n = {
     consoleFont = "lat9w-16";
     consoleKeyMap = "uk";
-    defaultLocale = "en_US.UTF-8";
+    defaultLocale = "en_GB.UTF-8";
   };
+
+  time.timeZone = "GMT";
 
   # List services that you want to enable:
 
@@ -40,13 +42,13 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
   
-  services.udev.extraRules = ''KERNEL=="vboxnetctl", OWNER="root", GROUP="vboxusers",      MODE="0660", TAG+="systemd"'';
+  services.udev.extraRules = ''KERNEL=="vboxnetctl", OWNER="root", GROUP="vboxusers", MODE="0660", TAG+="systemd"'';
 
   hardware.pulseaudio.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.layout = "uk";
+  services.xserver.layout = "gb";
   services.xserver.xkbOptions = "eurosign:e";
 
   services.xserver.synaptics = {
@@ -132,6 +134,7 @@
     kde4.kdiff3
     kde4.ark
     firefox
+    thunderbird
     inkscape
     chromium
 
