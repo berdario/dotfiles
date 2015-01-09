@@ -21,6 +21,9 @@
 
   
   security.initialRootPassword = "!"; # disable root password login
+  # security.sudo.extraConfig = ''
+  # Defaults        secure_path="/run/current-system/sw/bin/"
+  # '';
 
   networking.hostName = "curie"; # Define your hostname.
   networking.wireless.enable = true;  # Enables wireless.
