@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
       <nixpkgs/nixos/modules/programs/virtualbox.nix>
+      ./local.nix
     ];
 
   # Use the GRUB 2 boot loader.
@@ -25,7 +26,6 @@
   # Defaults        secure_path="/run/current-system/sw/bin/"
   # '';
 
-  networking.hostName = "curie"; # Define your hostname.
   networking.wireless.enable = true;  # Enables wireless.
 
   # Select internationalisation properties.
