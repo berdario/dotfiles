@@ -8,7 +8,6 @@
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
-      <nixpkgs/nixos/modules/programs/virtualbox.nix>
       ./local.nix
     ];
 
@@ -17,10 +16,7 @@
   boot.loader.grub.version = 2;
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/sda";
-  
-  nixpkgs.config.virtualbox.enableExtensionPack = true;
 
-  
   security.initialRootPassword = "!"; # disable root password login
   # security.sudo.extraConfig = ''
   # Defaults        secure_path="/run/current-system/sw/bin/"
@@ -66,6 +62,9 @@
   services.xserver.displayManager.kdm.enable = true;
   services.xserver.desktopManager.kde4.enable = true;
 
+  services.virtualboxHost.enable = true;
+  nixpkgs.config.virtualbox.enableExtensionPack = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers = {
     dario = {
@@ -110,13 +109,13 @@
     fish
     python
     python3
-    ruby2
+    ruby_2_1
     python27Packages.virtualenv
     gcc
     gnumake
     emacs
-    ghc.ghc782
-    haskellPackages.hoogle
+    ghc.ghc783
+    haskellPackages.hoogleLocal
     gradle
     bazaar
     mercurial
