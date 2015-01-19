@@ -18,9 +18,9 @@
   boot.loader.grub.device = "/dev/sda";
 
   security.initialRootPassword = "!"; # disable root password login
-  # security.sudo.extraConfig = ''
-  # Defaults        secure_path="/run/current-system/sw/bin/"
-  # '';
+  security.sudo.extraConfig = ''
+    Defaults        secure_path="/run/current-system/sw/bin/"
+    '';
 
   networking.wireless.enable = true;  # Enables wireless.
 
