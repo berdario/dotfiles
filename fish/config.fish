@@ -34,6 +34,8 @@ set -x ANSIBLE_NOCOWS 1
 set -l additional_paths ~/.opam/$OCAMLVERSION/bin ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin ~/Applications/depot_tools $NIX_LINK/bin
 mkdir -p $additional_paths
 
+set -x NIX_PATH $NIX_PATH nixtrunk=$HOME/nixpkgs common=$HOME/.dotfiles/packages.nix
+
 set -l additional_paths $additional_paths /opt/ghc/7.8.3/bin/
 set -x PATH $additional_paths $PATH
 

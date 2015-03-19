@@ -40,7 +40,7 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-  
+
   services.udev.extraRules = ''KERNEL=="vboxnetctl", OWNER="root", GROUP="vboxusers", MODE="0660", TAG+="systemd"'';
 
   hardware.pulseaudio.enable = true;
@@ -56,7 +56,7 @@
     twoFingerScroll = true;
     vertEdgeScroll = false;
   };
-  
+
 
   # Enable the KDE Desktop Environment.
   services.xserver.displayManager.kdm.enable = true;
@@ -77,79 +77,12 @@
       shell = "/nix/var/nix/profiles/default/bin/fish";
     };
   };
-  
+
   # List packages installed in system profile. To search by name, run:
   # -env -qaP | grep wget
-  environment.systemPackages = with pkgs; [
-    # base utilities
-    which
-    file
-    rlwrap
-    bc
-    xsel
-    pinentry
-    gnupg
-    ack
-    openssl
-    zip
-    unzip
-    socat
-    jwhois
-
-    # tools
-    pdftk
-    unetbootin
-    wget
-    openvpn
-    tigervnc
-    glxinfo
-    nfsUtils
-
-    # dev
-    fish
-    python
-    python3
-    ruby_2_1
-    python27Packages.virtualenv
+  environment.systemPackages = (import <common>) ++ (with pkgs; [
+    # software that would cause collision with nix-env, and is thus outside of <common>
     gcc
-    gnumake
-    emacs
-    ghc.ghc783
-    haskellPackages.hoogleLocal
-    gradle
-    bazaar
-    mercurial
-    git
-    gitAndTools.hub
-    docker
-    vagrant
-    openjdk
-    gradle
-    nodePackages.npm
-    clang
-    qemu
-
-    # applications
-    xpdf
-    kde4.kvirc
-    # kde4.kwallet # I probably don't need this
-    kde4.kdiff3
-    kde4.ark
-    firefox
-    thunderbird
-    inkscape
-    chromium
-
-    # pentest
-    nmap
-    telnet
-    net_snmp
-
-    ## these are only in the unstable channel, atm
-    #ideas.idea_community_1302
-    #android-sdk
-    #sshpass
-    #ansible
-  ];
+  ]);
 
 }
