@@ -199,6 +199,7 @@ Emacs buffer are those starting with “*”."
                       (ibuffer-vc ibuffer-vc-load)
                       (fsharp-mode fsharp-mode-load)
                       (tuareg ignore)
+                      (scala-mode2 ignore)
                       (exec-path-from-shell ,(if (memq window-system '(mac ns))
                                                 exec-path-from-shell-initialize 'ignore))
                       (ace-jump-mode (lambda () (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)))
