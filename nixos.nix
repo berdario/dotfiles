@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
-      <nixpkgs/nixos/modules/programs/virtualbox.nix>
+      ./local.nix
     ];
 
   # Use the GRUB 2 boot loader.
@@ -16,21 +16,22 @@
   boot.loader.grub.version = 2;
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/sda";
-  
-  nixpkgs.config.virtualbox.enableExtensionPack = true;
 
-  
   security.initialRootPassword = "!"; # disable root password login
+  security.sudo.extraConfig = ''
+    Defaults        secure_path="/run/current-system/sw/bin/"
+    '';
 
-  networking.hostName = "curie"; # Define your hostname.
   networking.wireless.enable = true;  # Enables wireless.
 
   # Select internationalisation properties.
   i18n = {
     consoleFont = "lat9w-16";
     consoleKeyMap = "uk";
-    defaultLocale = "en_US.UTF-8";
+    defaultLocale = "en_GB.UTF-8";
   };
+
+  time.timeZone = "GMT";
 
   # List services that you want to enable:
 
@@ -40,13 +41,13 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
   
-  services.udev.extraRules = ''KERNEL=="vboxnetctl", OWNER="root", GROUP="vboxusers",      MODE="0660", TAG+="systemd"'';
+  services.udev.extraRules = ''KERNEL=="vboxnetctl", OWNER="root", GROUP="vboxusers", MODE="0660", TAG+="systemd"'';
 
   hardware.pulseaudio.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.layout = "uk";
+  services.xserver.layout = "gb";
   services.xserver.xkbOptions = "eurosign:e";
 
   services.xserver.synaptics = {
@@ -60,6 +61,9 @@
   # Enable the KDE Desktop Environment.
   services.xserver.displayManager.kdm.enable = true;
   services.xserver.desktopManager.kde4.enable = true;
+
+  services.virtualboxHost.enable = true;
+  nixpkgs.config.virtualbox.enableExtensionPack = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers = {
@@ -105,13 +109,13 @@
     fish
     python
     python3
-    ruby2
+    ruby_2_1
     python27Packages.virtualenv
     gcc
     gnumake
     emacs
-    ghc.ghc782
-    haskellPackages.hoogle
+    ghc.ghc783
+    haskellPackages.hoogleLocal
     gradle
     bazaar
     mercurial
@@ -132,6 +136,7 @@
     kde4.kdiff3
     kde4.ark
     firefox
+    thunderbird
     inkscape
     chromium
 
