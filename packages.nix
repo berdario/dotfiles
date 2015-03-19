@@ -36,7 +36,6 @@ with (import <nixpkgs> {}).pkgs;
   gnumake
   emacs
   ghc.ghc783
-  haskellPackages.hoogleLocal
   gradle
   bazaar
   mercurial
@@ -49,6 +48,8 @@ with (import <nixpkgs> {}).pkgs;
   nodePackages.npm
   clang
   qemu
+  haskellPackages.yesodBin
+  haskellngPackages.cabal-install
 
   # applications
   xpdf
@@ -73,4 +74,6 @@ with (import <nixpkgs> {}).pkgs;
 (with (import <nixtrunk> {});
 [
   ansible
+  haskellPackages.hoogleLocal
+  haskellngPackages.cabal2nix
 ])
