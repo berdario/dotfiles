@@ -14,8 +14,12 @@ with (import <nixpkgs> {}).pkgs;
   openssl
   zip
   unzip
+  p7zip
   socat
   jwhois
+  tree
+  gptfdisk
+  btrfsProgs
 
   # tools
   pdftk
@@ -26,6 +30,12 @@ with (import <nixpkgs> {}).pkgs;
   glxinfo
   nfsUtils
   nethogs
+  bind
+  sshpass
+  graphviz
+  binwalk
+  nix-repl
+  pwgen
 
   # dev
   fish
@@ -45,35 +55,38 @@ with (import <nixpkgs> {}).pkgs;
   vagrant
   openjdk
   gradle
-  nodePackages.npm
   clang
   qemu
   haskellPackages.yesodBin
   haskellngPackages.cabal-install
-
+  idea.idea-community
+  androidsdk_4_4
+  ansible
+  nixops
+  redis
+  leiningen
+  scala
+ 
   # applications
   xpdf
   kde4.kvirc
-  # kde4.kwallet # I probably don't need this
   kde4.kdiff3
   kde4.ark
   firefox
   thunderbird
   inkscape
   chromium
+  libreoffice
 
   # pentest
   nmap
   telnet
   net_snmp
-
-  idea.idea-community
-  androidsdk_4_4
-  sshpass
 ] ++
 (with (import <nixtrunk> {});
 [
-  ansible
   haskellPackages.hoogleLocal
   haskellngPackages.cabal2nix
+  iojs
+  iojsPackages.npm
 ])
