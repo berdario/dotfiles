@@ -1,0 +1,41 @@
+# execute with ansible-playbook -i 'localhost,' setup-feynman.yml
+
+- hosts: localhost
+  connection: local
+  sudo: True
+  vars:
+    crashplan:
+      version: 3.6.3
+      sha256: 605580cfc6aecb3acdc10baa6afc448ac07d960dafdbaa2e35b92f61d877016c
+  roles:
+    - common
+  tasks:
+    - name: Check if crashplan is already installed
+      stat: path=/usr/local/bin/CrashPlanDesktop
+      register: crashplan
+
+    - name: Download crashplan
+      when: not crashplan.stat.exists
+      get_url: url="http://download.code42.com/installs/linux/install/CrashPlan/CrashPlan_{{crashplan.version}}_Linux.tgz" dest=/tmp/crashplan.tgz sha256sum={{crashplan.sha256}}
+
+    - name: Extract crashplan
+      when: not crashplan.stat.exists
+      unarchive: src=/tmp/crashplan.tgz copy=no dest=/tmp/
+
+    - name: Install java
+      apt: name=openjdk-7-jre
+
+    - name: Increase inotify watches
+      # lineinfile: dest=/proc/sys/fs/inotify/max_user_watches regexp='' line=" 1500000" # doesn't work
+      shell: echo "1500000" | tee /proc/sys/fs/inotify/max_user_watches
+
+    - name: Install crashplan
+      when: not crashplan.stat.exists
+      shell: xterm ./install.sh chdir=/tmp/CrashPlan-install
+
+    - name: Increase inotify watches (persist)
+      lineinfile: dest=/etc/sysctl.conf line="fs.inotify.max_user_watches=1500000"
+
+    - name: Fix CrashPlan webkit bug
+      lineinfile: dest=/usr/local/crashplan/bin/run.conf regexp='^GUI_JAVA_OPTS' backup=yes line='GUI_JAVA_OPTS="-Dfile.encoding=UTF-8 -Dapp=CrashPlanDesktop -DappBaseName=CrashPlan -Xms20m -Xmx512m -Djava.net.preferIPv4Stack=true -Dsun.net.inetaddr.ttl=300 -Dnetworkaddress.cache.ttl=300 -Dsun.net.inetaddr.negative.ttl=0 -Dnetworkaddress.cache.negative.ttl=0 -Dc42.native.md5.enabled=false -Dorg.eclipse.swt.browser.DefaultType=mozilla"'
+
