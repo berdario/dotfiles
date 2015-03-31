@@ -1,8 +1,12 @@
+system: x86_64-linux
+nix_version: 1.8
 dropbox:
   version: 1.6.0
   sha256: 3d96207244a6897cb23de088b3c4c8c2f93cce1baab4d5b74a224484b16c6202
-nix_installer:
-  sha256: 9a20b31afe264646acaaac54e2f5ab1be6247feda4dedf4a26affcec0ea084ac
+nix:
+  url: "https://nixos.org/releases/nix/nix-{{nix_version}}/nix-{{nix_version}}-{{system}}.tar.bz2"
+  extract_dir: "/tmp/nix-{{nix_version}}-{{system}}"
+  sha256: 52fab207b4ce4d098a12d85357d0353e972c492bab0aa9e08e1600363e76fefb
 keepass_http:
   version: 1.8.4.0
   sha256: 4803ea799962ec3e294691922d6255e63c5a96df36941f99ef633775829e7289

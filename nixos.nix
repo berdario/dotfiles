@@ -81,8 +81,46 @@
   # List packages installed in system profile. To search by name, run:
   # -env -qaP | grep wget
   environment.systemPackages = (import <common>) ++ (with pkgs; [
+    # base utilities/software missing only on nixos systems
+    which
+    file
+    bc
+    sel
+    openssl
+    zip
+    unzip
+    gptfdisk
+    wget
+    tigervnc
+    bind # for dig
+    telnet
+    ruby_2_2 # still need to rely on rbenv on other distros
+  
+    # software that relies on global libraries/stuff to be available (kernel modules, ui libraries)
+    # and is thus installed only on nixos systems (non-nixos will use the native package manager for them)
+    ## dev
+    glxinfo
+    vagrant
+    qemu # maybe it would be ok on Ubuntu?
+    openjdk # Apps on Ubuntu are often broken, also issues with jayatana
+    idea.idea-community
+    docker # requires the service running
+   
+    ## applications
+    xpdf
+    kde4.kvirc
+    kde4.kdiff3
+    kde4.ark
+    firefox
+    thunderbird
+    inkscape
+    chromium
+    libreoffice
+
     # software that would cause collision with nix-env, and is thus outside of <common>
     gcc
+  ]) ++ (with (import <nixtrunk> {}); [
+
   ]);
 
 }

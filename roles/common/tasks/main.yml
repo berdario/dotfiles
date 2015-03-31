@@ -1,21 +1,3 @@
-- name: Check if dropbox is already installed
-  stat: path=/usr/bin/dropbox
-  register: dropbox_bin
-
-- name: Download dropbox
-  when: not dropbox_bin.stat.exists
-  get_url: url="https://www.dropbox.com/download?dl=packages/debian/dropbox_{{dropbox.version}}_amd64.deb" dest=/tmp/dropbox.deb sha256sum={{dropbox.sha256}}
-
-- name: Install gpgme (needed to verify dropbox installation)
-  apt: name=python-gpgme
-
-- name: Install dropbox
-  when: not dropbox_bin.stat.exists
-  apt: deb=/tmp/dropbox.deb
-
-- name: Install keepass # to be able to login into Crashplan
-  apt: name=keepass2
-
 - name: Install git
   apt: name=git
 
@@ -32,74 +14,53 @@
   register: dotfiles_deploy
   changed_when: dotfiles_deploy.stdout
 
-- name: Add fish repository
-  apt_repository: repo='ppa:fish-shell/release-2'
-
-- name: Install fish
-  apt: name=fish
-
-- name: Set fish as login shell
-  user: name={{ansible_env.SUDO_USER}} shell=/usr/bin/fish
-
-- name: Add docker repository key
-  apt_key: id=36A1D7869245C8950F966E92D8576A8BA88D21E9 keyserver=hkp://keyserver.ubuntu.com:80
-
-# TODO setup pinentry-program (which pinentry-gtk-2) in ~/.gnupg/gpg-agent.conf
-
 - name: Add extra repositories
   apt_repository: repo="{{item}}"
   with_items:
+    - 'deb http://dl.google.com/linux/chrome/deb/ stable main'
+    - 'deb http://linux.dropbox.com/ubuntu precise main'
     - 'deb http://archive.canonical.com/ {{ansible_lsb.codename}} partner' # skype, etc
-    - 'ppa:hvr/ghc' # haskell
     - 'deb https://get.docker.io/ubuntu docker main'
     - 'deb http://ppa.launchpad.net/avsm/ppa/ubuntu trusty main' # opam
+
+- name: Add repository keys
+  apt_key: id={{item}} keyserver=hkp://keyserver.ubuntu.com:80
+  with_items:
+    - 36A1D7869245C8950F966E92D8576A8BA88D21E9 # docker
+    - 5B2D0C5561707B09 # opam
+
+# TODO setup pinentry-program (which pinentry-gtk-2) in ~/.gnupg/gpg-agent.conf
 
 - name: Install other software
   apt: name={{item}}
   with_items:
-    - rlwrap
-    - gnupg2
-    - emacs
-    - python3-pip
-    - ghc-7.8.3
-    - hoogle
-    - cabal-install-1.20
-    - ghc-7.6.3
-    - nodejs
     - npm
-    - ruby2.0
     - mono-complete # also needed for keepass plugins
-    - ack-grep
-    - socat
     - meld
-    - mercurial
-    - bzr
     - virtualbox
     - vagrant
     - indicator-multiload
     - smuxi
     - electrum
-    - psi-plus
     - skype
     - libssl-dev
     - texlive-latex-base
     - texlive-latex-extra
     - texlive-fonts-recommended
     - lxc-docker
+    - libffi-dev # needed by ruby-build
     - libreadline-dev # needed by heroku
     - exfat-fuse
-    - tree
     - bikeshed
-    - nethogs
-    - pv
-    - whois
-    - sshuttle
-    - iodine
-    - pdftk
     - ocaml
     - ocaml-native-compilers
     - camlp4-extra
-    - opam
+    - opam # try opam on top of Nix
+    - google-chrome-stable
+    - dropbox
+    - keepass2
+    - curl
+    - openjdk-8-jre
 
 - name: Install KeepassHttp plugin # needed for PassIFox
   get_url: url="https://github.com/pfn/keepasshttp/raw/{{keepass_http.version}}/KeePassHttp.plgx" dest=/usr/lib/keepass2 sha256sum={{keepass_http.sha256}}
@@ -109,33 +70,12 @@
   command: VBoxManage setproperty machinefolder ~/.VirtualBoxVMs
   changed_when: False
 
-- name: Check if nix is already installed
-  stat: path=/nix/store
-  register: nixstore
+- name: Add the local fish as a valid shell
+  lineinfile: dest=/etc/shells line="{{lookup('env', 'HOME')}}/nix-profile/bin/fish"
 
-- name: Download nix-installer
-  when: not nixstore.stat.exists
-  get_url: url=https://nixos.org/nix/install dest=/tmp/nix-install sha256sum={{nix_installer.sha256}}
+- name: Set fish as login shell
+  user: name={{ansible_env.SUDO_USER}} shell="{{lookup('env', 'HOME')}}/.nix-profile/bin/fish"
 
-- name: Install nix
-  # this install nix for the user, but needs sudo to install some files globally
-  # it usually works, assuming that sudo has already been authenticated in previous commands
-  sudo: False
-  when: not nixstore.stat.exists
-  command: /bin/bash /tmp/nix-install
-
-# TODO: create an ansible nix module
-
-- name: Check if hub is installed
-  sudo: False
-  command: nix-env -q --installed hub
-  register: hub_installed
-  changed_when: False
-
-- name: Install hub
-  sudo: False
-  when: not hub_installed.stdout
-  command: nix-env -i hub
 
 - name: Clone other software repos
   sudo: False
@@ -156,33 +96,59 @@
   sudo: False
   git: repo=git://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
 
-- name: Install ruby 2.1.2
+  # As a workaround, this needs to be executed before installing clang through nix
+  # https://github.com/sstephenson/ruby-build/issues/325
+- name: Install ruby 2.2.1
   sudo: False
-  command: rbenv install -s 2.1.2
+  command: rbenv install -s 2.2.1
+  environment:
+    CFLAGS: -fPIC
   register: rbenv_install
   changed_when: rbenv_install.stdout
 
-- name: Switch to ruby 2.1.2 as default
+- name: Switch to ruby 2.2.1 as default
   sudo: False
-  command: rbenv global 2.1.2
+  command: rbenv global 2.2.1
   changed_when: False
+
+
+- name: Check if nix is already installed
+  stat: path=/nix/store
+  register: nixstore
+
+- name: Download nix
+  when: not nixstore.stat.exists
+  get_url: url={{nix.url}} dest=/tmp/nix.tar.bz2 sha256sum={{nix.sha256}}
+
+- name: Unpack nix
+  when: not nixstore.stat.exists
+  unarchive: src=/tmp/nix.tar.bz2 dest=/tmp/ creates={{nix.extract_dir}} copy=no
+
+- name: Workaround nixpkgs issue 6757
+  file: state=directory path=/nix/var/nix/profiles/per-user/{{ansible_ssh_user}}
+
+- name: Set /nix owner for single-user installation
+  when: not nixstore.stat.exists
+  file: owner={{ansible_ssh_user}} recurse=yes path=/nix
+
+- name: Install nix
+  when: not nixstore.stat.exists
+  sudo: False
+  command: bash {{nix.extract_dir}}/install
+
+- name: Install nix software
+  sudo: False
+  command: ~/.nix-profile/bin/nix-env -f ~/.dotfiles/packages.nix -i
+  environment:
+    NIX_PATH: "nixpkgs={{lookup('env', 'HOME')}}/.nix-defexpr/channels/nixpkgs:nixtrunk={{lookup('env', 'HOME')}}/nixpkgs"
+  register: nix_env
+  changed_when: nix_env.stdout
 
 - name: Install gems
   sudo: False
-  gem: name={{item}}
+  gem: name={{item}} user_install=no
   with_items:
-    - gist
     - bundler
     - rb-readline # needed by heroku
     - heroku
     - rhc
-
-- name: Rehash rubygem executables
-  sudo: False
-  command: rbenv rehash
-  changed_when: False
-
-- name: Install node executables
-  npm: name={{item}} global=True
-  with_items:
-    - keybase
