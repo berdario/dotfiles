@@ -3,7 +3,7 @@
 with (import <nixpkgs> {}).pkgs;
 [
   nix
-  
+
   # base utilities
   rlwrap
   pinentry
@@ -29,8 +29,7 @@ with (import <nixpkgs> {}).pkgs;
   pwgen
   sshuttle
   iodine
-  #keybase-node-client # XXX with this commented out, when running nix-env -f ./packages.nix -ir
-                       # fish symlink in nix-profile is not generated
+  keybase-node-client
 
   # dev
   fish
@@ -54,7 +53,7 @@ with (import <nixpkgs> {}).pkgs;
   leiningen
   scala
   gist
- 
+
   # pentest
   net_snmp
 ] ++
