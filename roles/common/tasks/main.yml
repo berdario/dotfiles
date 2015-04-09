@@ -31,6 +31,10 @@
 
 # TODO setup pinentry-program (which pinentry-gtk-2) in ~/.gnupg/gpg-agent.conf
 
+- name: Preconfigure wireshark
+  shell: echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections
+  changed_when: False
+
 - name: Install other software
   apt: name={{item}}
   with_items:
@@ -61,6 +65,10 @@
     - keepass2
     - curl
     - openjdk-8-jre
+    - wireshark
+
+- name: Add to wireshark group
+  user: name={{ansible_env.SUDO_USER}} groups=wireshark append=yes
 
 - name: Install KeepassHttp plugin # needed for PassIFox
   get_url: url="https://github.com/pfn/keepasshttp/raw/{{keepass_http.version}}/KeePassHttp.plgx" dest=/usr/lib/keepass2 sha256sum={{keepass_http.sha256}}

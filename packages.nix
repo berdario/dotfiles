@@ -20,7 +20,7 @@ with (import <nixpkgs> {}).pkgs;
   pdftk
   unetbootin
   openvpn
-  nfsUtils
+  nfs-utils
   nethogs
   sshpass
   graphviz
@@ -30,6 +30,8 @@ with (import <nixpkgs> {}).pkgs;
   sshuttle
   iodine
   keybase-node-client
+  rpcbind
+  ncftp
 
   # dev
   fish
