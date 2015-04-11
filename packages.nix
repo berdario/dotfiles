@@ -57,6 +57,7 @@ with (import <nixpkgs> {}).pkgs;
   gist
 
   # pentest
+  nmap
   net_snmp
 ] ++
 (with (import <nixtrunk> {});
@@ -65,5 +66,4 @@ with (import <nixpkgs> {}).pkgs;
   haskellPackages.hoogleLocal
   haskellngPackages.cabal2nix
   iojs
-  nmap
 ])

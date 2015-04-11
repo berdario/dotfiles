@@ -100,7 +100,8 @@ dotfiles = [ # src, unixdest, windest, method
 ['ghci.conf', '.ghci', path.join(appdata, 'ghc', 'ghci.conf'), copy_ghciconf],
 ['lighttable', path.join(appsupport or cfg_dir, 'LightTable', 'settings'), None, symlink],
 ['lein-profile.clj', path.join('.lein', 'profiles.clj'), None, symlink],
-['powershell.ps1', None, path.join(home, "Documents", "WindowsPowerShell", "profile.ps1"), symlink]
+['powershell.ps1', None, path.join(home, "Documents", "WindowsPowerShell", "profile.ps1"), symlink],
+['nixpkgs', '.nixpkgs', None, symlink]
 ]
 
 dotfiles = map(
