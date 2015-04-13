@@ -66,6 +66,7 @@
     - curl
     - openjdk-8-jre
     - wireshark
+    - network-manager-openvpn-gnome
 
 - name: Add to wireshark group
   user: name={{ansible_env.SUDO_USER}} groups=wireshark append=yes
