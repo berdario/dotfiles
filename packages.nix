@@ -55,6 +55,9 @@ with (import <nixpkgs> {}).pkgs;
   leiningen
   scala
   gist
+  # mono # will conflict with smuxi
+  lua
+  luajit
 
   # pentest
   nmap

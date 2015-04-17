@@ -67,6 +67,13 @@
     - openjdk-8-jre
     - wireshark
     - network-manager-openvpn-gnome
+    - alacarte
+    - ubuntu-make
+
+# apparently there's no easy way to automate ubuntu-make, run these commands manually for now:
+# umake ide idea
+# umake android android-studio
+# umake web firefox-dev
 
 - name: Add to wireshark group
   user: name={{ansible_env.SUDO_USER}} groups=wireshark append=yes
