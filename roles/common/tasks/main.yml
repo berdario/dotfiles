@@ -145,6 +145,29 @@
   sudo: False
   command: bash {{nix.extract_dir}}/install
 
+- name: Check if conflicting software is installed
+  sudo: False
+  command: nix-env -q --installed {{conflicting_software}}
+  register: confl_installed
+  changed_when: False
+  ignore_errors: True
+
+- name: Preinstall conflicting software
+  sudo: False
+  command:  ~/.nix-profile/bin/nix-env -f <nixpkgs> -i {{conflicting_software}}
+  environment:
+    NIX_PATH: "nixpkgs={{lookup('env', 'HOME')}}/.nix-defexpr/channels/nixpkgs:nixtrunk={{lookup('env', 'HOME')}}/nixpkgs"
+  when: not confl_installed.stdout
+  register: pre_nix_env
+  changed_when: pre_nix_env.stdout
+
+- name: Tweak priority of conflicting software
+  sudo: False
+  command:  ~/.nix-profile/bin/nix-env --set-flag priority 1 {{conflicting_software}}
+  environment:
+    NIX_PATH: "nixpkgs={{lookup('env', 'HOME')}}/.nix-defexpr/channels/nixpkgs:nixtrunk={{lookup('env', 'HOME')}}/nixpkgs"
+  changed_when: False
+
 - name: Install nix software
   sudo: False
   command: ~/.nix-profile/bin/nix-env -f ~/.dotfiles/packages.nix -i

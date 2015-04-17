@@ -10,4 +10,4 @@ nix:
 keepass_http:
   version: 1.8.4.0
   sha256: 4803ea799962ec3e294691922d6255e63c5a96df36941f99ef633775829e7289
-
+conflicting_software: fsharp
