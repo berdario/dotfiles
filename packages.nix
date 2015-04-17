@@ -32,6 +32,7 @@ with (import <nixpkgs> {}).pkgs;
   keybase-node-client
   rpcbind
   ncftp
+  iotop
 
   # dev
   fish
@@ -58,6 +59,12 @@ with (import <nixpkgs> {}).pkgs;
   # mono # will conflict with smuxi
   lua
   luajit
+  go
+  rustc
+  jruby165
+  j
+  haskellPackages.elmRepl
+  haskellPackages.elmCompiler
 
   # pentest
   nmap
