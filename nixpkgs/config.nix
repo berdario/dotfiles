@@ -11,8 +11,9 @@
       # add readline support
       nativeBuildInputs = [pkgs.openssl pkgs.readline ];
     });
-    devstuff = with pkgs; buildEnv {
-      name = "devstuff";
+  } // (with pkgs; {
+    base_tools = buildEnv {
+      name = "base_tools";
       paths = [
         rlwrap
         pinentry
@@ -24,8 +25,11 @@
         tree
         btrfsProgs
         pv
-
-        # tools
+      ];
+    };
+    system_tools = buildEnv {
+      name = "system_tools";
+      paths = [
         pdftk
         unetbootin
         openvpn
@@ -44,31 +48,50 @@
         iotop
         iptraf
         iftop
-
-        # dev
+      ];
+    };
+    generic_dev = buildEnv {
+      name = "generic_dev";
+      paths = [
         fish
+        gnumake
+        emacs
+        bazaar
+        mercurial
+        git
+        gitAndTools.hub
+        ansible
+        nixops
+        redis
+      ];
+    };
+    python_dev = buildEnv {
+      name = "python_dev";
+      paths = [
         python
         python3
         python32
         python33
         python34Packages.pew
-        gnumake
-        emacs
+      ];
+      ignoreCollisions = true;
+    };
+    haskell_dev = buildEnv {
+      name = "haskell_dev";
+      paths = [
         ghc.ghc784
-        gradle
-        bazaar
-        mercurial
-        git
-        gitAndTools.hub
-        clang
-        gcc
         haskellPackages.hoogleLocal
         haskellPackages.yesodBin
         haskellngPackages.cabal-install
+      ];
+    };
+    dev = buildEnv {
+      name = "dev";
+      paths = [
+        gradle
+        clang
+        gcc
         androidsdk_4_4
-        ansible
-        nixops
-        redis
         leiningen
         fsharp
         scala
@@ -80,16 +103,24 @@
         go
         rustc
         jruby165
+      ];
+      ignoreCollisions = true;
+    };
+    niche_dev = buildEnv {
+      name = "niche_dev";
+      paths = [
         j
         haskellPackages.elmRepl
         haskellPackages.elmCompiler
-
-        # pentest
+      ];
+    };
+    pentest = buildEnv {
+      name = "pentest";
+      paths = [
         nmap
         net_snmp
         hping
       ];
-      ignoreCollisions = true;
     };
     bleeding_edge = pkgs.buildEnv {
       name = "bleeding_edge";
@@ -97,5 +128,6 @@
         haskellngPackages.cabal2nix
       ]);
     };
-  };
+  });
 }
+# nix-env -f '<nixpkgs>' -iA base_tools system_tools generic_dev python_dev haskell_dev dev niche_dev pentest bleeding_edge
