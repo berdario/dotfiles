@@ -42,6 +42,8 @@
         rpcbind
         ncftp
         iotop
+        iptraf
+        iftop
 
         # dev
         fish
@@ -85,6 +87,7 @@
         # pentest
         nmap
         net_snmp
+        hping
       ];
       ignoreCollisions = true;
     };

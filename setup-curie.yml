@@ -6,4 +6,5 @@
   roles:
     - common
   tasks:
+    apt: name=dsniff
 
