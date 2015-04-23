@@ -49,6 +49,7 @@
         python3
         python32
         python33
+        python34Packages.pew
         gnumake
         emacs
         ghc.ghc784
@@ -59,6 +60,7 @@
         gitAndTools.hub
         clang
         gcc
+        haskellPackages.hoogleLocal
         haskellPackages.yesodBin
         haskellngPackages.cabal-install
         androidsdk_4_4
@@ -70,6 +72,7 @@
         scala
         gist
         # mono # will conflict with smuxi
+        iojs
         lua
         luajit
         go
@@ -88,10 +91,7 @@
     bleeding_edge = pkgs.buildEnv {
       name = "bleeding_edge";
       paths = (with (import <nixtrunk> {}); [
-        python34Packages.pew
-        haskellPackages.hoogleLocal
         haskellngPackages.cabal2nix
-        iojs
       ]);
     };
   };
