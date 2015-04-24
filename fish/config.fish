@@ -1,7 +1,3 @@
-if [ (uname) != Darwin -a -z "$DISPLAY" -a -z "$BYOBU_WINDOWS" -a "$TERM" != dumb ] ;
-   exec byobu-launcher;
-end
-
 set -x SHELL fish
 
 set -x NIX_LINK ~/.nix-profile
@@ -43,4 +39,6 @@ set -x PATH $additional_paths $PATH $NIX_LINK/bin
 
 function e; emacs -nw $argv; end
 
-alias git hub
+if [ (which hub) ]
+   alias git hub
+end

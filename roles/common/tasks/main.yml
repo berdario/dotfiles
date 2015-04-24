@@ -14,6 +14,12 @@
   register: dotfiles_deploy
   changed_when: dotfiles_deploy.stdout
 
+
+- name: Enable multiverse repository # needed for virtualbox
+  command: apt-add-repository multiverse
+  register: multiverse
+  changed_when: "'already' not in multiverse.stdout"
+
 - name: Add extra repositories
   apt_repository: repo="{{item}}"
   with_items:
@@ -28,6 +34,8 @@
   with_items:
     - 36A1D7869245C8950F966E92D8576A8BA88D21E9 # docker
     - 5B2D0C5561707B09 # opam
+    - 1C61A2656FB57B7E4DE0F4C1FC918B335044912E # dropbox
+    - 4CCA1EAF950CEE4AB83976DCA040830F7FAC5991 # google
 
 # TODO setup pinentry-program (which pinentry-gtk-2) in ~/.gnupg/gpg-agent.conf
 
@@ -69,6 +77,7 @@
     - network-manager-openvpn-gnome
     - alacarte
     - ubuntu-make
+    - fish
 
 # apparently there's no easy way to automate ubuntu-make, run these commands manually for now:
 # umake ide idea
@@ -86,11 +95,18 @@
   command: VBoxManage setproperty machinefolder ~/.VirtualBoxVMs
   changed_when: False
 
+- name: Find fish executable
+  shell: which fish || true
+  register: fish
+  changed_when: False
+
 - name: Add the local fish as a valid shell
-  lineinfile: dest=/etc/shells line="{{lookup('env', 'HOME')}}/nix-profile/bin/fish"
+  when: fish.stdout
+  lineinfile: dest=/etc/shells line={{fish.stdout}}
 
 - name: Set fish as login shell
-  user: name={{ansible_env.SUDO_USER}} shell="{{lookup('env', 'HOME')}}/.nix-profile/bin/fish"
+  when: fish.stdout
+  user: name={{ansible_env.SUDO_USER}} shell={{fish.stdout}}
 
 
 - name: Clone other software repos
@@ -101,6 +117,10 @@
     - {repo: 'https://github.com/sstephenson/rbenv.git', name: 'rbenv'}
     - {repo: 'https://github.com/Bitmessage/PyBitmessage.git', name: 'PyBitmessage'}
 
+- name: Create user bin directory
+  sudo: False
+  file: path=~/Applications/bin state=directory
+
 - name: Symlink cloned repos executables
   sudo: False
   file: src=~/Applications/{{ item.path }} dest=~/Applications/bin/{{ item.dest }} state=link
@@ -110,26 +130,26 @@
 
 - name: Clone ruby-build
   sudo: False
-  git: repo=git://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
+  git: repo=https://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
 
   # As a workaround, this needs to be executed before installing clang through nix
   # https://github.com/sstephenson/ruby-build/issues/325
 - name: Install ruby 2.2.1
   sudo: False
-  command: rbenv install -s 2.2.1
+  command: ~/Applications/bin/rbenv install -s 2.2.1
   environment:
     CFLAGS: -fPIC
   register: rbenv_install
-  changed_when: rbenv_install.stdout
+  changed_when: rbenv_install.stderr
 
 - name: Switch to ruby 2.2.1 as default
   sudo: False
-  command: rbenv global 2.2.1
+  command: ~/Applications/bin/rbenv global 2.2.1
   changed_when: False
 
 - name: Install gems
   sudo: False
-  gem: name={{item}} user_install=no
+  gem: name={{item}} user_install=no executable=~/.rbenv/shims/gem
   with_items:
     - bundler
     - rb-readline # needed by heroku
