@@ -26,3 +26,4 @@ emacs.d/abbrev_defs
 emacs.d/auto-save-list/
 emacs.d/eshell
 local.nix
+setup/.vagrant

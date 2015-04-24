@@ -80,7 +80,9 @@
 
   # List packages installed in system profile. To search by name, run:
   # -env -qaP | grep wget
-  environment.systemPackages = (import <common>) ++ (with pkgs; [
+  environment.systemPackages = (with pkgs; [
+    # TODO, think about moving out these packages, to make the system config more minimal
+  
     # base utilities/software missing only on nixos systems
     which
     file
@@ -119,8 +121,6 @@
 
     # software that would cause collision with nix-env, and is thus outside of <common>
     gcc
-  ]) ++ (with (import <nixtrunk> {}); [
-
   ]);
 
 }

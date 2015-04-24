@@ -1,4 +1,4 @@
-# execute with ansible-playbook -i 'localhost,' setup-curie.yml
+# execute with ansible-playbook -i 'localhost,' setup/curie.yml
 
 - hosts: localhost
   connection: local
