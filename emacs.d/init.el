@@ -111,7 +111,6 @@ Emacs buffer are those starting with “*”."
   (require 'diminish)
   (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
   (diminish 'global-whitespace-mode)
-  (diminish 'global-visual-line-mode)
   (diminish 'visual-line-mode)
   (diminish 'projectile-mode))
 
