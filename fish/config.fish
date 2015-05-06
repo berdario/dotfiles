@@ -42,3 +42,5 @@ function e; emacs -nw $argv; end
 if [ (which hub) ]
    alias git hub
 end
+
+alias nix-install "nix-env -f '<nixpkgs>' -iA"

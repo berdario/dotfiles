@@ -20,7 +20,6 @@
         gnupg
         ack
         p7zip
-        socat
         jwhois
         tree
         btrfsProgs
@@ -48,6 +47,8 @@
         iotop
         iptraf
         iftop
+        samba
+        youtube-dl
       ];
     };
     generic_dev = buildEnv {
@@ -120,6 +121,8 @@
         nmap
         net_snmp
         hping
+        tcpflow
+        john
       ];
     };
     bleeding_edge = pkgs.buildEnv {

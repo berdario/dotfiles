@@ -78,6 +78,7 @@
     - alacarte
     - ubuntu-make
     - fish
+    - python-dev
 
 # apparently there's no easy way to automate ubuntu-make, run these commands manually for now:
 # umake ide idea
