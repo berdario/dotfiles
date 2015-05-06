@@ -3,6 +3,10 @@
 - hosts: localhost
   connection: local
   sudo: True
+  vars:
+    nbtscan:
+      url: http://www.unixwiz.net/tools/nbtscan-1.0.35-redhat-linux
+      sha256: 2fbcb1995c458e5affd5fb8f1f979a08ddce21714a2e413aa3d5dc44f9f245fe
   roles:
     - common
   tasks:
@@ -42,4 +46,6 @@
         - libpcap-dev
         - libsqlite3-dev
 
-  # todo nbtscan
+    - name: Download nbtscan
+      sudo: False
+      get_url: url={{nbtscan.url}} dest=~/Applications/bin/nbtscan sha256sum={{nbtscan.sha256}} mode="ugo+x"
