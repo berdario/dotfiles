@@ -58,9 +58,8 @@
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode))
 
-(defun zencoding-mode-load ()
-  (require 'zencoding-mode)
-  (add-hook 'sgml-mode-hook 'zencoding-mode))
+(defun emmet-mode-load ()
+  (add-hook 'sgml-mode-hook 'emmet-mode))
 
 
 (defun powershell-mode-load ()
@@ -180,7 +179,7 @@ Emacs buffer are those starting with “*”."
                       (clojure-test-mode ignore)
                       (cider cider-load)
                       (haskell-mode haskell-mode-load)
-                      (zencoding-mode zencoding-mode-load)
+                      (emmet-mode emmet-mode-load) ; the new zencoding
                       (erlang (lambda () (add-to-list 'auto-mode-alist '("\\.\\(e\\|h\\)rl" . erlang-mode))))
                       (yaml-mode ignore)
                       (undo-tree (lambda () (add-hook 'after-init-hook 'global-undo-tree-mode)))
