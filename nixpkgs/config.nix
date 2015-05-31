@@ -1,10 +1,10 @@
 {
-  packageOverrides = pkgs: rec {
+  packageOverrides = pkgs: let self = pkgs.pkgs; in {
     libpcap = pkgs.stdenv.lib.overrideDerivation pkgs.libpcap (oldAttrs: {
       # workaround for bug https://github.com/nmap/nmap/issues/34
       src = pkgs.fetchurl {
-        url = "http://www.tcpdump.org/release/libpcap-1.4.0.tar.gz";
-        sha256 = "7c6a2a4f71e8ab09804e6b4fb3aff998c5583108ac42c0e2967eee8e1dbc7406";
+        url = "http://www.tcpdump.org/release/libpcap-1.3.0.tar.gz";
+        sha256 = "41cbd9ed68383afd9f1fda279cb78427d36879d9e34ee707e31a16a1afd872b9";
       };
     });
     socat = pkgs.stdenv.lib.overrideDerivation pkgs.socat (oldAttrs: {
@@ -41,7 +41,7 @@
         pwgen
         sshuttle
         iodine
-        keybase-node-client
+        keybase
         rpcbind
         ncftp
         iotop
@@ -49,6 +49,7 @@
         iftop
         samba
         youtube-dl
+        self.socat
       ];
     };
     generic_dev = buildEnv {
@@ -80,24 +81,27 @@
     haskell_dev = buildEnv {
       name = "haskell_dev";
       paths = [
-        ghc.ghc784
-        haskellPackages.hoogleLocal
-        haskellPackages.yesodBin
-        haskellngPackages.cabal-install
+        (haskellPackages.ghcWithPackages (hpkgs: with hpkgs; [
+          cabal-install.env
+        ]))
+        haskellPackages.ghc
+        haskellPackages.hoogle
+        haskellngPackages.cabal2nix
+        haskellPackages.yesod
+        haskellPackages.cabal-install
+        #haskellPackages.ghc-mod
+        haskellPackages.hlint
+        haskellPackages.stylish-haskell
       ];
     };
     dev = buildEnv {
       name = "dev";
       paths = [
         gradle
-        clang
-        gcc
         androidsdk_4_4
         leiningen
-        fsharp
         scala
         gist
-        # mono # will conflict with smuxi
         iojs
         lua
         luajit
@@ -105,20 +109,29 @@
         rustc
         jruby165
       ];
+    };
+    huge_dev = buildEnv {
+      name = "huge_dev"; #slow to build
+      paths = [
+        clang
+        gcc
+        fsharp
+        # mono # will conflict with smuxi
+      ];
       ignoreCollisions = true;
     };
     niche_dev = buildEnv {
       name = "niche_dev";
       paths = [
         j
-        haskellPackages.elmRepl
-        haskellPackages.elmCompiler
+        haskellPackages.elm-repl
+        haskellPackages.elm-compiler
       ];
     };
     pentest = buildEnv {
       name = "pentest";
       paths = [
-        nmap
+        self.nmap
         net_snmp
         hping
         tcpflow
@@ -128,9 +141,22 @@
     bleeding_edge = pkgs.buildEnv {
       name = "bleeding_edge";
       paths = (with (import <nixtrunk> {}); [
-        haskellngPackages.cabal2nix
+        # woot, nothing here for now
       ]);
+    };
+    devstuff = pkgs.buildEnv {
+      name = "devstuff";
+      paths = [
+        self.base_tools
+        self.system_tools
+        self.generic_dev
+        self.python_dev
+        self.haskell_dev
+        self.dev
+        # self.niche_dev # broken
+        self.pentest
+        self.bleeding_edge
+      ];
     };
   });
 }
-# nix-env -f '<nixpkgs>' -iA base_tools system_tools generic_dev python_dev haskell_dev dev niche_dev pentest bleeding_edge
