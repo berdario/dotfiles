@@ -58,3 +58,6 @@
 
     - name: Install hhvm
       apt: name=hhvm
+
+    - name: Disable mdns lookups to allow resolving the windows network
+      lineinfile: dest=/etc/nsswitch.conf regexp='^(hosts:.*)mdns4_minimal \[NOTFOUND=return\](.*)$' line='\1\2' backrefs=yes backup=yes
