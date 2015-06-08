@@ -61,3 +61,9 @@
 
     - name: Disable mdns lookups to allow resolving the windows network
       lineinfile: dest=/etc/nsswitch.conf regexp='^(hosts:.*)mdns4_minimal \[NOTFOUND=return\](.*)$' line='\1\2' backrefs=yes backup=yes
+
+    - name: Install xen
+      apt: name=xen-hypervisor-amd64
+
+    - name: Do not override the normal linux kernel with xens
+      lineinfile: dest=/etc/default/grub.d/xen.cfg regexp='^(#)?XEN_OVERRIDE_GRUB_DEFAULT' line='XEN_OVERRIDE_GRUB_DEFAULT=0' backup=yes
