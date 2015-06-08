@@ -49,3 +49,12 @@
     - name: Download nbtscan
       sudo: False
       get_url: url={{nbtscan.url}} dest=~/Applications/bin/nbtscan sha256sum={{nbtscan.sha256}} mode="ugo+x"
+
+    - name: Add hhvm repository key
+      apt_key: id=36AEF64D0207E7EEE352D4875A16E7281BE7A449 keyserver=hkp://keyserver.ubuntu.com:80
+
+    - name: Add hhvm repository
+      apt_repository: repo="deb http://dl.hhvm.com/ubuntu vivid main"
+
+    - name: Install hhvm
+      apt: name=hhvm
