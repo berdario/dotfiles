@@ -62,6 +62,9 @@
     - name: Disable mdns lookups to allow resolving the windows network
       lineinfile: dest=/etc/nsswitch.conf regexp='^(hosts:.*)mdns4_minimal \[NOTFOUND=return\](.*)$' line='\1\2' backrefs=yes backup=yes
 
+    - name: Enable Radeon gpu
+      lineinfile: dest=/etc/rc.local insertbefore='^exit ' line='echo DDIS > /sys/kernel/debug/vgaswitcheroo/switch' backup=yes
+
     - name: Install xen
       apt: name=xen-hypervisor-amd64
 
