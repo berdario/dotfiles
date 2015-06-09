@@ -22,7 +22,9 @@ end
 
 set -x ANSIBLE_NOCOWS 1
 
-set -l additional_paths ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin ~/Applications/depot_tools
+set -x GOPATH ~/.local/share/go
+
+set -l additional_paths $GOPATH/bin ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin ~/Applications/depot_tools
 mkdir -p $additional_paths
 
 set -x NIX_PATH $NIX_PATH nixtrunk=$HOME/nixpkgs
