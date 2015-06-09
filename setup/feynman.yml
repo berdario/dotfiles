@@ -7,6 +7,8 @@
     crashplan:
       version: 3.6.3
       sha256: 605580cfc6aecb3acdc10baa6afc448ac07d960dafdbaa2e35b92f61d877016c
+    git:
+      signingkey: B3BF75A0
   roles:
     - common
   tasks:

@@ -1,10 +1,10 @@
 [core]
     excludesfile = "~/.gitignore"
 [user]
-    email = berdario@gmail.com
+    email = {{git.email}}
     surname = Bertini
     name = Dario Bertini
-    signingkey = B3BF75A0
+{% if git.signingkey %}    signingkey = {{git.signingkey}}{% endif %}
 [color]
     ui = auto
 [alias]
