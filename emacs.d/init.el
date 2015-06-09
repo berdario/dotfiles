@@ -266,3 +266,8 @@ Emacs buffer are those starting with “*”."
 (setq auto-save-file-name-transforms
       `((".*" ,autosave-dir t)))
 
+
+(add-to-list 'load-path "~/.emacs.d/packages")
+(autoload 'vbnet-mode "vbnet-mode" "Mode for editing VB.NET code." t)
+(setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
+                                 vbnet-mode)) auto-mode-alist))
