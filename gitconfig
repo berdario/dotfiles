@@ -17,3 +17,5 @@
     program = gpg2
 [merge]
     tool = meld
+[diff]
+	algorithm = histogram

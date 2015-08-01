@@ -27,3 +27,7 @@ emacs.d/auto-save-list/
 emacs.d/eshell
 local.nix
 setup/.vagrant
+atom/compile-cache
+atom/nohup.out
+atom/packages
+atom/storage

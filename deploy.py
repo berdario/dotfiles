@@ -101,7 +101,8 @@ dotfiles = [ # src, unixdest, windest, method
 ['lighttable', path.join(appsupport or cfg_dir, 'LightTable', 'settings'), None, symlink],
 ['lein-profile.clj', path.join('.lein', 'profiles.clj'), None, symlink],
 ['powershell.ps1', None, path.join(home, "Documents", "WindowsPowerShell", "profile.ps1"), symlink],
-['nixpkgs', '.nixpkgs', None, symlink]
+['nixpkgs', '.nixpkgs', None, symlink],
+['atom', '.atom', None, symlink]
 ]
 
 dotfiles = map(

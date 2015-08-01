@@ -1,0 +1,20 @@
+"*":
+  "exception-reporting":
+    userId: "3a79e679-f326-eba8-2673-b848d6004961"
+  welcome:
+    showOnStartup: false
+  metrics:
+    userId: "5afe01d925f56ca54ea8945b2cce677f8755be3a"
+  core:
+    disabledPackages: [
+      "haskell-ghc-mod"
+      "autocomplete-haskell"
+    ]
+  editor:
+    invisibles: {}
+    showInvisibles: true
+  "haskell-ghc-mod":
+    additionalPathDirectories: [
+      "/home/dario/.local/bin/"
+    ]
+  "ide-haskell": {}
