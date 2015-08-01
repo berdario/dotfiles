@@ -31,3 +31,5 @@ atom/compile-cache
 atom/nohup.out
 atom/packages
 atom/storage
+atom/.apm
+atom/.node-gyp

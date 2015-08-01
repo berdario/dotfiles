@@ -6,7 +6,12 @@
   metrics:
     userId: "5afe01d925f56ca54ea8945b2cce677f8755be3a"
   core:
+    themes: [
+      "one-light-ui"
+      "solarized-light-syntax"
+    ]
     disabledPackages: [
+      "ide-haskell"
       "haskell-ghc-mod"
       "autocomplete-haskell"
     ]
@@ -18,3 +23,7 @@
       "/home/dario/.local/bin/"
     ]
   "ide-haskell": {}
+  "lisp-paredit": {}
+".haskell.source":
+  editor:
+    tabLength: 1
