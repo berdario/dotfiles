@@ -92,7 +92,7 @@ dotfiles = [ # src, unixdest, windest, method
 ['bazaar', '.bazaar', path.join(appdata, "bazaar", "2.0"), symlink],
 ['hgrc', '.hgrc', 'mercurial.ini', symlink],
 ['mercurial', '.hgextensions', '.hgextensions', symlink],
-['gitconfig', '.gitconfig', '.gitconfig', symlink],
+['gitconfig', None, '.gitconfig', symlink],
 ['global_gitignore', '.gitignore', None, symlink],
 ['emacs.d', '.emacs.d', path.join(appdata, ".emacs.d"), symlink],
 ['fish', path.join(cfg_dir, 'fish'), None, symlink],

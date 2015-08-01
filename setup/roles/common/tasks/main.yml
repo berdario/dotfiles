@@ -14,6 +14,9 @@
   register: dotfiles_deploy
   changed_when: dotfiles_deploy.stdout
 
+- name: Deploy gitconfig
+  sudo: False
+  template: src=gitconfig dest=~/.gitconfig
 
 - name: Enable multiverse repository # needed for virtualbox
   command: apt-add-repository multiverse

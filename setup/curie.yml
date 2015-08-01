@@ -4,6 +4,8 @@
   connection: local
   sudo: True
   vars:
+    git:
+      email: dario.bertini@nccgroup.trust
     nbtscan:
       url: http://www.unixwiz.net/tools/nbtscan-1.0.35-redhat-linux
       sha256: 2fbcb1995c458e5affd5fb8f1f979a08ddce21714a2e413aa3d5dc44f9f245fe
@@ -49,3 +51,24 @@
     - name: Download nbtscan
       sudo: False
       get_url: url={{nbtscan.url}} dest=~/Applications/bin/nbtscan sha256sum={{nbtscan.sha256}} mode="ugo+x"
+
+    - name: Add hhvm repository key
+      apt_key: id=36AEF64D0207E7EEE352D4875A16E7281BE7A449 keyserver=hkp://keyserver.ubuntu.com:80
+
+    - name: Add hhvm repository
+      apt_repository: repo="deb http://dl.hhvm.com/ubuntu vivid main"
+
+    - name: Install hhvm
+      apt: name=hhvm
+
+    - name: Disable mdns lookups to allow resolving the windows network
+      lineinfile: dest=/etc/nsswitch.conf regexp='^(hosts:.*)mdns4_minimal \[NOTFOUND=return\](.*)$' line='\1\2' backrefs=yes backup=yes
+
+    - name: Enable Radeon gpu
+      lineinfile: dest=/etc/rc.local insertbefore='^exit ' line='echo DDIS > /sys/kernel/debug/vgaswitcheroo/switch' backup=yes
+
+    - name: Install xen
+      apt: name=xen-hypervisor-amd64
+
+    - name: Do not override the normal linux kernel with xens
+      lineinfile: dest=/etc/default/grub.d/xen.cfg regexp='^(#)?XEN_OVERRIDE_GRUB_DEFAULT' line='XEN_OVERRIDE_GRUB_DEFAULT=0' backup=yes

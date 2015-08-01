@@ -20,14 +20,9 @@ if [ -e /usr/libexec/java_home ] ;
     set -x JAVA_HOME (/usr/libexec/java_home)
 end
 
-set OCAMLVERSION 4.00.1
-set -x CAML_LD_LIBRARY_PATH ~/.opam/$OCAMLVERSION/lib/stublibs /usr/lib/ocaml/stublibs
-set -x OCAML_TOPLEVEL_PATH ~/.opam/$OCAMLVERSION/lib/toplevel
-set -x MANPATH ~/.opam/$OCAMLVERSION/man:$MANPATH
-
 set -x ANSIBLE_NOCOWS 1
 
-set -l additional_paths ~/.local/bin ~/.opam/$OCAMLVERSION/bin ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin ~/Applications/depot_tools
+set -l additional_paths ~/.local/bin ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin ~/Applications/depot_tools
 mkdir -p $additional_paths
 
 set -x NIX_PATH $NIX_PATH nixtrunk=$HOME/nixpkgs
@@ -44,3 +39,6 @@ if [ (which hub) ]
 end
 
 alias nix-install "nix-env -f '<nixpkgs>' -iA"
+
+# OPAM configuration
+. /home/dario/.opam/opam-init/init.fish > /dev/null 2> /dev/null or true

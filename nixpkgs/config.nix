@@ -50,6 +50,7 @@
         samba
         youtube-dl
         self.socat
+        dos2unix
       ];
     };
     generic_dev = buildEnv {

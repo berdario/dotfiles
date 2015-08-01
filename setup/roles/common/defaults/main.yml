@@ -1,5 +1,8 @@
 system: x86_64-linux
 nix_version: 1.8
+git:
+  email: berdario@gmail.com
+  signingkey: 
 dropbox:
   version: 1.6.0
   sha256: 3d96207244a6897cb23de088b3c4c8c2f93cce1baab4d5b74a224484b16c6202
