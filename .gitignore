@@ -2,6 +2,7 @@ fishd.macbook
 fish_history
 bazaar/subversion.conf
 fish/completions
+fish/fish_read_history
 plugins
 emacs.d/elpa
 emacs.d/url

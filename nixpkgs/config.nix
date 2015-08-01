@@ -84,12 +84,12 @@
         (haskellPackages.ghcWithPackages (hpkgs: with hpkgs; [
           cabal-install.env
         ]))
+        haskellPackages.stack
         haskellPackages.ghc
         haskellPackages.hoogle
         haskellngPackages.cabal2nix
         haskellPackages.yesod
         haskellPackages.cabal-install
-        #haskellPackages.ghc-mod
         haskellPackages.hlint
         haskellPackages.stylish-haskell
       ];
@@ -107,14 +107,14 @@
         luajit
         go
         rustc
-        jruby165
+        jruby
       ];
     };
     huge_dev = buildEnv {
       name = "huge_dev"; #slow to build
       paths = [
-        clang
-        gcc
+        #clang
+        #gcc
         fsharp
         # mono # will conflict with smuxi
       ];

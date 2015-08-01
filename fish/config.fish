@@ -27,7 +27,7 @@ set -x MANPATH ~/.opam/$OCAMLVERSION/man:$MANPATH
 
 set -x ANSIBLE_NOCOWS 1
 
-set -l additional_paths ~/.opam/$OCAMLVERSION/bin ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin ~/Applications/depot_tools
+set -l additional_paths ~/.local/bin ~/.opam/$OCAMLVERSION/bin ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin ~/Applications/depot_tools
 mkdir -p $additional_paths
 
 set -x NIX_PATH $NIX_PATH nixtrunk=$HOME/nixpkgs
