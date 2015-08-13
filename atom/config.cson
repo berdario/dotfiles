@@ -11,19 +11,23 @@
       "solarized-light-syntax"
     ]
     disabledPackages: [
-      "ide-haskell"
-      "haskell-ghc-mod"
       "autocomplete-haskell"
+      "haskell-ghc-mod"
+      "ide-haskell"
     ]
   editor:
     invisibles: {}
     showInvisibles: true
+    softWrap: true
+    fontSize: 15
   "haskell-ghc-mod":
     additionalPathDirectories: [
       "/home/dario/.local/bin/"
     ]
   "ide-haskell": {}
   "lisp-paredit": {}
+  "nuclide-flow":
+    pathToFlow: "/home/dario/.opam/system/bin/flow"
 ".haskell.source":
   editor:
     tabLength: 1
