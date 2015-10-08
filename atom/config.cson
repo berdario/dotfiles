@@ -19,7 +19,7 @@
     invisibles: {}
     showInvisibles: true
     softWrap: true
-    fontSize: 15
+    fontSize: 17
   "haskell-ghc-mod":
     additionalPathDirectories: [
       "/home/dario/.local/bin/"
@@ -28,6 +28,18 @@
   "lisp-paredit": {}
   "nuclide-flow":
     pathToFlow: "/home/dario/.opam/system/bin/flow"
+  "file-watcher":
+    promptWhenFileHasChangedOnDisk: false
+  "atom-beautify":
+    _analyticsUserId: "0e23b366-b469-4b38-9aae-5b6cca78be80"
+  linter: {}
+  "linter-pep257":
+    executablePath: "/home/dario/.local/bin/pep257"
+  "linter-flake8":
+    executablePath: "/home/dario/.local/bin/flake8"
 ".haskell.source":
   editor:
     tabLength: 1
+".python.source":
+  editor:
+    tabLength: 4
