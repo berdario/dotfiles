@@ -75,19 +75,15 @@ function fish_prompt --description 'Write out the prompt'
             set -g __prompt_branch (set_color --bold red)
         end
 
-        if [ -z $VIRTUAL_ENV ]
-           set -g __prompt_venv ""
-        else
-           set -g __prompt_venv (set_color --bold -b blue white) (basename "$VIRTUAL_ENV") "$__prompt_normal "
-        end
+
 
         if [ $last_status -ne 0 ]
            set -g __prompt_exit_code (set_color --bold red) "[$last_status]"
         else
            set -g __prompt_exit_code ""
         end
-
-        echo -n -s "$__prompt_venv$__prompt_userhost$USER" @ "$__prompt_hostname" ' ' "$__prompt_cwd" (prompt_pwd) "$__prompt_branch" (branch_name) "$__prompt_exit_code$__prompt_normal" '> '
+        set -g _v (pew_prompt)
+        echo -n -s "$_v$__prompt_userhost$USER" @ "$__prompt_hostname" ' ' "$__prompt_cwd" (prompt_pwd) "$__prompt_branch" (branch_name) "$__prompt_exit_code$__prompt_normal" '> '
 
     end
 end

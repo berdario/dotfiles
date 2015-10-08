@@ -42,3 +42,6 @@ alias nix-install "nix-env -f '<nixpkgs>' -iA"
 
 # OPAM configuration
 . /home/dario/.opam/opam-init/init.fish > /dev/null 2> /dev/null or true
+
+# added by Pew
+source (pew shell_config)
