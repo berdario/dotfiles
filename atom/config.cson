@@ -11,9 +11,7 @@
       "solarized-light-syntax"
     ]
     disabledPackages: [
-      "autocomplete-haskell"
-      "haskell-ghc-mod"
-      "ide-haskell"
+      "language-powershell"
     ]
   editor:
     invisibles: {}
@@ -25,18 +23,24 @@
       "/home/dario/.local/bin/"
     ]
   "ide-haskell": {}
-  "lisp-paredit": {}
+  "lisp-paredit":
+    strict: false
   "nuclide-flow":
     pathToFlow: "/home/dario/.opam/system/bin/flow"
   "file-watcher":
     promptWhenFileHasChangedOnDisk: false
   "atom-beautify":
     _analyticsUserId: "0e23b366-b469-4b38-9aae-5b6cca78be80"
-  linter: {}
+  linter:
+    showErrorPanel: false
   "linter-pep257":
     executablePath: "/home/dario/.local/bin/pep257"
   "linter-flake8":
     executablePath: "/home/dario/.local/bin/flake8"
+    ignoreErrorCodes: [
+      "E501"
+      "E302"
+    ]
 ".haskell.source":
   editor:
     tabLength: 1
