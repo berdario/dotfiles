@@ -60,6 +60,7 @@
   'keybinding-resolver'
   'line-ending-selector'
   'link'
+  'MagicPython'
   'markdown-preview'
   'metrics'
   'notifications'

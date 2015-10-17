@@ -34,3 +34,4 @@ atom/packages
 atom/storage
 atom/.apm
 atom/.node-gyp
+atom/.package-cop.json

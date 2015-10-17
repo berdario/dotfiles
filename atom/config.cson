@@ -11,7 +11,8 @@
       "solarized-light-syntax"
     ]
     disabledPackages: [
-      "language-powershell"
+      "ionide-fsharp"
+      "language-python"
     ]
   editor:
     invisibles: {}
@@ -41,9 +42,9 @@
       "E501"
       "E302"
     ]
-".haskell.source":
-  editor:
-    tabLength: 1
 ".python.source":
   editor:
     tabLength: 4
+".haskell.source":
+  editor:
+    tabLength: 1
