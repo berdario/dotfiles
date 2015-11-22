@@ -93,7 +93,7 @@
     - atom
 
 - name: Install electrum
-  pip: name='https://download.electrum.org/2.5.4/Electrum-2.5.4.tar.gz' 
+  pip: name='https://download.electrum.org/2.5.4/Electrum-2.5.4.tar.gz'
 
 # apparently there's no easy way to automate ubuntu-make, run these commands manually for now:
 # umake ide idea
@@ -109,6 +109,11 @@
 - name: Change default VBox machine folder
   sudo: False
   command: VBoxManage setproperty machinefolder ~/.VirtualBoxVMs
+  changed_when: False
+
+- name: Set No_COW attribute for VBox machine folder (indispensable on btrfs)
+  sudo: False
+  command: chattr +C ~/.VirtualBoxVMs
   changed_when: False
 
 - name: Find fish executable
