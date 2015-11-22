@@ -31,15 +31,17 @@
     - 'deb http://archive.canonical.com/ {{ansible_lsb.codename}} partner' # skype, etc
     - 'deb https://get.docker.io/ubuntu docker main'
     - 'deb http://ppa.launchpad.net/avsm/ppa/ubuntu trusty main' # opam
+    - 'deb http://www.a9f.eu/apt/atom/ubuntu wily main'
 
 - name: Add repository keys
   apt_key: id={{item}} keyserver=hkp://keyserver.ubuntu.com:80
   register: addedkeys
   with_items:
     - 36A1D7869245C8950F966E92D8576A8BA88D21E9 # docker
-    - 5B2D0C5561707B09 # opam
+    - 630F626C9FD811EBC19DF0955B2D0C5561707B09 # opam
     - 1C61A2656FB57B7E4DE0F4C1FC918B335044912E # dropbox
     - 4CCA1EAF950CEE4AB83976DCA040830F7FAC5991 # google
+    - A1D267C030C00DCB877900ED939C61C5D1270819 # atom
 
 # TODO setup pinentry-program (which pinentry-gtk-2) in ~/.gnupg/gpg-agent.conf
 
@@ -88,6 +90,7 @@
     - python-pip
     - python-qt4 # needed for electrum
     - python-dev
+    - atom
 
 - name: Install electrum
   pip: name='https://download.electrum.org/2.5.4/Electrum-2.5.4.tar.gz' 
