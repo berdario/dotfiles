@@ -34,6 +34,7 @@
 
 - name: Add repository keys
   apt_key: id={{item}} keyserver=hkp://keyserver.ubuntu.com:80
+  register: addedkeys
   with_items:
     - 36A1D7869245C8950F966E92D8576A8BA88D21E9 # docker
     - 5B2D0C5561707B09 # opam
@@ -46,6 +47,9 @@
   shell: echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections
   changed_when: False
 
+- apt: update_cache=yes
+  when: addedkeys.changed
+
 - name: Install other software
   apt: name={{item}}
   with_items:
@@ -56,7 +60,6 @@
     - vagrant
     - indicator-multiload
     - smuxi
-    - electrum
     - skype
     - libssl-dev
     - texlive-latex-base
@@ -81,7 +84,13 @@
     - alacarte
     - ubuntu-make
     - fish
+    - python3-pip
+    - python-pip
+    - python-qt4 # needed for electrum
     - python-dev
+
+- name: Install electrum
+  pip: name='https://download.electrum.org/2.5.4/Electrum-2.5.4.tar.gz' 
 
 # apparently there's no easy way to automate ubuntu-make, run these commands manually for now:
 # umake ide idea

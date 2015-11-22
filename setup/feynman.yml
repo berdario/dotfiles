@@ -5,8 +5,8 @@
   sudo: True
   vars:
     crashplan:
-      version: 3.6.3
-      sha256: 605580cfc6aecb3acdc10baa6afc448ac07d960dafdbaa2e35b92f61d877016c
+      version: 4.4.1 
+      sha256: 0bb24c88152f0f523e17d9a0df8013567f29f882538a45524fe440ef170d787a 
     git:
       signingkey: B3BF75A0
   roles:
@@ -24,8 +24,9 @@
       when: not crashplan.stat.exists
       unarchive: src=/tmp/crashplan.tgz copy=no dest=/tmp/
 
-    - name: Install java
-      apt: name=openjdk-7-jre
+    - name: Ensure no incompatible OpenJDK # Make sure that Crashplan will use its own Oracle JDK
+      when: not crashplan.stat.exists
+      apt: name=openjdk-7-jre-headless state=absent
 
     - name: Increase inotify watches
       # lineinfile: dest=/proc/sys/fs/inotify/max_user_watches regexp='' line=" 1500000" # doesn't work
@@ -33,11 +34,11 @@
 
     - name: Install crashplan
       when: not crashplan.stat.exists
-      shell: xterm ./install.sh chdir=/tmp/CrashPlan-install
+      shell: xterm ./install.sh chdir=/tmp/crashplan-install
 
     - name: Increase inotify watches (persist)
       lineinfile: dest=/etc/sysctl.conf line="fs.inotify.max_user_watches=1500000"
 
-    - name: Fix CrashPlan webkit bug
-      lineinfile: dest=/usr/local/crashplan/bin/run.conf regexp='^GUI_JAVA_OPTS' backup=yes line='GUI_JAVA_OPTS="-Dfile.encoding=UTF-8 -Dapp=CrashPlanDesktop -DappBaseName=CrashPlan -Xms20m -Xmx512m -Djava.net.preferIPv4Stack=true -Dsun.net.inetaddr.ttl=300 -Dnetworkaddress.cache.ttl=300 -Dsun.net.inetaddr.negative.ttl=0 -Dnetworkaddress.cache.negative.ttl=0 -Dc42.native.md5.enabled=false -Dorg.eclipse.swt.browser.DefaultType=mozilla"'
+    #- name: Fix CrashPlan webkit bug
+    #  lineinfile: dest=/usr/local/crashplan/bin/run.conf regexp='^GUI_JAVA_OPTS' backup=yes line='GUI_JAVA_OPTS="-Dfile.encoding=UTF-8 -Dapp=CrashPlanDesktop -DappBaseName=CrashPlan -Xms20m -Xmx512m -Djava.net.preferIPv4Stack=true -Dsun.net.inetaddr.ttl=300 -Dnetworkaddress.cache.ttl=300 -Dsun.net.inetaddr.negative.ttl=0 -Dnetworkaddress.cache.negative.ttl=0 -Dc42.native.md5.enabled=false -Dorg.eclipse.swt.browser.DefaultType=mozilla"'
 
