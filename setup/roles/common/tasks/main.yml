@@ -91,6 +91,9 @@
     - python-qt4 # needed for electrum
     - python-dev
     - atom
+    - libxml2-utils # xmllint
+    - postgresql-client-common
+    - mariadb-client-core-10.0
 
 - name: Install electrum
   pip: name='https://download.electrum.org/2.5.4/Electrum-2.5.4.tar.gz'

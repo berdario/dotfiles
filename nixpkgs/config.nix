@@ -51,6 +51,8 @@
         youtube-dl
         self.socat
         dos2unix
+        smem
+        fdupes
       ];
     };
     generic_dev = buildEnv {
@@ -59,6 +61,7 @@
         fish
         gnumake
         emacs
+        neovim
         bazaar
         mercurial
         git
@@ -66,6 +69,8 @@
         ansible
         nixops
         redis
+        jq
+        phantomjs
       ];
     };
     python_dev = buildEnv {
@@ -96,18 +101,17 @@
       ];
     };
     dev = buildEnv {
-      name = "dev";
+      name = "dev"; # watch out for conflicts...
       paths = [
-        gradle
-        androidsdk_4_4
+        # gradle # unused
+        # androidsdk_4_4 # unused
         leiningen
         scala
         gist
-        iojs
+        nodejs
         lua
         luajit
         go
-        rustc
         jruby
       ];
     };
@@ -117,6 +121,7 @@
         #clang
         #gcc
         fsharp
+        rustc
         # mono # will conflict with smuxi
       ];
       ignoreCollisions = true;
@@ -151,8 +156,8 @@
         self.base_tools
         self.system_tools
         self.generic_dev
-        self.python_dev
-        self.haskell_dev
+        # self.python_dev # no advantage and conflicts... should focus on project profiles
+        # self.haskell_dev
         self.dev
         # self.niche_dev # broken
         self.pentest
