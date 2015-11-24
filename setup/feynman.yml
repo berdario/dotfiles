@@ -18,6 +18,12 @@
     - name: Install rescuetime
       apt: deb=/tmp/rescuetime.deb
 
+    - name: Install xen
+      apt: name=xen-hypervisor-amd64
+
+    - name: Do not override the normal linux kernel with xens
+      lineinfile: dest=/etc/default/grub.d/xen.cfg regexp='^(#)?XEN_OVERRIDE_GRUB_DEFAULT' line='XEN_OVERRIDE_GRUB_DEFAULT=0' backup=yes
+
     - name: Check if crashplan is already installed
       stat: path=/usr/local/bin/CrashPlanDesktop
       register: crashplan
@@ -44,6 +50,3 @@
 
     - name: Increase inotify watches (persist)
       lineinfile: dest=/etc/sysctl.conf line="fs.inotify.max_user_watches=1500000"
-
-    #- name: Fix CrashPlan webkit bug
-    #  lineinfile: dest=/usr/local/crashplan/bin/run.conf regexp='^GUI_JAVA_OPTS' backup=yes line='GUI_JAVA_OPTS="-Dfile.encoding=UTF-8 -Dapp=CrashPlanDesktop -DappBaseName=CrashPlan -Xms20m -Xmx512m -Djava.net.preferIPv4Stack=true -Dsun.net.inetaddr.ttl=300 -Dnetworkaddress.cache.ttl=300 -Dsun.net.inetaddr.negative.ttl=0 -Dnetworkaddress.cache.negative.ttl=0 -Dc42.native.md5.enabled=false -Dorg.eclipse.swt.browser.DefaultType=mozilla"'

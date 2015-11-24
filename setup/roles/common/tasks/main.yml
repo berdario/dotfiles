@@ -27,11 +27,11 @@
   apt_repository: repo="{{item}}"
   with_items:
     - 'deb http://dl.google.com/linux/chrome/deb/ stable main'
-    - 'deb http://linux.dropbox.com/ubuntu precise main'
+    - 'deb http://linux.dropbox.com/ubuntu {{ansible_lsb.codename}} main'
     - 'deb http://archive.canonical.com/ {{ansible_lsb.codename}} partner' # skype, etc
     - 'deb https://get.docker.io/ubuntu docker main'
-    - 'deb http://ppa.launchpad.net/avsm/ppa/ubuntu trusty main' # opam
-    - 'deb http://www.a9f.eu/apt/atom/ubuntu wily main'
+    - 'deb http://ppa.launchpad.net/avsm/ppa/ubuntu {{ansible_lsb.codename}} main' # opam
+    - 'deb http://www.a9f.eu/apt/atom/ubuntu {{ansible_lsb.codename}} main'
 
 - name: Add repository keys
   apt_key: id={{item}} keyserver=hkp://keyserver.ubuntu.com:80
@@ -75,7 +75,7 @@
     - ocaml
     - ocaml-native-compilers
     - camlp4-extra
-    - opam # try opam on top of Nix
+    - opam
     - google-chrome-stable
     - dropbox
     - keepass2
@@ -92,7 +92,7 @@
     - python-dev
     - atom
     - libxml2-utils # xmllint
-    - postgresql-client-common
+    - postgresql-client
     - mariadb-client-core-10.0
 
 - name: Install electrum
@@ -156,8 +156,6 @@
   sudo: False
   git: repo=https://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
 
-  # As a workaround, this needs to be executed before installing clang through nix
-  # https://github.com/sstephenson/ruby-build/issues/325
 - name: Install ruby 2.2.1
   sudo: False
   command: ~/Applications/bin/rbenv install -s 2.2.1
