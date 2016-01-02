@@ -24,6 +24,12 @@
     - name: Do not override the normal linux kernel with xens
       lineinfile: dest=/etc/default/grub.d/xen.cfg regexp='^(#)?XEN_OVERRIDE_GRUB_DEFAULT' line='XEN_OVERRIDE_GRUB_DEFAULT=0' backup=yes
 
+    - name: Install cardpeek and smart card daemon
+      apt: name={{item}}
+      with_items:
+        - cardpeek
+        - pcscd
+
     - name: Check if crashplan is already installed
       stat: path=/usr/local/bin/CrashPlanDesktop
       register: crashplan

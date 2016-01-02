@@ -105,6 +105,7 @@
       paths = [
         # gradle # unused
         # androidsdk_4_4 # unused
+        ant
         leiningen
         scala
         gist
