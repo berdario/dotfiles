@@ -43,6 +43,9 @@
     - 4CCA1EAF950CEE4AB83976DCA040830F7FAC5991 # google
     - A1D267C030C00DCB877900ED939C61C5D1270819 # atom
 
+- name: Add support for yubikey
+  lineinfile: dest=/etc/udev/rules.d/81-yubikey.rules line='KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0664", GROUP="plugdev", ATTRS{idVendor}=="1050", ATTRS{idProduct}=="0113|0114|0115|0116|0120"'
+
 # TODO setup pinentry-program (which pinentry-gtk-2) in ~/.gnupg/gpg-agent.conf
 
 - name: Preconfigure wireshark
