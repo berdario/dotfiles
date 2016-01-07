@@ -70,6 +70,7 @@
     - texlive-latex-base
     - texlive-latex-extra
     - texlive-fonts-recommended
+    - texlive-fonts-extra
     - lxc-docker
     - libffi-dev # needed by ruby-build
     - libreadline-dev # needed by heroku

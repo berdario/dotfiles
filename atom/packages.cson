@@ -10,6 +10,7 @@
   'language-ocaml'
   'language-powershell'
   'language-scala'
+  'language-latex'
   'linter'
   'linter-flake8'
   'linter-pep257'
