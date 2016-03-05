@@ -1,50 +1,50 @@
 "*":
-  "exception-reporting":
-    userId: "3a79e679-f326-eba8-2673-b848d6004961"
-  welcome:
-    showOnStartup: false
-  metrics:
-    userId: "5afe01d925f56ca54ea8945b2cce677f8755be3a"
+  "atom-beautify":
+    _analyticsUserId: "0e23b366-b469-4b38-9aae-5b6cca78be80"
   core:
+    disabledPackages: [
+      "language-python"
+      "h-atom"
+    ]
     themes: [
       "one-light-ui"
       "solarized-light-syntax"
     ]
-    disabledPackages: [
-      "ionide-fsharp"
-      "language-python"
-    ]
   editor:
+    fontSize: 17
     invisibles: {}
     showInvisibles: true
     softWrap: true
-    fontSize: 17
+  "exception-reporting":
+    userId: "3a79e679-f326-eba8-2673-b848d6004961"
+  "file-watcher":
+    promptWhenFileHasChangedOnDisk: false
   "haskell-ghc-mod":
     additionalPathDirectories: [
       "/home/dario/.local/bin/"
     ]
   "ide-haskell": {}
-  "lisp-paredit":
-    strict: false
-  "nuclide-flow":
-    pathToFlow: "/home/dario/.opam/system/bin/flow"
-  "file-watcher":
-    promptWhenFileHasChangedOnDisk: false
-  "atom-beautify":
-    _analyticsUserId: "0e23b366-b469-4b38-9aae-5b6cca78be80"
   linter:
     showErrorPanel: false
-  "linter-pep257":
-    executablePath: "/home/dario/.local/bin/pep257"
   "linter-flake8":
     executablePath: "/home/dario/.local/bin/flake8"
     ignoreErrorCodes: [
       "E501"
       "E302"
     ]
-".python.source":
-  editor:
-    tabLength: 4
+  "linter-pep257":
+    executablePath: "/home/dario/.local/bin/pep257"
+  "lisp-paredit":
+    strict: false
+  metrics:
+    userId: "5afe01d925f56ca54ea8945b2cce677f8755be3a"
+  "nuclide-flow":
+    pathToFlow: "/home/dario/.opam/system/bin/flow"
+  welcome:
+    showOnStartup: false
 ".haskell.source":
   editor:
     tabLength: 1
+".python.source":
+  editor:
+    tabLength: 4
