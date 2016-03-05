@@ -103,7 +103,9 @@ dotfiles = [ # src, unixdest, windest, method
 ['powershell.ps1', None, path.join(home, "Documents", "WindowsPowerShell", "profile.ps1"), symlink],
 ['nixpkgs', '.nixpkgs', None, symlink],
 ['atom', '.atom', None, symlink],
-['stack.yaml', path.join('.stack', 'config.yaml'), None, symlink]
+['stack.yaml', path.join('.stack', 'config.yaml'), None, symlink],
+['npmrc', '.npmrc', None, symlink],
+['vscode', path.join(appsupport or cfg_dir, 'Code', 'User'), None, symlink],
 ]
 
 dotfiles = map(
