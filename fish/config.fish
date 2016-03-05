@@ -28,6 +28,9 @@ mkdir -p ~/.local/bin
 
 set -x NIX_PATH "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs:nixtrunk=$HOME/nixpkgs"
 
+set -x GUIX_LOCPATH $HOME/.guix-profile/lib/locale
+set -x LC_ALL en_US.UTF-8 # needed by guix
+
 set -l additional_paths $additional_paths /opt/ghc/7.8.3/bin/
 set -x PATH $additional_paths $PATH ~/.local/bin $NIX_LINK/bin
 
