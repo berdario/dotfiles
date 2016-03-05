@@ -99,8 +99,9 @@
     - postgresql-client
     - mariadb-client-core-10.0
 
-- name: Install electrum
-  pip: name='https://download.electrum.org/2.5.4/Electrum-2.5.4.tar.gz'
+## I'm now using pipsi for electrum, but that requires to manually modify the no-global-site-packages for the env
+#- name: Install electrum
+#  pip: name='https://download.electrum.org/2.5.4/Electrum-2.5.4.tar.gz'
 
 # apparently there's no easy way to automate ubuntu-make, run these commands manually for now:
 # umake ide idea
@@ -117,6 +118,12 @@
   sudo: False
   command: VBoxManage setproperty machinefolder ~/.VirtualBoxVMs
   changed_when: False
+
+- name: Disable NetworkManager managing of vboxnet0 # this way it'll correctly come up after suspend
+  ini_file: dest=/etc/NetworkManager/NetworkManager.conf section=keyfile option=unmanaged-devices value='interface-name:vboxnet0' backup=yes
+
+- name: /etc/network/interfaces template for vboxnet0 static ip address
+  template: src=network_interfaces dest=/etc/network/interfaces backup=yes
 
 - name: Set No_COW attribute for VBox machine folder (indispensable on btrfs)
   sudo: False
