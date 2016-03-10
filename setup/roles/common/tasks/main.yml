@@ -23,16 +23,6 @@
   register: multiverse
   changed_when: "'already' not in multiverse.stdout"
 
-- name: Add extra repositories
-  apt_repository: repo="{{item}}"
-  with_items:
-    - 'deb http://dl.google.com/linux/chrome/deb/ stable main'
-    - 'deb http://linux.dropbox.com/ubuntu {{ansible_lsb.codename}} main'
-    - 'deb http://archive.canonical.com/ {{ansible_lsb.codename}} partner' # skype, etc
-    - 'deb https://get.docker.io/ubuntu docker main'
-    - 'deb http://ppa.launchpad.net/avsm/ppa/ubuntu {{ansible_lsb.codename}} main' # opam
-    - 'deb http://www.a9f.eu/apt/atom/ubuntu {{ansible_lsb.codename}} main'
-
 - name: Add repository keys
   apt_key: id={{item}} keyserver=hkp://keyserver.ubuntu.com:80
   register: addedkeys
@@ -41,19 +31,39 @@
     - 630F626C9FD811EBC19DF0955B2D0C5561707B09 # opam
     - 1C61A2656FB57B7E4DE0F4C1FC918B335044912E # dropbox
     - 4CCA1EAF950CEE4AB83976DCA040830F7FAC5991 # google
-    - A1D267C030C00DCB877900ED939C61C5D1270819 # atom
+
+- name: Add extra repositories
+  apt_repository: repo="{{item}}"
+  with_items:
+    - 'deb http://dl.google.com/linux/chrome/deb/ stable main'
+    - 'deb http://linux.dropbox.com/ubuntu {{ansible_lsb.codename}} main'
+    - 'deb http://archive.canonical.com/ {{ansible_lsb.codename}} partner' # skype, etc
+    - 'deb https://get.docker.io/ubuntu docker main'
+    - 'deb http://ppa.launchpad.net/avsm/ppa/ubuntu {{ansible_lsb.codename}} main' # opam
+
+- apt: update_cache=yes
+  when: addedkeys.changed
+
+- name: Install software from extra repositories
+  apt: name={{item}}
+  with_items:
+    - google-chrome-stable
+    - dropbox
+    - skype
+    - lxc-docker
+    - ocaml
+    - ocaml-native-compilers
+    - camlp4-extra
+    - opam
 
 - name: Add support for yubikey
-  lineinfile: dest=/etc/udev/rules.d/81-yubikey.rules line='KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0664", GROUP="plugdev", ATTRS{idVendor}=="1050", ATTRS{idProduct}=="0113|0114|0115|0116|0120"'
+  lineinfile: dest=/etc/udev/rules.d/81-yubikey.rules create=yes line='KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0664", GROUP="plugdev", ATTRS{idVendor}=="1050", ATTRS{idProduct}=="0113|0114|0115|0116|0120"'
 
 # TODO setup pinentry-program (which pinentry-gtk-2) in ~/.gnupg/gpg-agent.conf
 
 - name: Preconfigure wireshark
   shell: echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections
   changed_when: False
-
-- apt: update_cache=yes
-  when: addedkeys.changed
 
 - name: Install other software
   apt: name={{item}}
@@ -65,23 +75,15 @@
     - vagrant
     - indicator-multiload
     - smuxi
-    - skype
     - libssl-dev
     - texlive-latex-base
     - texlive-latex-extra
     - texlive-fonts-recommended
     - texlive-fonts-extra
-    - lxc-docker
     - libffi-dev # needed by ruby-build
     - libreadline-dev # needed by heroku
     - exfat-fuse
     - bikeshed
-    - ocaml
-    - ocaml-native-compilers
-    - camlp4-extra
-    - opam
-    - google-chrome-stable
-    - dropbox
     - keepass2
     - curl
     - openjdk-8-jre
@@ -94,10 +96,10 @@
     - python-pip
     - python-qt4 # needed for electrum
     - python-dev
-    - atom
     - libxml2-utils # xmllint
     - postgresql-client
     - mariadb-client-core-10.0
+    - ruby2.3
 
 ## I'm now using pipsi for electrum, but that requires to manually modify the no-global-site-packages for the env
 #- name: Install electrum
@@ -124,11 +126,6 @@
 
 - name: /etc/network/interfaces template for vboxnet0 static ip address
   template: src=network_interfaces dest=/etc/network/interfaces backup=yes
-
-- name: Set No_COW attribute for VBox machine folder (indispensable on btrfs)
-  sudo: False
-  command: chattr +C ~/.VirtualBoxVMs
-  changed_when: False
 
 - name: Find fish executable
   shell: which fish || true
@@ -167,22 +164,9 @@
   sudo: False
   git: repo=https://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
 
-- name: Install ruby 2.2.1
-  sudo: False
-  command: ~/Applications/bin/rbenv install -s 2.2.1
-  environment:
-    CFLAGS: -fPIC
-  register: rbenv_install
-  changed_when: rbenv_install.stderr
-
-- name: Switch to ruby 2.2.1 as default
-  sudo: False
-  command: ~/Applications/bin/rbenv global 2.2.1
-  changed_when: False
-
 - name: Install gems
   sudo: False
-  gem: name={{item}} user_install=no executable=~/.rbenv/shims/gem
+  gem: name={{item}} user_install=yes executable=/usr/bin/gem
   with_items:
     - bundler
     - rb-readline # needed by heroku

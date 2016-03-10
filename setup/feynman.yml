@@ -12,6 +12,11 @@
   roles:
     - common
   tasks:
+    - name: Set No_COW attribute for VBox machine folder (indispensable on btrfs)
+      sudo: False
+      command: chattr +C ~/.VirtualBoxVMs
+      changed_when: False
+
     - name: Download rescuetime
       get_url: url="https://www.rescuetime.com/installers/rescuetime_current_amd64.deb" dest=/tmp/rescuetime.deb
 

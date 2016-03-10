@@ -1,0 +1,67 @@
+# execute with ansible-playbook -i 'localhost,' setup/curie.yml
+
+- hosts: localhost
+  connection: local
+  sudo: True
+  vars:
+    git:
+      email: dario.bertini@secretescapes.com
+  roles:
+    - common
+  tasks:
+    - ufw: state=enabled
+
+    - name: Install clamav
+      apt: name={{item}}
+      with_items:
+        - clamav
+        - clamav-daemon
+        - clamav-freshclam
+
+    - command: freshclam
+
+    - name: clamav services
+      tags: clam
+      service: name={{item}} enabled=yes state=started
+      with_items:
+        - clamav-daemon
+        - clamav-freshclam
+
+# TODO update-rc.d clamav-daemon defaults
+#      update-rc.d clamav-freshclam defaults
+# ansible bug? https://github.com/ansible/ansible-modules-core/issues/237
+
+    - name: Configure Clamav
+      tags: clam
+      lineinfile: dest=/etc/clamav/clamd.conf regexp='{{item.regexp}}' line='{{item.line}}'
+      with_items:
+        - {regexp: '^User ', line: 'User root'}
+        - {regexp: '^ScanOnAccess', line: 'ScanOnAccess true'}
+        - {regexp: '^OnAccessMaxFileSize', line: 'OnAccessMaxFileSize 10M'}
+        - {regexp: '^OnAccessIncludePath', line: 'OnAccessIncludePath /home/{{ansible_ssh_user}}'}
+        - {regexp: '^OnAccessPrevention', line: 'OnAccessPrevention true'}
+
+
+    - name: Increase inotify watches
+      tags: inotify
+      # lineinfile: dest=/proc/sys/fs/inotify/max_user_watches regexp='' line=" 1500000" # doesn't work
+      shell: echo "1500000" | tee /proc/sys/fs/inotify/max_user_watches
+
+    - name: Increase inotify watches (persist)
+      tags: inotify
+      lineinfile: dest=/etc/sysctl.conf line="fs.inotify.max_user_watches=1500000"
+
+
+    - name: Install databases
+      tags: db
+      apt: name={{item}}
+      with_items:
+        - mysql-server
+        - mongodb-server
+
+    - name: database
+      tags: db
+      service: name={{item}} enabled=yes state=started
+      with_items:
+        - mysql
+        - mongodb
