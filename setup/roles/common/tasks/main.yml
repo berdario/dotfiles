@@ -35,11 +35,18 @@
 - name: Add extra repositories
   apt_repository: repo="{{item}}"
   with_items:
-    - 'deb http://dl.google.com/linux/chrome/deb/ stable main'
-    - 'deb http://linux.dropbox.com/ubuntu {{ansible_lsb.codename}} main'
+    - 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
     - 'deb http://archive.canonical.com/ {{ansible_lsb.codename}} partner' # skype, etc
     - 'deb https://get.docker.io/ubuntu docker main'
     - 'deb http://ppa.launchpad.net/avsm/ppa/ubuntu {{ansible_lsb.codename}} main' # opam
+
+- name: Check if Dropbox already installed its own sources
+  stat: path=/etc/apt/sources.list.d/dropbox.list
+  register: dropbox_repo
+
+- name: Add Dropbox repository
+  apt_repository: repo='deb http://linux.dropbox.com/ubuntu {{ansible_lsb.codename}} main'
+  when: not dropbox_repo.stat.exists
 
 - apt: update_cache=yes
   when: addedkeys.changed
