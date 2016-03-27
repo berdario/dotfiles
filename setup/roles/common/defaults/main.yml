@@ -7,6 +7,10 @@ nix:
   url: "https://nixos.org/releases/nix/nix-{{nix_version}}/nix-{{nix_version}}-{{system}}.tar.bz2"
   extract_dir: "/tmp/nix-{{nix_version}}-{{system}}"
   sha256: 8b208cfcd396da2bd2192fee485077618920b98fe9858105b3a7836562417d49
+guix:
+  url: "ftp://alpha.gnu.org/gnu/guix/guix-binary-0.9.0.x86_64-linux.tar.xz"
+  sigurl: "ftp://alpha.gnu.org/gnu/guix/guix-binary-0.9.0.x86_64-linux.tar.xz.sig"
+  sha256: 902c07be26b149f75a7744bb1994f1a1c027e72c057139470325b26490351439
 keepass_http:
   version: 1.8.4.0
   sha256: 4803ea799962ec3e294691922d6255e63c5a96df36941f99ef633775829e7289

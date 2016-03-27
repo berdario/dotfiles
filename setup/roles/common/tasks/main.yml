@@ -203,3 +203,58 @@
   when: not nixstore.stat.exists
   sudo: False
   command: bash {{nix.extract_dir}}/install
+
+- name: Get Ludovic Courtès gpg key for guix
+  sudo: False
+  command: gpg2 --recv-key 3CE464558A84FDC69DB40CFB090B11993D9AEBB5
+  register: ludo_gpg
+  changed_when: "'unchanged' not in ludo_gpg.stderr"
+
+- name: Check if guix is already installed
+  stat: path=/gnu/store
+  register: guixstore
+
+- name: Download guix
+  when: not guixstore.stat.exists
+  get_url: url={{guix.url}} dest=/tmp/guix.tar.xz sha256sum={{guix.sha256}}
+
+- name: Download guix signature
+  when: not guixstore.stat.exists
+  get_url: url={{guix.sigurl}} dest=/tmp/guix.tar.xz.sig
+
+- name: Verify guix with gpg
+  sudo: False
+  when: not guixstore.stat.exists
+  command: gpg2 --verify /tmp/guix.tar.xz.sig /tmp/guix.tar.xz
+  changed_when: False
+
+- name: Unpack guix
+  command: tar -xf /tmp/guix.tar.xz chdir=/ creates=/gnu/store
+  # unarchive: src=/tmp/guix.tar.xz dest=/ creates=/gnu/store copy=no
+  # BUG https://github.com/ansible/ansible-modules-core/issues/932
+
+- name: Set up root's guix profile
+  file: src=/var/guix/profiles/per-user/root/guix-profile dest=/root/.guix-profile state=link
+
+- name: Set up guix build users
+  user: name="guixbuilder{{item}}" comment="Guix build user {{item}}" shell=/usr/sbin/nologin groups=guixbuild home=/var/empty system=yes
+  with_sequence: start=1 end=10 format=%02d
+  changed_when: False # BUG https://github.com/ansible/ansible-modules-core/issues/1118
+
+- name: Install guix systemd service
+  file: src=/var/guix/profiles/per-user/root/guix-profile/lib/systemd/system/guix-daemon.service dest=/etc/systemd/system/guix-daemon.service state=link
+
+- name: Enable guix service
+  service: name=guix-daemon state=started
+
+- name: symlink guix executable
+  sudo: False
+  file: src=/var/guix/profiles/per-user/root/guix-profile/bin/guix dest=~/Applications/bin/guix state=link
+
+- name: Authorize guix substitutes
+  shell: guix archive --authorize < /var/guix/profiles/per-user/root/guix-profile/share/guix/hydra.gnu.org.pub
+  changed_when: False
+
+- name: Install guix's utf-8 locale
+  sudo: False
+  command: ~/Applications/bin/guix package -i glibc-locales
