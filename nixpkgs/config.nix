@@ -71,6 +71,7 @@
         redis
         jq
         phantomjs
+        cloc
       ];
     };
     python_dev = buildEnv {
@@ -143,6 +144,7 @@
         hping
         tcpflow
         john
+        zap
       ];
     };
     bleeding_edge = pkgs.buildEnv {

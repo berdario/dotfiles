@@ -107,6 +107,7 @@
     - postgresql-client
     - mariadb-client-core-10.0
     - ruby2.3
+    - diffoscope
 
 ## I'm now using pipsi for electrum, but that requires to manually modify the no-global-site-packages for the env
 #- name: Install electrum
