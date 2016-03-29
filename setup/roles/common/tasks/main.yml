@@ -237,6 +237,9 @@
 - name: Set up root's guix profile
   file: src=/var/guix/profiles/per-user/root/guix-profile dest=/root/.guix-profile state=link
 
+- name: Set up guixbuild group
+  group: name=guixbuild system=yes
+
 - name: Set up guix build users
   user: name="guixbuilder{{item}}" comment="Guix build user {{item}}" shell=/usr/sbin/nologin groups=guixbuild home=/var/empty system=yes
   with_sequence: start=1 end=10 format=%02d
@@ -253,9 +256,11 @@
   file: src=/var/guix/profiles/per-user/root/guix-profile/bin/guix dest=~/Applications/bin/guix state=link
 
 - name: Authorize guix substitutes
-  shell: guix archive --authorize < /var/guix/profiles/per-user/root/guix-profile/share/guix/hydra.gnu.org.pub
+  shell: /var/guix/profiles/per-user/root/guix-profile/bin/guix archive --authorize < /var/guix/profiles/per-user/root/guix-profile/share/guix/hydra.gnu.org.pub
   changed_when: False
 
 - name: Install guix's utf-8 locale
   sudo: False
-  command: ~/Applications/bin/guix package -i glibc-locales
+  command: ~/Applications/bin/guix package -i glibc-utf8-locales
+  register: guix_locale
+  changed_when: "'nothing to be done' not in guix_locale.stderr"
