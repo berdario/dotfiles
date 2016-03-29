@@ -105,7 +105,6 @@
     - python-dev
     - libxml2-utils # xmllint
     - postgresql-client
-    - mariadb-client-core-10.0
     - ruby2.3
     - diffoscope
 

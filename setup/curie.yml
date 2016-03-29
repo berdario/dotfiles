@@ -18,7 +18,9 @@
         - clamav-daemon
         - clamav-freshclam
 
-    - command: freshclam
+    - name: Update clam signatures for the first time/when service not enabled
+      command: freshclam
+      ignore_errors: yes
 
     - name: clamav services
       tags: clam
@@ -38,7 +40,7 @@
         - {regexp: '^User ', line: 'User root'}
         - {regexp: '^ScanOnAccess', line: 'ScanOnAccess true'}
         - {regexp: '^OnAccessMaxFileSize', line: 'OnAccessMaxFileSize 10M'}
-        - {regexp: '^OnAccessIncludePath', line: 'OnAccessIncludePath /home/{{ansible_ssh_user}}'}
+        - {regexp: '^OnAccessIncludePath', line: 'OnAccessIncludePath /home/{{ansible_ssh_user}}/Downloads'}
         - {regexp: '^OnAccessPrevention', line: 'OnAccessPrevention true'}
 
 
