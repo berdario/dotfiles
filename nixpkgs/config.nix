@@ -66,6 +66,7 @@
         mercurial
         git
         gitAndTools.hub
+        gitAndTools.gitflow
         ansible
         nixops
         redis
