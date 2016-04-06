@@ -42,6 +42,10 @@ if [ (which hub) ]
    alias git hub
 end
 
+if [ (which keychain) ]
+   eval (keychain --eval --quiet)
+end
+
 alias nix-install "nix-env -f '<nixpkgs>' -iA"
 
 # OPAM configuration

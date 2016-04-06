@@ -5,7 +5,7 @@
   sudo: True
   vars:
     git:
-      email: dario.bertini@secretescapes.com
+      email: berdario@gmail.com
   roles:
     - common
   tasks:

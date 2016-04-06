@@ -53,6 +53,7 @@
         dos2unix
         smem
         fdupes
+        keychain
       ];
     };
     generic_dev = buildEnv {
