@@ -92,6 +92,7 @@
     - exfat-fuse
     - bikeshed
     - keepass2
+    - xdotool
     - curl
     - openjdk-8-jre
     - wireshark

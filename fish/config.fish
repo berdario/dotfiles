@@ -22,7 +22,7 @@ end
 
 set -x ANSIBLE_NOCOWS 1
 
-set -l additional_paths ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin ~/Applications/depot_tools
+set -l additional_paths ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin
 mkdir -p $additional_paths
 mkdir -p ~/.local/bin
 
