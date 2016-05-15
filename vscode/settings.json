@@ -2,6 +2,7 @@
 {
     "files.trimTrailingWhitespace": true,
     "editor.renderWhitespace": true,
+    "git.autofetch": false,
     "extension-manager.extensions": [
           "bbenoist.Nix"
         , "flowtype.flow-for-vscode"
