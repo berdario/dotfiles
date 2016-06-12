@@ -55,8 +55,8 @@
 
 
 (defun haskell-mode-load ()
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode))
+  (add-hook 'haskell-mode-hook 'intero-mode)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))
 
 (defun emmet-mode-load ()
   (add-hook 'sgml-mode-hook 'emmet-mode))
@@ -178,7 +178,7 @@ Emacs buffer are those starting with “*”."
 (defvar my-packages `((clojure-mode ignore)
                       (clojure-test-mode ignore)
                       (cider cider-load)
-                      (haskell-mode haskell-mode-load)
+                      (intero haskell-mode-load)
                       (emmet-mode emmet-mode-load) ; the new zencoding
                       (erlang (lambda () (add-to-list 'auto-mode-alist '("\\.\\(e\\|h\\)rl" . erlang-mode))))
                       (yaml-mode ignore)
