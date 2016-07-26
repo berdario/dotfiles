@@ -1,3 +1,4 @@
 --type-set=vala=.vala
 --type-set=clojure=.clj,.cljs
---ignore-dir=.tox,.stack-work
+--ignore-dir=.stack-work
+--ignore-dir=.tox

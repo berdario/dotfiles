@@ -3,6 +3,18 @@
     "files.trimTrailingWhitespace": true,
     "editor.renderWhitespace": true,
     "git.autofetch": false,
+    "editor.autoClosingBrackets": true,
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "*/result": true,
+        "*.egg-info": true,
+        "dist": true,
+        "**/__pycache__": true,
+        ".stack-work": true
+    },
+    "workbench.editor.showTabs": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
     "extension-manager.extensions": [
           "bbenoist.Nix"
         , "flowtype.flow-for-vscode"
@@ -16,5 +28,10 @@
         , "vigoo.stylish-haskell"
         , "webstp.extension-manager"
         , "yuce.erlang-otp"
-    ]
+        , "nwolverson.ide-purescript"
+        , "donjayamanne.python"
+    ],
+    "haskell.ghcMod.executablePath": "/home/dario/.local/bin/ghc-mod",
+    "haskell.hlint.executablePath": "/home/dario/.local/bin/hlint",
+    "stylishHaskell.commandLine": "/home/dario/.local/bin/stylish-haskell"
 }
