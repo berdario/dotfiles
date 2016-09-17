@@ -7,10 +7,6 @@
         sha256 = "41cbd9ed68383afd9f1fda279cb78427d36879d9e34ee707e31a16a1afd872b9";
       };
     });
-    socat = pkgs.stdenv.lib.overrideDerivation pkgs.socat (oldAttrs: {
-      # add readline support
-      nativeBuildInputs = [pkgs.openssl pkgs.readline ];
-    });
   } // (with pkgs; {
     base_tools = buildEnv {
       name = "base_tools";
@@ -19,6 +15,7 @@
         pinentry
         gnupg
         ack
+        haskellPackages.cgrep
         p7zip
         jwhois
         tree
@@ -36,7 +33,7 @@
         nethogs
         sshpass
         graphviz
-        binwalk
+        python35Packages.binwalk
         nix-repl
         pwgen
         sshuttle
@@ -49,7 +46,7 @@
         iftop
         samba
         youtube-dl
-        self.socat
+        socat
         dos2unix
         smem
         fdupes
@@ -113,7 +110,6 @@
         scala
         gist
         nodejs
-        lua
         luajit
         go
         jruby
