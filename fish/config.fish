@@ -53,3 +53,7 @@ alias nix-install "nix-env -f '<nixpkgs>' -iA"
 
 # added by Pew
 source (pew shell_config)
+
+if [ -e ~/.config/fish/local.fish ] ;
+  . ~/.config/fish/local.fish
+end

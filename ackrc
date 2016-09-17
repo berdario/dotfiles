@@ -1,4 +1,6 @@
 --type-set=vala=.vala
 --type-set=clojure=.clj,.cljs
+--type-set=gsp=.gsp
+--type-set=purs=.purs
 --ignore-dir=.stack-work
 --ignore-dir=.tox

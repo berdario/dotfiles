@@ -36,3 +36,7 @@ atom/.apm
 atom/.node-gyp
 atom/.package-cop.json
 atom/blob-store
+fish/fish_history.*
+fish/local.fish
+vscode/workspaceStorage
+vscode/locale.json

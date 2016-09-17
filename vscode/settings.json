@@ -12,7 +12,9 @@
         ".tox": true,
         "dist": true,
         "**/__pycache__": true,
-        ".stack-work": true
+        ".stack-work": true,
+        "**/target/classes": true,
+        "**/target/test-classes": true
     },
     "workbench.editor.showTabs": false,
     "workbench.editor.enablePreviewFromQuickOpen": false,
