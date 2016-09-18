@@ -14,7 +14,8 @@
         "**/__pycache__": true,
         ".stack-work": true,
         "**/target/classes": true,
-        "**/target/test-classes": true
+        "**/target/test-classes": true,
+        "build/py*": true
     },
     "workbench.editor.showTabs": false,
     "workbench.editor.enablePreviewFromQuickOpen": false,
