@@ -26,6 +26,9 @@
     - name: Install xen
       apt: name=xen-hypervisor-amd64
 
+    - name: Install java
+      apt: name=openjdk-8-jre
+
     - name: Do not override the normal linux kernel with xens
       lineinfile: dest=/etc/default/grub.d/xen.cfg regexp='^(#)?XEN_OVERRIDE_GRUB_DEFAULT' line='XEN_OVERRIDE_GRUB_DEFAULT=0' backup=yes
 

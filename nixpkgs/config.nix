@@ -7,6 +7,9 @@
         sha256 = "41cbd9ed68383afd9f1fda279cb78427d36879d9e34ee707e31a16a1afd872b9";
       };
     });
+    Fabric = pkgs.stdenv.lib.overrideDerivation pkgs.Fabric (oldAttrs: {
+      propagatedBuildInputs = with pkgs.python27Packages; [ paramiko pycrypto jinja2 ];
+    });
   } // (with pkgs; {
     base_tools = buildEnv {
       name = "base_tools";
@@ -56,6 +59,7 @@
     generic_dev = buildEnv {
       name = "generic_dev";
       paths = [
+        # self.Fabric
         fish
         gnumake
         emacs
@@ -65,6 +69,7 @@
         git
         gitAndTools.hub
         gitAndTools.gitflow
+        git-crypt
         ansible
         nixops
         redis
@@ -90,7 +95,6 @@
         (haskellPackages.ghcWithPackages (hpkgs: with hpkgs; [
           cabal-install.env
         ]))
-        haskellPackages.stack
         haskellPackages.ghc
         haskellPackages.hoogle
         haskellngPackages.cabal2nix
@@ -159,6 +163,7 @@
         self.generic_dev
         # self.python_dev # no advantage and conflicts... should focus on project profiles
         # self.haskell_dev
+        stack
         self.dev
         # self.niche_dev # broken
         self.pentest

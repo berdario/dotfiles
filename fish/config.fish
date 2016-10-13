@@ -33,7 +33,7 @@ set -x LC_ALL en_US.UTF-8 # needed by guix
 
 set -l additional_paths $additional_paths /opt/ghc/7.8.3/bin/
 set -x PATH $additional_paths $PATH ~/.local/bin $NIX_LINK/bin
-set -x MANPATH $NIX_LINK/share/man $MANPATH
+set -x MANPATH "$NIX_LINK/share/man:$MANPATH"
 
 . ~/.config/fish/prompt.fish
 

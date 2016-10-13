@@ -28,7 +28,6 @@
   register: addedkeys
   with_items:
     - 36A1D7869245C8950F966E92D8576A8BA88D21E9 # docker
-    - 630F626C9FD811EBC19DF0955B2D0C5561707B09 # opam
     - 1C61A2656FB57B7E4DE0F4C1FC918B335044912E # dropbox
     - 4CCA1EAF950CEE4AB83976DCA040830F7FAC5991 # google
 
@@ -38,7 +37,6 @@
     - 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
     - 'deb http://archive.canonical.com/ {{ansible_lsb.codename}} partner' # skype, etc
     - 'deb https://get.docker.io/ubuntu docker main'
-    - 'deb http://ppa.launchpad.net/avsm/ppa/ubuntu {{ansible_lsb.codename}} main' # opam
 
 - name: Check if Dropbox already installed its own sources
   stat: path=/etc/apt/sources.list.d/dropbox.list
@@ -56,6 +54,7 @@
   with_items:
     - google-chrome-stable
     - dropbox
+    - python-gpgme
     - skype
     - lxc-docker
     - ocaml
@@ -94,7 +93,6 @@
     - keepass2
     - xdotool
     - curl
-    - openjdk-8-jre
     - wireshark
     - network-manager-openvpn-gnome
     - alacarte
@@ -114,7 +112,6 @@
 #  pip: name='https://download.electrum.org/2.5.4/Electrum-2.5.4.tar.gz'
 
 # apparently there's no easy way to automate ubuntu-make, run these commands manually for now:
-# umake ide idea
 # umake android android-studio
 # umake web firefox-dev
 
@@ -259,8 +256,8 @@
   shell: /var/guix/profiles/per-user/root/guix-profile/bin/guix archive --authorize < /var/guix/profiles/per-user/root/guix-profile/share/guix/hydra.gnu.org.pub
   changed_when: False
 
-- name: Install guix's utf-8 locale
-  sudo: False
-  command: ~/Applications/bin/guix package -i glibc-utf8-locales
-  register: guix_locale
-  changed_when: "'nothing to be done' not in guix_locale.stderr"
+#- name: Install guix's utf-8 locale
+#  sudo: False
+#  command: ~/Applications/bin/guix package -i glibc-utf8-locales
+#  register: guix_locale
+#  changed_when: "'nothing to be done' not in guix_locale.stderr"
