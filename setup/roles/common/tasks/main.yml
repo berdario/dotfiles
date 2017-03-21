@@ -106,6 +106,7 @@
     - postgresql-client
     - ruby2.3
     - diffoscope
+    - haskell-stack
 
 ## I'm now using pipsi for electrum, but that requires to manually modify the no-global-site-packages for the env
 #- name: Install electrum

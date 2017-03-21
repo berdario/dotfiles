@@ -18,7 +18,7 @@
         pinentry
         gnupg
         ack
-        haskellPackages.cgrep
+        # haskellPackages.cgrep
         p7zip
         jwhois
         tree
@@ -66,7 +66,7 @@
         neovim
         bazaar
         mercurial
-        git
+        (git.override {openssh=openssh_with_kerberos;})
         gitAndTools.hub
         gitAndTools.gitflow
         git-crypt
@@ -76,6 +76,9 @@
         jq
         phantomjs
         cloc
+        awscli
+        packer
+        pandoc
       ];
     };
     python_dev = buildEnv {
@@ -163,7 +166,6 @@
         self.generic_dev
         # self.python_dev # no advantage and conflicts... should focus on project profiles
         # self.haskell_dev
-        stack
         self.dev
         # self.niche_dev # broken
         self.pentest
