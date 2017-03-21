@@ -1,3 +1,10 @@
 // Place your key bindings in this file to overwrite the defaults
 [
+    {"key": "ctrl+shift+t", "command": "workbench.action.terminal.toggleTerminal"},
+    {"key": "ctrl+shift+f", "command": "workbench.view.search",
+                            "when": "!searchViewletVisible"},
+    { "key": "ctrl+shift+f", "command": "workbench.action.findInFiles",
+                             "when": "!searchInputBoxFocus"},
+    { "key": "ctrl+shift+f", "command": "search.action.focusActiveEditor",
+                             "when": "searchInputBoxFocus && searchViewletVisible" }
 ]

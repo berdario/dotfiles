@@ -1,7 +1,7 @@
 // Place your settings in this file to overwrite the default settings
 {
     "files.trimTrailingWhitespace": true,
-    "editor.renderWhitespace": true,
+    "editor.renderWhitespace": "boundary",
     "git.autofetch": false,
     "editor.autoClosingBrackets": true,
     "search.exclude": {
@@ -15,7 +15,9 @@
         ".stack-work": true,
         "**/target/classes": true,
         "**/target/test-classes": true,
-        "build/py*": true
+        "build/py*": true,
+        "**/out": true,
+        "output": true
     },
     "workbench.editor.showTabs": false,
     "workbench.editor.enablePreviewFromQuickOpen": false,
@@ -36,6 +38,9 @@
         , "donjayamanne.python"
     ],
     "haskell.ghcMod.executablePath": "/home/dario/.local/bin/ghc-mod",
+    "hindentFormat.command": "/home/dario/.local/bin/hindent --style chris-done --line-length 120",
     "haskell.hlint.executablePath": "/home/dario/.local/bin/hlint",
-    "stylishHaskell.commandLine": "/home/dario/.local/bin/stylish-haskell"
+    "stylishHaskell.commandLine": "/home/dario/.local/bin/stylish-haskell",
+    "window.zoomLevel": 0,
+    "editor.wordWrap": false
 }
