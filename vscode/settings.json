@@ -19,7 +19,7 @@
         "**/out": true,
         "output": true
     },
-    "workbench.editor.showTabs": false,
+    "workbench.editor.showTabs": true,
     "workbench.editor.enablePreviewFromQuickOpen": false,
     "extension-manager.extensions": [
           "bbenoist.Nix"
