@@ -6,7 +6,5 @@
     { "key": "ctrl+shift+f", "command": "workbench.action.findInFiles",
                              "when": "!searchInputBoxFocus"},
     { "key": "ctrl+shift+f", "command": "search.action.focusActiveEditor",
-                             "when": "searchInputBoxFocus && searchViewletVisible" },
-    { "key": "ctrl+tab",              "command": "workbench.action.nextEditor" },
-    { "key": "ctrl+shift+tab",        "command": "workbench.action.previousEditor" }
+                             "when": "searchInputBoxFocus && searchViewletVisible" }
 ]
