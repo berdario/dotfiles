@@ -7,9 +7,11 @@
         sha256 = "41cbd9ed68383afd9f1fda279cb78427d36879d9e34ee707e31a16a1afd872b9";
       };
     });
-    Fabric = pkgs.stdenv.lib.overrideDerivation pkgs.Fabric (oldAttrs: {
+    Fabric = pkgs.Fabric.override {
       propagatedBuildInputs = with pkgs.python27Packages; [ paramiko pycrypto jinja2 ];
-    });
+
+      doCheck = false;
+    };
   } // (with pkgs; {
     base_tools = buildEnv {
       name = "base_tools";
@@ -59,7 +61,7 @@
     generic_dev = buildEnv {
       name = "generic_dev";
       paths = [
-        # self.Fabric
+        self.Fabric
         fish
         gnumake
         emacs
@@ -79,6 +81,7 @@
         awscli
         packer
         pandoc
+        shellcheck
       ];
     };
     python_dev = buildEnv {
