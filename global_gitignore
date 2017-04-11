@@ -8,3 +8,5 @@ __pycache__
 .tox
 .*.swp
 .stack-work
+*.o
+*.hi
