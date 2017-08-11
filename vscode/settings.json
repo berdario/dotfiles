@@ -17,7 +17,8 @@
         "**/target/test-classes": true,
         "build/py*": true,
         "**/out": true,
-        "output": true
+        "output": true,
+        "build": true
     },
     "workbench.editor.showTabs": false,
     "workbench.editor.enablePreviewFromQuickOpen": false,

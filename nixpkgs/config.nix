@@ -1,18 +1,19 @@
 {
   packageOverrides = pkgs: let self = pkgs.pkgs; in {
-    libpcap = pkgs.stdenv.lib.overrideDerivation pkgs.libpcap (oldAttrs: {
+    #libpcap = pkgs.stdenv.lib.overrideDerivation pkgs.libpcap (oldAttrs: {
       # workaround for bug https://github.com/nmap/nmap/issues/34
-      src = pkgs.fetchurl {
-        url = "http://www.tcpdump.org/release/libpcap-1.3.0.tar.gz";
-        sha256 = "41cbd9ed68383afd9f1fda279cb78427d36879d9e34ee707e31a16a1afd872b9";
-      };
-    });
+    #  src = pkgs.fetchurl {
+    #    url = "http://www.tcpdump.org/release/libpcap-1.3.0.tar.gz";
+    #    sha256 = "41cbd9ed68383afd9f1fda279cb78427d36879d9e34ee707e31a16a1afd872b9";
+    #  };
+    #});
     Fabric = pkgs.Fabric.override {
       propagatedBuildInputs = with pkgs.python27Packages; [ paramiko pycrypto jinja2 ];
 
       doCheck = false;
     };
   } // (with pkgs; {
+    moz = (import /home/dario/Projects/nixpkgs-mozilla/rust-overlay.nix);
     base_tools = buildEnv {
       name = "base_tools";
       paths = [
@@ -20,6 +21,7 @@
         pinentry
         gnupg
         ack
+	ripgrep
         # haskellPackages.cgrep
         p7zip
         jwhois
@@ -73,7 +75,7 @@
         gitAndTools.gitflow
         git-crypt
         ansible
-        nixops
+        #nixops
         redis
         jq
         phantomjs

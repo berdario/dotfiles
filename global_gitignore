@@ -10,3 +10,8 @@ __pycache__
 .stack-work
 *.o
 *.hi
+.psci_modules/
+bower_components/
+node_modules/
+.psc-ide-port
+.psc-package/
