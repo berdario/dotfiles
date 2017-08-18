@@ -13,7 +13,6 @@
       doCheck = false;
     };
   } // (with pkgs; {
-    moz = (import /home/dario/Projects/nixpkgs-mozilla/rust-overlay.nix);
     base_tools = buildEnv {
       name = "base_tools";
       paths = [
@@ -21,7 +20,7 @@
         pinentry
         gnupg
         ack
-	ripgrep
+	      ripgrep
         # haskellPackages.cgrep
         p7zip
         jwhois

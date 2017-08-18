@@ -26,13 +26,14 @@ set -l additional_paths ~/Applications/bin ~/.rbenv/shims ~/.cabal/bin
 mkdir -p $additional_paths
 mkdir -p ~/.local/bin
 
-set -x NIX_PATH "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs:nixtrunk=$HOME/nixpkgs"
+set NIX_CHANNEL_REVISION "51a83266d164195698f04468d90d2c6238ed3491"
+set -x NIX_PATH "nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/$NIX_CHANNEL_REVISION.tar.gz:nixtrunk=$HOME/nixpkgs"
 
 set -x GUIX_LOCPATH $HOME/.guix-profile/lib/locale
 set -x LC_ALL en_US.UTF-8 # needed by guix
 
 set -l additional_paths $additional_paths /opt/ghc/7.8.3/bin/
-set -x PATH $additional_paths $PATH ~/.local/bin $NIX_LINK/bin
+set -x PATH $additional_paths $HOME/.cargo/bin $PATH ~/.local/bin $NIX_LINK/bin
 set -x MANPATH "$NIX_LINK/share/man:$MANPATH"
 
 . ~/.config/fish/prompt.fish
