@@ -22,22 +22,6 @@
     },
     "workbench.editor.showTabs": false,
     "workbench.editor.enablePreviewFromQuickOpen": false,
-    "extension-manager.extensions": [
-          "bbenoist.Nix"
-        , "flowtype.flow-for-vscode"
-        , "hoovercj.haskell-linter"
-        , "hoovercj.vscode-ghc-mod"
-        , "itryapitsin.Scala"
-        , "justusadam.language-haskell"
-        , "magicstack.MagicPython"
-        , "narma.vscode-parinfer"
-        , "sbrink.elm"
-        , "vigoo.stylish-haskell"
-        , "webstp.extension-manager"
-        , "yuce.erlang-otp"
-        , "nwolverson.ide-purescript"
-        , "donjayamanne.python"
-    ],
     "haskell.ghcMod.executablePath": "/home/dario/.local/bin/ghc-mod",
     "hindentFormat.command": "/home/dario/.local/bin/hindent --style chris-done --line-length 120",
     "haskell.hlint.executablePath": "/home/dario/.local/bin/hlint",

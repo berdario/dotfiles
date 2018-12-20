@@ -1,0 +1,21 @@
+{
+	"folders": [
+	],
+	"settings": {},
+	"extensions": {
+		"recommendations": [
+			"bbenoist.Nix",
+			"flowtype.flow-for-vscode",
+			"hoovercj.haskell-linter",
+			"hoovercj.vscode-ghc-mod",
+			"itryapitsin.Scala",
+			"justusadam.language-haskell",
+			"magicstack.MagicPython",
+			"haunlebron.vscode-parinfer",
+			"sbrink.elm",
+			"vigoo.stylish-haskell",
+			"yuce.erlang-otp",
+			"nwolverson.ide-purescript"
+		]
+	}
+}

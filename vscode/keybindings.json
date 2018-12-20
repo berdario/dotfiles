@@ -5,6 +5,6 @@
                             "when": "!searchViewletVisible"},
     { "key": "ctrl+shift+f", "command": "workbench.action.findInFiles",
                              "when": "!searchInputBoxFocus"},
-    { "key": "ctrl+shift+f", "command": "search.action.focusActiveEditor",
+    { "key": "ctrl+shift+f", "command": "workbench.action.focusActiveEditorGroup",
                              "when": "searchInputBoxFocus && searchViewletVisible" }
 ]
