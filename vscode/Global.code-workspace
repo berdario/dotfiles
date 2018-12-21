@@ -11,11 +11,12 @@
 			"itryapitsin.Scala",
 			"justusadam.language-haskell",
 			"magicstack.MagicPython",
-			"haunlebron.vscode-parinfer",
+			"cospaia.paredit-revived",
 			"sbrink.elm",
 			"vigoo.stylish-haskell",
 			"yuce.erlang-otp",
-			"nwolverson.ide-purescript"
+			"nwolverson.ide-purescript",
+			"zxh404.vscode-proto3"
 		]
 	}
 }

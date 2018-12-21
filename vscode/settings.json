@@ -3,7 +3,7 @@
     "files.trimTrailingWhitespace": true,
     "editor.renderWhitespace": "boundary",
     "git.autofetch": false,
-    "editor.autoClosingBrackets": true,
+    "editor.autoClosingBrackets": "languageDefined",
     "search.exclude": {
         "**/node_modules": true,
         "**/bower_components": true,
@@ -27,5 +27,5 @@
     "haskell.hlint.executablePath": "/home/dario/.local/bin/hlint",
     "stylishHaskell.commandLine": "/home/dario/.local/bin/stylish-haskell",
     "window.zoomLevel": 0,
-    "editor.wordWrap": false
+    "editor.wordWrap": "off"
 }
